@@ -209,7 +209,8 @@ def create_maze(w,h,file):
     #disp_maze(maze)
     maze_to_xlsx(maze, file)
     fin = time.time()
-    return ('Fini. ' + file + ' généré en : ' + str(round(fin-debut,3)) + ' secondes')
+    print('Fini. ' + file + ' généré en : ' + str(round(fin-debut,3)) + ' secondes')
+    return maze
 
 
 # # Run
