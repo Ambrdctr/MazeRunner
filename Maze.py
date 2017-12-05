@@ -6,8 +6,6 @@
 # In[183]:
 
 from random import *
-from openpyxl.styles.borders import Border, Side
-from openpyxl import Workbook
 import time
 
 
@@ -171,32 +169,7 @@ def colnum_string(n):
         string = chr(65 + remainder) + string
     return string
 
-def maze_to_xlsx(maze, file):
-    wb = Workbook()
-    ws = wb.active
-    for i in range(maze.w):
-        for j in range(maze.h):
-            top = Side(color="FFFFFFFF")
-            right = Side(color="FFFFFFFF")
-            bottom = Side(color="FFFFFFFF")
-            left = Side(color="FFFFFFFF")
-            for k in range(4):
-                if maze.grid[i][j].walls[k]:
-                    if k == 0:
-                        top = Side(style='thick')
-                    if k == 1:
-                        right = Side(style='thick')
-                    if k == 2:
-                        bottom = Side(style='thick')
-                    if k == 3:
-                        left = Side(style='thick')
-            border = Border(left, right, top, bottom) # Attention à l'ordre !
-            ws.cell(row=i+2, column=j+2).border = border
-            ws.cell(row=1, column=j+2).value = j
-            ws.cell(row=i+2, column=1).value = i
-    for i in range(2, maze.h+2):
-        ws.column_dimensions[colnum_string(i)].width = 3
-    wb.save(file)
+
     
 
 
@@ -204,10 +177,8 @@ def create_maze(w,h,file):
     debut = time.time()
     maze = Grid(w,h)
     #disp_maze(maze)
-    #maze_to_xlsx(maze, file)
     kruskal(maze)
     #disp_maze(maze)
-    maze_to_xlsx(maze, file)
     fin = time.time()
     print('Fini. ' + file + ' généré en : ' + str(round(fin-debut,3)) + ' secondes')
     return maze
@@ -217,15 +188,7 @@ def create_maze(w,h,file):
 
 # In[188]:
 
-#create_maze(1,2,'maze1x2.xlsx')
-#create_maze(2,2,'maze2x2.xlsx')
-#create_maze(3,3,'maze3x3.xlsx')
-#create_maze(5,5,'maze5x5.xlsx')
-#create_maze(10,10,'maze10x10.xlsx')
-#create_maze(22,15,'maze22x15.xlsx')
-create_maze(30,20,'maze30x20.xlsx')
-#create_maze(50,50,'maze50x50.xlsx')
-#create_maze(100,100,'maze100x100.xlsx')
+
 
 
 # In[ ]:
