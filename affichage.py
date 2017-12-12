@@ -17,14 +17,15 @@ cases1 = blue
 cases2 = white
 
 
-def afficherMap(screen, map):
+def afficherMap(screen, perso, map):
 
-    taille_case = 50
+    taille_case = 120
     grid = map.grid
 
-    for i in range(0, map.w):
-        for j in range(0, map.h):
+    for i in range(0, int(map.w)):
+        for j in range(0, int(map.h)):
             case = pygame.image.load("images/" + grid[i][j].state + ".png").convert()
+            case = pygame.transform.scale(case, (taille_case, taille_case))
             screen.blit(case, (i*taille_case, j*taille_case))
             if grid[i][j].walls[0] == True:  ##Si mur
                 posx = taille_case * k
@@ -69,9 +70,16 @@ def afficherMap(screen, map):
                 pygame.display.flip()
     return pause
 
-def affichage(screen, map):
-    res = afficherMap(screen, map)
-    afficherPerso(screen, perso, map)
+def afficherPerso(screen, perso, map):
+    pos = perso.pos
+
+
+
+
+def affichage(screen, perso, map):
+    mapInt = []
+    res = afficherMap(screen, perso, map)
+    #afficherPerso(screen, perso, map)
     return res
 
 def pause(screen):
