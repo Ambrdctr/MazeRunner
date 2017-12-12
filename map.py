@@ -1,3 +1,4 @@
+import random
 #Classe cellule
 class Cell:
     """Classe définissant une cellule caractérisé par:
@@ -8,8 +9,12 @@ class Cell:
 
     #Constructeur
     def __init__(self):
+        tabSols = ['gazon', 'gravier', 'terre']
         self.walls = [False, False, False, False]
-        self.state = 'gazon'
+        self.state = random.choice(tabSols)
+
+    def __str__(self):
+        return self.state
 
 class Grid:
 
@@ -20,9 +25,16 @@ class Grid:
         for i in range(w):
             grid.append([])
             for j in range(h):
-                # Ajout de l'indice pour le calcul des ensemble
                 grid[i].append(Cell())
         self.grid = grid
+
+    def __str__(self):
+        ch = ""
+        for i in range(self.w):
+            for j in range(self.h):
+                ch += self.grid[i][j].__str__() + " "
+            ch += '\n'
+        return ch
 
 
 def create_empty_map(w,h):

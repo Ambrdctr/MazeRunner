@@ -30,7 +30,7 @@ def principal():
         elif choice == 3:
             run = False
     credit(screen)
-    time.sleep(3)
+    time.sleep(0.5)
     pygame.display.quit()
 
 principal()
