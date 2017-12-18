@@ -19,8 +19,8 @@ cases2 = white
 
 
 #Dimensions
-w = 10
-h = 10
+w = 7
+h = 7
 taille_perso = 100
 taille_case = 100
 deplacement = 100
@@ -34,8 +34,13 @@ pygame.init()
 screen = pygame.display.set_mode((largeur, hauteur))
 
 #Fond
-fond = pygame.image.load("background.jpg").convert()
-screen.blit(fond, (0,0))
+gazon = pygame.image.load("gazon.jpg").convert()
+#screen.blit(fond, (0,0))
+#Placement personnage
+x = 0
+y = 0
+perso = pygame.image.load("perso.png").convert_alpha()  #convert_alpha = zone transparente
+
 
 
 #ex = [([True,False,False,False],'eau'),([True,True,False,False],'gazon')]
@@ -43,39 +48,45 @@ screen.blit(fond, (0,0))
 
 cles = [(1,1)]
 
-
-#carte = [[([False,False,False,False],'eau'),([False,True,False,False],'gazon'),([False,True,True,True],'gazon'),([False,False,False,True],'gazon')],
-#         [([False,False,False,False],'eau'),([False,False,False,False],'gazon'),([True,False,False,False],'gazon'),([False,False,False,False],'gazon')],
-#         [([False,False,False,False],'eau'),([False,False,False,False],'gazon'),([False,False,False,False],'gazon'),([False,False,False,False],'gazon')],
-#         [([False,False,False,False],'eau'),([True,False,False,False],'gazon'),([False,False,False,False],'gazon'),([False,False,False,False],'gazon')]]
-        
-
-
 carte = create_maze(w,h)
          
 
 
-
 def draw_map(tab):
-    for i in range (0,len(tab)):
-        for k in range (0,len(tab[i])):
-                if tab[i][k].walls[0] == True:          ##Si mur
-                    posx = taille_case * k 
-                    posy = taille_case * i
+    
+    pos2 = 0
+    
+    for i in range ((y//taille_case - 2), (y//taille_case + 3)):
+        pos1 = 0
+        for k in range ((x//taille_case - 2), (x//taille_case + 3)):
+            if i in range(0,len(tab)) and k in range(0,len(tab[i])):
+                if tab[i][k].state == 'v':
+                    posx = taille_case * pos1
+                    posy = taille_case * pos2
+                    screen.blit(gazon, (posx,posy))
+                    ##Si mur
+                if tab[i][k].walls[0] == True:
+                    posx = taille_case * pos1
+                    posy = taille_case * pos2
                     pygame.draw.rect(screen, color_mur, (posx, posy-5, taille_case, 10), 0)
                 if tab[i][k].walls[1] == True:
-                    posx = taille_case * k + taille_case
-                    posy = taille_case * i 
+                    posx = taille_case * pos1 + taille_case
+                    posy = taille_case * pos2
                     pygame.draw.rect(screen, color_mur, (posx-5, posy, 10, taille_case), 0)
                 if tab[i][k].walls[2] == True:
-                    posx = taille_case * k 
-                    posy = taille_case * i + taille_case
+                    posx = taille_case * pos1
+                    posy = taille_case * pos2 + taille_case
                     pygame.draw.rect(screen, color_mur, (posx, posy-5, taille_case, 10), 0)
                 if tab[i][k].walls[3] == True:
-                    posx = taille_case * k
-                    posy = taille_case * i 
+                    posx = taille_case * pos1
+                    posy = taille_case * pos2
                     pygame.draw.rect(screen, color_mur, (posx-5, posy, 10, taille_case), 0)
-
+            if (k == x//taille_case) and (i == y/taille_case):
+                posx = taille_case * pos1
+                posy = taille_case * pos2
+                screen.blit(perso, (posx,posy))
+            pos1 += 1
+        pos2 += 1
                         
                                     
                 
@@ -124,19 +135,6 @@ def mur(x,y,direction):
 
 
 
-##MODIFIER LA FONCTION PORTE CAR PAS BONNE
-def porte(x,y):
-    res = False
-    ybis = int(y / taille_case)
-    xbis = int(x / taille_case)
-    if carte[ybis][xbis] != 0:
-        if carte[ybis][xbis].state == 'porte':
-            res = True
-            exit
-    return res
-
-
-
 
 
 def cle(x,y):
@@ -149,11 +147,6 @@ def cle(x,y):
             exit
     return
 
-#Chargement et collage du pion
-x = 0
-y = 0
-perso = pygame.image.load("perso.png").convert_alpha()  #convert_alpha = zone transparente
-screen.blit(perso, (x,y))
 
 #Rafraîchissement de l'écran
 pygame.display.flip()
@@ -172,45 +165,46 @@ while running:
         if event.type == KEYDOWN:
             if event.key == K_UP:
                 if (y-deplacement)>=0 and not mur(x, y, 'haut'):
-                    if not have_key and porte(x, y-deplacement):
-                        print("Il vous manque la cle !")
-                    else:
+                    # if not have_key:
+                    #    print("Il vous manque la cle !")
+                    #else:
                         y-=deplacement
                 
                     
             if event.key == K_DOWN:
-                if (y+2*deplacement)<hauteur and not mur(x, y, 'bas'):
-                    if not have_key and porte(x, y+deplacement):
-                        print("Il vous manque la cle !")
-                    else:
+                if (y+deplacement)<hauteur and not mur(x, y, 'bas'):
+                   # if not have_key :
+                   #     print("Il vous manque la cle !")
+                   # else:
                         y+=deplacement
                 
                     
             if event.key == K_RIGHT:
-                if (x+2*deplacement)<largeur and not mur(x, y, 'droite'):
-                    if not have_key and porte(x+deplacement, y):
-                        print("Il vous manque la cle !")
-                    else:
+                if (x+deplacement)<largeur and not mur(x, y, 'droite'):
+                   # if not have_key :
+                   #     print("Il vous manque la cle !")
+                   # else:
                         x+=deplacement
                 
                     
             if event.key == K_LEFT:
                 if (x-deplacement)>=0 and not mur(x, y, 'gauche'):
-                    if not have_key and porte(x-deplacement, y):
-                        print("Il vous manque la cle !")
-                    else:
+                   # if not have_key :
+                   #     print("Il vous manque la cle !")
+                   # else:
                         x-=deplacement
+
+
+
                 
             #Re-collage
-            
+            pygame.draw.rect(screen, color_mur, (0, 0, w*taille_case, h*taille_case), 0)
             screen.blit(screen, (0,0))
-            ##draw_damier()
-            screen.blit(fond, (0,0))
             cle(x,y)
             draw_map(carte)
             if not have_key:
                 draw_cle(cles)
-            screen.blit(perso, (x,y))
+            #screen.blit(perso, (x,y))
             #Rafraichissement
             pygame.display.flip()
 pygame.display.quit()
