@@ -20,7 +20,7 @@ class Cell:
     #Constructor
     def __init__(self, i):
         self.walls = [True, True, True, True]
-        self.state = 'v'
+        self.state = 'gravier'
         self.set = i
 
 
@@ -180,8 +180,9 @@ def create_maze(w,h):
     kruskal(maze)
     #disp_maze(maze)
     fin = time.time()
-    print('Fini. généré en : ' + str(round(fin-debut,3)) + ' secondes')
-    return maze.grid
+    #print('Fini. généré en : ' + str(round(fin-debut,3)) + ' secondes')
+    maze.grid[1][1].state = 'sortie'
+    return maze
 
 
 # # Run

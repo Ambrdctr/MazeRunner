@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+import random
 
 # Couleurs
 red = (255, 0, 0)
@@ -16,37 +17,95 @@ color_cle = green
 cases1 = blue
 cases2 = white
 
+def afficher_map(screen, perso, map):
+    # Fond
+    taille_case = 100
+    mer1 = pygame.image.load("images/eau1.png").convert()
+    mer2 = pygame.image.load("images/eau2.png").convert()
+    mer3 = pygame.image.load("images/eau3.png").convert()
+    mer4 = pygame.image.load("images/eau4.png").convert()
 
-def afficherMap(screen, map):
+    persoimg = pygame.image.load("images/" + perso.images[perso.dir] + ".png").convert_alpha()
+    persoimg = pygame.transform.scale(persoimg, (int(taille_case/1.5), taille_case))
 
+    x = perso.x
+    y = perso.y
+    tab = map.grid
+    pos2 = 0
+
+    for i in range((y - 3), (y + 5)):
+        pos1 = 0
+        for k in range((x - 6), (x + 7)):
+            if i in range(0, len(tab)) and k in range(0, len(tab[i])):
+                posx = taille_case * pos1
+                posy = taille_case * pos2
+                case = pygame.image.load("images/" + tab[i][k].state + ".png").convert()
+                case = pygame.transform.scale(case, (taille_case, taille_case))
+                screen.blit(case, (posx, posy))
+                    ##Si mur
+                if tab[i][k].walls[0] == True:
+                    posx = taille_case * pos1
+                    posy = taille_case * pos2
+                    pygame.draw.rect(screen, color_mur, (posx, posy - 5, taille_case, 10), 0)
+                if tab[i][k].walls[1] == True:
+                    posx = taille_case * pos1 + taille_case
+                    posy = taille_case * pos2
+                    pygame.draw.rect(screen, color_mur, (posx - 5, posy, 10, taille_case), 0)
+                if tab[i][k].walls[2] == True:
+                    posx = taille_case * pos1
+                    posy = taille_case * pos2 + taille_case
+                    pygame.draw.rect(screen, color_mur, (posx, posy - 5, taille_case, 10), 0)
+                if tab[i][k].walls[3] == True:
+                    posx = taille_case * pos1
+                    posy = taille_case * pos2
+                    pygame.draw.rect(screen, color_mur, (posx - 5, posy, 10, taille_case), 0)
+            else:
+                eau = random.randint(1,1)#, 4)
+                posx = taille_case * pos1
+                posy = taille_case * pos2
+                if eau == 1:
+                    screen.blit(mer1, (posx, posy))
+                elif eau == 2:
+                    screen.blit(mer2, (posx, posy))
+                elif eau == 3:
+                    screen.blit(mer3, (posx, posy))
+                elif eau == 4:
+                    screen.blit(mer4, (posx, posy))
+            if (k == x) and (i == y):
+                posx = taille_case * pos1 + int(taille_case/6)
+                posy = taille_case * pos2
+                screen.blit(persoimg, (posx, posy))
+            pos1 += 1
+        pos2 += 1
+
+"""def afficherMap(screen, map):
     taille_case = 120
     grid = map.grid
 
-    for i in range(0, int(map.w)):
-        for j in range(0, int(map.h)):
+    for i in range(0, map.w):
+        for j in range(0, map.h):
             case = pygame.image.load("images/" + grid[i][j].state + ".png").convert()
             case = pygame.transform.scale(case, (taille_case, taille_case))
-            screen.blit(case, (i*taille_case, j*taille_case))
+            screen.blit(case, (j * taille_case, i * taille_case))
             if grid[i][j].walls[0] == True:  ##Si mur
-                posx = taille_case * k
+                posx = taille_case * j
                 posy = taille_case * i
                 pygame.draw.rect(screen, color_mur, (posx, posy - 5, taille_case, 10), 0)
             if grid[i][j].walls[1] == True:
-                posx = taille_case * k + taille_case
+                posx = taille_case * j + taille_case
                 posy = taille_case * i
                 pygame.draw.rect(screen, color_mur, (posx - 5, posy, 10, taille_case), 0)
             if grid[i][j].walls[2] == True:
-                posx = taille_case * k
+                posx = taille_case * j
                 posy = taille_case * i + taille_case
                 pygame.draw.rect(screen, color_mur, (posx, posy - 5, taille_case, 10), 0)
             if grid[i][j].walls[3] == True:
-                posx = taille_case * k
+                posx = taille_case * j
                 posy = taille_case * i
                 pygame.draw.rect(screen, color_mur, (posx - 5, posy, 10, taille_case), 0)
 
     # Rafraîchissement de l'écran
     pygame.display.flip()
-
     # Variable qui continue la boucle si = True, stoppe si = False
     run = True
 
@@ -68,20 +127,18 @@ def afficherMap(screen, map):
                     run = False
                 # Rafraichissement
                 pygame.display.flip()
-    return pause
+    return pause"""
 
-def afficherPerso(screen, perso, map):
-    pos = perso.pos
-
-
+"""def afficherPerso(screen, perso, map):
+    persoimg = pygame.image.load("images/" + perso.images[2] + ".png").convert_alpha()
+    persoimg = pygame.transform.scale(persoimg, (taille_case, taille_case))
+    screen.blit(persoimg, (posx, posy))"""
 
 
 def affichage(screen, perso, map):
-    mapInt = []
-    res = afficherMap(screen, map)
-    #afficherPerso(screen, perso, map)
-    #gererDeplacements(screen, perso, montres, map)
-    return res
+    afficher_map(screen, perso, map)
+    #afficherPerso(screen, perso)
+
 
 def pause(screen):
     fond = pygame.image.load("images/pause.png").convert()

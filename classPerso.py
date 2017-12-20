@@ -2,7 +2,9 @@ class Perso:
     
     def __init__(self, ici):
         """ici : un tuple (x, y) représentant un point dans l'espace"""
-        self.pos = ici
+        self.x = ici[0]
+        self.y = ici[1]
+        self.dir = 2
 
 class Joueur(Perso):
     
