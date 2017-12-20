@@ -15,6 +15,8 @@ class Joueur(Perso):
         self.memoire = 30
         self.charisme = 0
         #self.inventaire = Bag()
+        self.images = ['haut', 'droite', 'bas', 'gauche']
+
 
 class Marchand(Perso):
     
@@ -32,4 +34,5 @@ class Monstre(Perso):
         self.force = strength
         self.vision = view
         self.inventaire = Bag()
+        self.images = ['m_haut', 'm_droite', 'm_bas', 'm_gauche']
 

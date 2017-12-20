@@ -32,7 +32,7 @@ largeurBis = taille_case * wbis
 hauteurBis = taille_case * hbis
 
 
-pygame.init()
+"""pygame.init()
 
 #Ouverture de la fenêtre Pygame
 screen = pygame.display.set_mode((largeurBis, hauteurBis))
@@ -40,7 +40,7 @@ screen = pygame.display.set_mode((largeurBis, hauteurBis))
 #Fond
 gazon = pygame.image.load("gazon.jpg").convert()
 #screen.blit(fond, (0,0))
-#Placement personnage
+#Placement personnage"""
 x = 0
 y = 0
 perso = pygame.image.load("perso.png").convert_alpha()  #convert_alpha = zone transparente

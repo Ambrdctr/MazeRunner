@@ -17,7 +17,7 @@ cases1 = blue
 cases2 = white
 
 
-def afficherMap(screen, perso, map):
+def afficherMap(screen, map):
 
     taille_case = 120
     grid = map.grid
@@ -78,8 +78,9 @@ def afficherPerso(screen, perso, map):
 
 def affichage(screen, perso, map):
     mapInt = []
-    res = afficherMap(screen, perso, map)
+    res = afficherMap(screen, map)
     #afficherPerso(screen, perso, map)
+    #gererDeplacements(screen, perso, montres, map)
     return res
 
 def pause(screen):

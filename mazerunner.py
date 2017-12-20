@@ -20,7 +20,7 @@ def principal():
     while run:
         choice = startMenu(screen)
         if choice == 1:
-            play(screen, difficulty)
+            run = play(screen, difficulty)
         elif choice == 2:
             res = options(screen)
             if res == False:
