@@ -1,4 +1,5 @@
 import pygame
+import random
 from pygame.locals import *
 from Maze import create_maze
 
@@ -39,12 +40,16 @@ pygame.init()
 screen = pygame.display.set_mode((largeurBis, hauteurBis))
 
 #Fond
-gazon = pygame.image.load("gazon.jpg").convert()
+gazon = pygame.image.load("images/gazon.jpg").convert()
+mer1 = pygame.image.load("images/eau1.png").convert()
+mer2 = pygame.image.load("images/eau2.png").convert()
+mer3 = pygame.image.load("images/eau3.png").convert()
+mer4 = pygame.image.load("images/eau4.png").convert()
 #screen.blit(fond, (0,0))
 #Placement personnage
 x = 0
 y = 0
-perso = pygame.image.load("perso.png").convert_alpha()  #convert_alpha = zone transparente
+perso = pygame.image.load("images/perso.png").convert_alpha()  #convert_alpha = zone transparente
 
 
 
@@ -86,6 +91,18 @@ def draw_map(tab):
                     posx = taille_case * pos1
                     posy = taille_case * pos2
                     pygame.draw.rect(screen, color_mur, (posx-5, posy, 10, taille_case), 0)
+            else :
+                eau = random.randint(1,4)
+                posx = taille_case * pos1
+                posy = taille_case * pos2
+                if eau == 1:
+                    screen.blit(mer1, (posx,posy))
+                elif eau == 2:
+                    screen.blit(mer2, (posx,posy))
+                elif eau == 3:
+                    screen.blit(mer3, (posx,posy))
+                elif eau == 4:
+                    screen.blit(mer4, (posx,posy))
             if (k == x//taille_case) and (i == y/taille_case):
                 posx = taille_case * pos1
                 posy = taille_case * pos2
@@ -103,7 +120,7 @@ draw_map(carte)
 
 #Chargement et collage de la clée
 have_key = False
-key = pygame.image.load("cle.png").convert_alpha()
+key = pygame.image.load("images/cle.png").convert_alpha()
 def draw_cle(tab):
     global key
     for elt in tab:
