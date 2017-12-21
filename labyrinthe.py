@@ -132,7 +132,7 @@ def kruskal(maze):
             cellSet.join_sets(cell, neighbor, maze)
     return maze
 
-def create_maze(w,h,file):
+def create_maze(w,h):
     maze = Grid(w,h)
     kruskal(maze)
     return maze
