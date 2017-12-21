@@ -1,4 +1,4 @@
-from random import shuffle
+from random import *
 
 
 class Cell:
@@ -160,19 +160,11 @@ def place_rooms(maze, roomRange):
             for j in range(y1, y2):
                 maze.grid[i][j].walls = [False, False, False, False]
                 maze.grid[i][j].set = maxind
-                if i == x1:
-                    maze.grid[i][j].walls[0] = True
-                if j == y2 - 1:
-                    maze.grid[i][j].walls[1] = True
-                if i == x2 - 1:
-                    maze.grid[i][j].walls[2] = True
-                if j == y1:
-                    maze.grid[i][j].walls[3] = True
         maze.rooms.append(roomInt)
 
 
 def kruskal(maze):
-    roomsNb = 10
+    roomsNb = 5
     roomRange = [5, 10]
     # STEP 0 place rooms
     for i in range(roomsNb):
@@ -196,7 +188,7 @@ def kruskal(maze):
     return maze
 
 
-def create_maze(w, h, file):
+def create_maze(w, h):
     maze = Grid(w, h)
     kruskal(maze)
     return maze
