@@ -25,7 +25,7 @@ def afficher_map(screen, perso, map):
     mer3 = pygame.image.load("images/eau3.png").convert()
     mer4 = pygame.image.load("images/eau4.png").convert()
 
-    persoimg = pygame.image.load("images/" + perso.images[perso.dir] + ".png").convert_alpha()
+    persoimg = perso.images[perso.dir]
     persoimg = pygame.transform.scale(persoimg, (int(taille_case/1.5), taille_case))
 
     x = perso.x

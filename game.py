@@ -9,14 +9,10 @@ from labyrinthe import create_maze
 
 def play(screen, difficulty):
     size = screen.get_size()
-    perso = Joueur((0,0), 'Player')
+
     out = True
     exterieur = create_empty_map(int(size[0] / 50), int(size[1] / 50))
-    exterieur.grid[2][3].state = 'entree'
-    exterieur.grid[10][1].state = 'forgeron'
-    exterieur.grid[10][3].state = 'sorciere'
-    exterieur.grid[10][5].state = 'acheteur'
-    donjon = create_maze(10, 20)
+    donjon = create_maze(20, 30)
 
     map = exterieur
 

@@ -48,9 +48,9 @@ class Grid:
 
 
 def create_empty_map(w,h):
-    """map = Grid(w,h)
+    map = Grid(w,h)
     map.grid[2][3].state = 'entree'
     map.grid[10][1].state = 'forgeron'
     map.grid[10][3].state = 'sorciere'
-    map.grid[10][5].state = 'acheteur'"""
-    return Grid(w,h)
+    map.grid[10][5].state = 'acheteur'
+    return map

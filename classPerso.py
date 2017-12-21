@@ -1,3 +1,6 @@
+import pygame
+from pygame.locals import *
+
 class Perso:
     
     def __init__(self, ici):
@@ -17,8 +20,8 @@ class Joueur(Perso):
         self.memoire = 30
         self.charisme = 0
         #self.inventaire = Bag()
-        self.images = ['haut', 'droite', 'bas', 'gauche']
-
+        self.images = [pygame.image.load("images/haut.png").convert_alpha(), pygame.image.load("images/droite.png").convert_alpha(),
+                       pygame.image.load("images/bas.png").convert_alpha(), pygame.image.load("images/gauche.png").convert_alpha()]
 
 class Marchand(Perso):
     

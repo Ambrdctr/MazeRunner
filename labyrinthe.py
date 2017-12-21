@@ -20,7 +20,7 @@ class Cell:
     #Constructor
     def __init__(self, i):
         self.walls = [True, True, True, True]
-        self.state = 'gravier'
+        self.state = 'pierre'
         self.set = i
 
 
@@ -181,7 +181,7 @@ def create_maze(w,h):
     #disp_maze(maze)
     fin = time.time()
     #print('Fini. généré en : ' + str(round(fin-debut,3)) + ' secondes')
-    maze.grid[1][1].state = 'sortie'
+    maze.grid[0][0].state = 'sortie'
     return maze
 
 
