@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+import time
 
 class Perso:
     
@@ -14,6 +15,7 @@ class Joueur(Perso):
     def __init__(self, ici, name):
         Perso.__init__(self, ici)
         self.nom = name
+        self.vivant = True
         self.vie = 100
         self.vitesse = 1
         self.force = 5
@@ -22,6 +24,8 @@ class Joueur(Perso):
         #self.inventaire = Bag()
         self.images = [pygame.image.load("images/haut.png").convert_alpha(), pygame.image.load("images/droite.png").convert_alpha(),
                        pygame.image.load("images/bas.png").convert_alpha(), pygame.image.load("images/gauche.png").convert_alpha()]
+        self.dansDonjon = False
+
 
 class Marchand(Perso):
     
@@ -32,12 +36,14 @@ class Marchand(Perso):
         
 class Monstre(Perso):
     
-    def __init__(self, ici, pv, speed, strength, view):
+    def __init__(self, ici, diff):
         Perso.__init__(self, ici)
-        self.vie = pv
-        self.vitesse = speed
-        self.force = strength
-        self.vision = view
-        self.inventaire = Bag()
-        self.images = ['m_haut', 'm_droite', 'm_bas', 'm_gauche']
-
+        self.vivant = True
+        self.dansDonjon = True
+        self.vie = 10*diff
+        self.dernierMvmt = 0
+        self.vitesse = 3 / diff
+        self.force = 5
+        self.vision = 0
+        self.images =  [pygame.image.load("images/m_haut.png").convert_alpha(), pygame.image.load("images/m_droite.png").convert_alpha(),
+                       pygame.image.load("images/m_bas.png").convert_alpha(), pygame.image.load("images/m_gauche.png").convert_alpha()]

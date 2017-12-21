@@ -3,9 +3,11 @@ from pygame.locals import *
 from map import create_empty_map
 from affichage import affichage, pause
 from deplacements import deplacerPerso
-from classPerso import Perso, Joueur
+from classPerso import Perso, Joueur, Monstre
 from fonctionCases import *
 from labyrinthe import create_maze
+import random
+import time
 
 def play(screen, difficulty):
     size = screen.get_size()
@@ -17,13 +19,16 @@ def play(screen, difficulty):
     map = exterieur
 
     perso = Joueur((3,1), 'Didier')
+    monstre = Monstre((5,3), difficulty)
 
     aBouge = False
 
     # Touche reste enfoncée
     pygame.key.set_repeat(100, 50)
+
+    timestart = time.time()
     while out:
-        affichage(screen, perso, map)
+        affichage(screen, perso, monstre, map)
         # Rafraîchissement de l'écran
         pygame.display.flip()
 
@@ -36,15 +41,28 @@ def play(screen, difficulty):
                     out = not pause(screen)
                 if event.key == K_UP or event.key == K_DOWN or event.key == K_RIGHT or event.key == K_LEFT:
                     aBouge = True
-                    deplacerPerso(perso, map, event.key)
+                    deplacerPerso(perso, map, monstre, event.key)
         if allerDonjon(map, perso):
             aBouge = False
             perso.x = 0
             perso.y = 0
             map = donjon
+            perso.dansDonjon = True
         if aBouge:
             if allerExterieur(map, perso):
                 perso.x = 0
                 perso.y = 0
                 map = exterieur
+                perso.dansDonjon = False
+        if victoire(map,perso):
+            perso.x = 0
+            perso.y = 0
+            map = exterieur
+            perso.dansDonjon = False
+        monstre.dernierMvmt = time.time()
+        if monstre.dernierMvmt - timestart >= monstre.vitesse:
+            timestart = time.time()
+            monstre.dernierMvmt = time.time()
+            if perso.dansDonjon:
+                deplacerPerso(monstre, map, perso, K_UP)
     return out

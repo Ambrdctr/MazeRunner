@@ -17,7 +17,7 @@ color_cle = green
 cases1 = blue
 cases2 = white
 
-def afficher_map(screen, perso, map):
+def afficher_map(screen, perso, monstre, map):
     # Fond
     taille_case = 100
     mer1 = pygame.image.load("images/eau1.png").convert()
@@ -27,6 +27,9 @@ def afficher_map(screen, perso, map):
 
     persoimg = perso.images[perso.dir]
     persoimg = pygame.transform.scale(persoimg, (int(taille_case/1.5), taille_case))
+
+    monstreimg = monstre.images[monstre.dir]
+    monstreimg = pygame.transform.scale(monstreimg, (taille_case, taille_case))
 
     x = perso.x
     y = perso.y
@@ -71,7 +74,11 @@ def afficher_map(screen, perso, map):
                     screen.blit(mer3, (posx, posy))
                 elif eau == 4:
                     screen.blit(mer4, (posx, posy))
-            if (k == x) and (i == y):
+            if (k == monstre.x) and (i == monstre.y) and perso.dansDonjon and monstre.vivant:
+                posx = taille_case * pos1
+                posy = taille_case * pos2
+                screen.blit(monstreimg, (posx, posy))
+            if (k == x) and (i == y) and perso.vivant:
                 posx = taille_case * pos1 + int(taille_case/6)
                 posy = taille_case * pos2
                 screen.blit(persoimg, (posx, posy))
@@ -135,8 +142,8 @@ def afficher_map(screen, perso, map):
     screen.blit(persoimg, (posx, posy))"""
 
 
-def affichage(screen, perso, map):
-    afficher_map(screen, perso, map)
+def affichage(screen, perso, monstre, map):
+    afficher_map(screen, perso, monstre, map)
     #afficherPerso(screen, perso)
 
 
