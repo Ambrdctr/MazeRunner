@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 from map import create_empty_map
 from affichage import affichage, pause
-from deplacements import deplacerPerso
+from deplacements import deplacerPerso, deplacerMonstre
 from classPerso import Perso, Joueur, Monstre
 from fonctionCases import *
 from labyrinthe import create_maze
@@ -40,6 +40,7 @@ def play(screen, difficulty):
                 if event.key == K_ESCAPE:
                     out = not pause(screen)
                 if event.key == K_UP or event.key == K_DOWN or event.key == K_RIGHT or event.key == K_LEFT:
+
                     aBouge = True
                     deplacerPerso(perso, map, monstre, event.key)
         if allerDonjon(map, perso):
@@ -63,6 +64,6 @@ def play(screen, difficulty):
         if monstre.dernierMvmt - timestart >= monstre.vitesse:
             timestart = time.time()
             monstre.dernierMvmt = time.time()
-            if perso.dansDonjon:
-                deplacerPerso(monstre, map, perso, K_UP)
+            if perso.dansDonjon and monstre.vivant:
+                deplacerMonstre(monstre, map, perso)
     return out

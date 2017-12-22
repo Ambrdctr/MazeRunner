@@ -43,6 +43,7 @@ class Monstre(Perso):
         self.vie = 10*diff
         self.dernierMvmt = 0
         self.vitesse = 3 / diff
+        self.dirRetour = 0
         self.force = 5
         self.vision = 0
         self.images =  [pygame.image.load("images/m_haut.png").convert_alpha(), pygame.image.load("images/m_droite.png").convert_alpha(),

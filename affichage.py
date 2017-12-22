@@ -28,6 +28,9 @@ def afficher_map(screen, perso, monstre, map):
     persoimg = perso.images[perso.dir]
     persoimg = pygame.transform.scale(persoimg, (int(taille_case/1.5), taille_case))
 
+    mort = pygame.image.load("images/sang.png").convert_alpha()
+    mort = pygame.transform.scale(mort, (taille_case, taille_case))
+
     monstreimg = monstre.images[monstre.dir]
     monstreimg = pygame.transform.scale(monstreimg, (taille_case, taille_case))
 
@@ -74,10 +77,13 @@ def afficher_map(screen, perso, monstre, map):
                     screen.blit(mer3, (posx, posy))
                 elif eau == 4:
                     screen.blit(mer4, (posx, posy))
-            if (k == monstre.x) and (i == monstre.y) and perso.dansDonjon and monstre.vivant:
+            if (k == monstre.x) and (i == monstre.y) and perso.dansDonjon:
                 posx = taille_case * pos1
                 posy = taille_case * pos2
-                screen.blit(monstreimg, (posx, posy))
+                if monstre.vivant:
+                    screen.blit(monstreimg, (posx, posy))
+                else:
+                    screen.blit(mort, (posx,posy))
             if (k == x) and (i == y) and perso.vivant:
                 posx = taille_case * pos1 + int(taille_case/6)
                 posy = taille_case * pos2
