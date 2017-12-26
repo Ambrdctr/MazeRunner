@@ -1,6 +1,5 @@
 from random import *
 
-
 class Cell:
     # Constructor
     def __init__(self, i):
@@ -12,16 +11,23 @@ class Cell:
 class Room:
     # Constructor
     def __init__(self, x1, y1, x2, y2):
-        self.left = x1
-        self.right = x2
-        self.top = y1
-        self.bottom = y2
+        self.left = y1
+        self.right = y2 - 1
+        self.top = x1
+        self.bottom = x2 - 1
+
+    def __str__(self):
+        return "(" + str(self.left) + "," + str(self.top) + "), (" + str(self.right) + "," + str(self.bottom) + ")"
 
 
 class Grid:
     def __init__(self, w, h):
         self.w = w
         self.h = h
+        randList = [(0, 0), (0, self.h - 1), (self.w - 1, self.h - 1), (self.w - 1, 0)]
+        self.start = choice(randList)
+        randList.remove(self.start)
+        self.end = choice(randList)
         self.rooms = []
         grid = []
         ind = 0
@@ -32,16 +38,18 @@ class Grid:
                 initial_cell = Cell(ind)
                 grid[i].append(initial_cell)
                 ind += 1
+        grid[self.start[0]][self.start[1]].state = 'entree'
+        grid[self.end[0]][self.end[1]].state = 'sortie'
         self.grid = grid
 
-    def overlap_room(self, roomB):
+    def non_overlap_room(self, roomB):
         for roomA in self.rooms:
-            if (roomA.left < roomB.right and
-                        roomA.right > roomB.left and
-                        roomA.top > roomB.bottom and
-                        roomA.bottom < roomB.top):
-                return True
-        return False
+            if not (roomB.left > roomA.right or
+                            roomB.right < roomA.left or
+                            roomB.top > roomA.bottom or
+                            roomB.bottom < roomA.top):
+                return False
+        return True
 
     def is_in_room(self, cell):
         for roomA in self.rooms:
@@ -77,8 +85,23 @@ class Grid:
 
 
 class Set:
-    def __init__(self):  # {0: set([(f, o), (o, b), (a, r)...])}
+    def __init__(self, maze):  # {0: set([(f, o), (o, b), (a, r)...])}
         self.lst = {}
+        rooms = maze.rooms
+        for room in rooms:
+            ind = maze.grid[room.left][room.top].set
+            cellList = []
+            for j in range(room.left, room.right + 1):
+                for i in range(room.top, room.bottom + 1):
+                    cellList.append((i, j))
+            self.lst[ind] = set(cellList)
+
+    def __str__(self):
+        ch = ""
+        for e in self.lst:
+            for cell in self.lst[e]:
+                ch += "(" + str(cell[0]) + ", " + str(cell[1]) + ")"
+        return ch
 
     def already(self, ind, c):
         if ind in self.lst:
@@ -118,7 +141,7 @@ def makeRandomWallList(maze):
     for i in range(maze.w):
         for j in range(maze.h):
             for k in range(4):
-                if maze.have_neighbor((i, j), k):
+                if maze.have_neighbor((i, j), k) and maze.grid[i][j].walls[k]:
                     list.append((i, j, k))
     shuffle(list)
     return list
@@ -155,16 +178,24 @@ def place_rooms(maze, roomRange):
     x2 = x1 + width
     y2 = y1 + height
     roomInt = Room(x1, y1, x2, y2)
-    if not maze.overlap_room(roomInt):
+    if maze.non_overlap_room(roomInt):
+        ind = maze.grid[x1][y1].set
         for i in range(x1, x2):
             for j in range(y1, y2):
                 maze.grid[i][j].walls = [False, False, False, False]
-                maze.grid[i][j].set = maxind
+                maze.grid[i][j].set = ind
+                if i == x1:
+                    maze.grid[i][j].walls[0] = True
+                if j == y2 - 1:
+                    maze.grid[i][j].walls[1] = True
+                if i == x2 - 1:
+                    maze.grid[i][j].walls[2] = True
+                if j == y1:
+                    maze.grid[i][j].walls[3] = True
         maze.rooms.append(roomInt)
 
 
-def kruskal(maze):
-    roomsNb = 5
+def kruskal(maze, roomsNb):
     roomRange = [5, 10]
     # STEP 0 place rooms
     for i in range(roomsNb):
@@ -172,9 +203,8 @@ def kruskal(maze):
     # STEP I
     # a-
     wallList = makeRandomWallList(maze)
-    # print(wallList)
     # b-
-    cellSet = Set()
+    cellSet = Set(maze)
     # STEP II
     for cell in wallList:  # cell with wall
         # step 1
@@ -187,8 +217,7 @@ def kruskal(maze):
             cellSet.join_sets(cell, neighbor, maze)
     return maze
 
-
-def create_maze(w, h):
+def create_maze(w, h, roomsNb):
     maze = Grid(w, h)
-    kruskal(maze)
+    kruskal(maze, roomsNb)
     return maze

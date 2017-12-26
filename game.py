@@ -14,11 +14,12 @@ def play(screen, difficulty):
 
     out = True
     exterieur = create_empty_map(int(size[0] / 50), int(size[1] / 50))
-    donjon = create_maze(20, 30)
+    donjon = create_maze(30, 20, 10)
 
     map = exterieur
 
     perso = Joueur((3,1), 'Didier')
+
     monstre = Monstre((5,3), difficulty)
 
     aBouge = False
@@ -40,14 +41,17 @@ def play(screen, difficulty):
                 if event.key == K_ESCAPE:
                     out = not pause(screen)
                 if event.key == K_UP or event.key == K_DOWN or event.key == K_RIGHT or event.key == K_LEFT:
-
                     aBouge = True
+                    if perso.vitesse < 10:
+                        perso.vitesse += 1
+                    if perso.force < 100:
+                        perso.force += 1
                     deplacerPerso(perso, map, monstre, event.key)
         if allerDonjon(map, perso):
             aBouge = False
-            perso.x = 0
-            perso.y = 0
             map = donjon
+            perso.x = map.start[1]
+            perso.y = map.start[0]
             perso.dansDonjon = True
         if aBouge:
             if allerExterieur(map, perso):

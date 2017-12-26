@@ -1,11 +1,11 @@
 def allerDonjon(map, perso):
 
-    return map.grid[perso.y][perso.x].state == 'escaliersbas'
+    return map.grid[perso.y][perso.x].state == 'entreeDonjon'
 
 def allerExterieur(map, perso):
 
-    return map.grid[perso.y][perso.x].state == 'escaliershaut'
+    return map.grid[perso.y][perso.x].state == 'entree'
 
 def victoire(map, perso):
 
-    return map.grid[perso.y][perso.x].state == 'gagner'
+    return map.grid[perso.y][perso.x].state == 'tresor'

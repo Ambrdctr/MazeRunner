@@ -91,66 +91,23 @@ def afficher_map(screen, perso, monstre, map):
             pos1 += 1
         pos2 += 1
 
-"""def afficherMap(screen, map):
-    taille_case = 120
-    grid = map.grid
-
-    for i in range(0, map.w):
-        for j in range(0, map.h):
-            case = pygame.image.load("images/" + grid[i][j].state + ".png").convert()
-            case = pygame.transform.scale(case, (taille_case, taille_case))
-            screen.blit(case, (j * taille_case, i * taille_case))
-            if grid[i][j].walls[0] == True:  ##Si mur
-                posx = taille_case * j
-                posy = taille_case * i
-                pygame.draw.rect(screen, color_mur, (posx, posy - 5, taille_case, 10), 0)
-            if grid[i][j].walls[1] == True:
-                posx = taille_case * j + taille_case
-                posy = taille_case * i
-                pygame.draw.rect(screen, color_mur, (posx - 5, posy, 10, taille_case), 0)
-            if grid[i][j].walls[2] == True:
-                posx = taille_case * j
-                posy = taille_case * i + taille_case
-                pygame.draw.rect(screen, color_mur, (posx, posy - 5, taille_case, 10), 0)
-            if grid[i][j].walls[3] == True:
-                posx = taille_case * j
-                posy = taille_case * i
-                pygame.draw.rect(screen, color_mur, (posx - 5, posy, 10, taille_case), 0)
-
-    # Rafraîchissement de l'écran
-    pygame.display.flip()
-    # Variable qui continue la boucle si = True, stoppe si = False
-    run = True
-
-    # Boucle infinie
-    while run:
-        # Limitation de vitesse de la boucle
-        # 30 frames par secondes suffisent
-        pygame.time.Clock().tick(30)
-
-        for event in pygame.event.get():
-            # Lorsque l'on ferme la fenetre
-            if event.type == QUIT:
-                pause = False
-                run = False
-            # Deplacement
-            if event.type == KEYDOWN:
-                if event.key == K_ESCAPE:
-                    pause = True
-                    run = False
-                # Rafraichissement
-                pygame.display.flip()
-    return pause"""
-
-"""def afficherPerso(screen, perso, map):
-    persoimg = pygame.image.load("images/" + perso.images[2] + ".png").convert_alpha()
-    persoimg = pygame.transform.scale(persoimg, (taille_case, taille_case))
-    screen.blit(persoimg, (posx, posy))"""
+def afficherStats(screen, perso):
+    pygame.draw.rect(screen, (0, 0, 0), (1300, 80, 200, 200), 0)
+    myfont = pygame.font.SysFont('Comic Sans MS', 15)
+    textsurface = myfont.render('Vie (' + str(perso.vie) + ')', False, (200, 200, 200))
+    screen.blit(textsurface, (1320, 94))
+    pygame.draw.rect(screen, (255,0,0), (1410, 100, perso.vie, 10), 0)
+    textsurface = myfont.render('Vitesse (' + str(perso.vitesse) + ')', False, (200, 200, 200))
+    screen.blit(textsurface, (1320, 114))
+    pygame.draw.rect(screen, (0, 255, 0), (1410, 120, perso.vitesse*10, 10), 0)
+    textsurface = myfont.render('Force (' + str(perso.force) + ')', False, (200, 200, 200))
+    screen.blit(textsurface, (1320, 134))
+    pygame.draw.rect(screen, (0, 0, 255), (1410, 140, perso.force, 10), 0)
 
 
 def affichage(screen, perso, monstre, map):
     afficher_map(screen, perso, monstre, map)
-    #afficherPerso(screen, perso)
+    afficherStats(screen, perso)
 
 
 def pause(screen):

@@ -21,7 +21,6 @@ def principal():
         choice = startMenu(screen)
         if choice == 1:
             run = play(screen, difficulty)
-            run = True
         elif choice == 2:
             res = options(screen)
             if res == False:
