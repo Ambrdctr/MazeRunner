@@ -20,6 +20,7 @@ def play(screen, difficulty):
 
     perso = Joueur((3,1), 'Didier')
 
+    liste_montres = []
     monstre = Monstre((5,3), difficulty)
 
     aBouge = False
@@ -42,10 +43,6 @@ def play(screen, difficulty):
                     out = not pause(screen)
                 if event.key == K_UP or event.key == K_DOWN or event.key == K_RIGHT or event.key == K_LEFT:
                     aBouge = True
-                    if perso.vitesse < 10:
-                        perso.vitesse += 1
-                    if perso.force < 100:
-                        perso.force += 1
                     deplacerPerso(perso, map, monstre, event.key)
         if allerDonjon(map, perso):
             aBouge = False
@@ -64,10 +61,13 @@ def play(screen, difficulty):
             perso.y = 0
             map = exterieur
             perso.dansDonjon = False
-        monstre.dernierMvmt = time.time()
-        if monstre.dernierMvmt - timestart >= monstre.vitesse:
-            timestart = time.time()
-            monstre.dernierMvmt = time.time()
-            if perso.dansDonjon and monstre.vivant:
-                deplacerMonstre(monstre, map, perso)
+
+        if perso.dansDonjon:
+            map.grid[perso.y][perso.x].visitee = time.time()
+            if monstre.vivant:
+                monstre.dernierMvmt = time.time()
+                if monstre.dernierMvmt - timestart >= monstre.vitesse:
+                    timestart = time.time()
+                    monstre.dernierMvmt = time.time()
+                    deplacerMonstre(monstre, map, perso)
     return out

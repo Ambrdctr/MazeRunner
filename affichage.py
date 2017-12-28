@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 import random
+import time
 
 # Couleurs
 red = (255, 0, 0)
@@ -45,7 +46,10 @@ def afficher_map(screen, perso, monstre, map):
             if i in range(0, len(tab)) and k in range(0, len(tab[i])):
                 posx = taille_case * pos1
                 posy = taille_case * pos2
-                case = pygame.image.load("images/" + tab[i][k].state + ".png").convert()
+                if perso.dansDonjon and time.time() - tab[i][k].visitee > perso.memoire:
+                    case = pygame.image.load("images/ombre.png").convert()
+                else:
+                    case = pygame.image.load("images/" + tab[i][k].state + ".png").convert()
                 case = pygame.transform.scale(case, (taille_case, taille_case))
                 screen.blit(case, (posx, posy))
                     ##Si mur
@@ -92,7 +96,7 @@ def afficher_map(screen, perso, monstre, map):
         pos2 += 1
 
 def afficherStats(screen, perso):
-    pygame.draw.rect(screen, (0, 0, 0), (1300, 80, 200, 200), 0)
+    pygame.draw.rect(screen, (0, 0, 0), (1300, 80, 300, 200), 0)
     myfont = pygame.font.SysFont('Comic Sans MS', 15)
     textsurface = myfont.render('Vie (' + str(perso.vie) + ')', False, (200, 200, 200))
     screen.blit(textsurface, (1320, 94))

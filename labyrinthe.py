@@ -6,6 +6,7 @@ class Cell:
         self.walls = [True, True, True, True]
         self.state = 'pierre'
         self.set = i
+        self.visitee = False
 
 
 class Room:
@@ -15,6 +16,7 @@ class Room:
         self.right = y2 - 1
         self.top = x1
         self.bottom = x2 - 1
+        self.visitee = False
 
     def __str__(self):
         return "(" + str(self.left) + "," + str(self.top) + "), (" + str(self.right) + "," + str(self.bottom) + ")"
