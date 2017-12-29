@@ -1,4 +1,5 @@
 from random import *
+import time
 
 class Cell:
     # Constructor
@@ -20,6 +21,18 @@ class Room:
 
     def __str__(self):
         return "(" + str(self.left) + "," + str(self.top) + "), (" + str(self.right) + "," + str(self.bottom) + ")"
+
+
+    def visite_cellules_piece(self, grid):
+        for i in range(self.left, self.right):
+            for j in range(self.top, self.bottom):
+                grid[j][i].visitee = time.time()
+
+    def renvoi_diff_coords(self, diff):
+        coords = []
+        for i in range(diff*2):
+            coords.append((randint(self.left, self.right-1), randint(self.top, self.bottom-1)))
+        return coords
 
 
 class Grid:
@@ -46,20 +59,20 @@ class Grid:
 
     def non_overlap_room(self, roomB):
         for roomA in self.rooms:
-            if not (roomB.left > roomA.right or
-                            roomB.right < roomA.left or
-                            roomB.top > roomA.bottom or
-                            roomB.bottom < roomA.top):
+            if not (roomB.left      >   roomA.right   or
+                    roomB.right     <   roomA.left    or
+                    roomB.top       >   roomA.bottom  or
+                    roomB.bottom    <   roomA.top     ):
                 return False
         return True
 
-    def is_in_room(self, cell):
+    def est_dans_piece(self, cell):
         for roomA in self.rooms:
-            if (roomA.left < cell[0] and
-                        roomA.right > cell[0] and
-                        roomA.top > cell[1] and
-                        roomA.bottom < cell[1]):
-                return True
+            if (roomA.left      <=   cell[0]     and
+                roomA.right     >=   cell[0]     and
+                roomA.top       <=   cell[1]     and
+                roomA.bottom    >=   cell[1]     ):
+                return roomA
         return False
 
     def have_neighbor(self, c, wall):

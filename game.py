@@ -20,17 +20,15 @@ def play(screen, difficulty):
 
     perso = Joueur((3,1), 'Didier')
 
-    liste_montres = []
-    monstre = Monstre((5,3), difficulty)
+    liste_monstres = []
 
     aBouge = False
 
     # Touche reste enfoncée
     pygame.key.set_repeat(100, 50)
 
-    timestart = time.time()
     while out:
-        affichage(screen, perso, monstre, map)
+        affichage(screen, perso, liste_monstres, map)
         # Rafraîchissement de l'écran
         pygame.display.flip()
 
@@ -43,7 +41,7 @@ def play(screen, difficulty):
                     out = not pause(screen)
                 if event.key == K_UP or event.key == K_DOWN or event.key == K_RIGHT or event.key == K_LEFT:
                     aBouge = True
-                    deplacerPerso(perso, map, monstre, event.key)
+                    deplacerPerso(perso, map, liste_monstres, event.key)
         if allerDonjon(map, perso):
             aBouge = False
             map = donjon
@@ -64,10 +62,18 @@ def play(screen, difficulty):
 
         if perso.dansDonjon:
             map.grid[perso.y][perso.x].visitee = time.time()
-            if monstre.vivant:
-                monstre.dernierMvmt = time.time()
-                if monstre.dernierMvmt - timestart >= monstre.vitesse:
-                    timestart = time.time()
-                    monstre.dernierMvmt = time.time()
-                    deplacerMonstre(monstre, map, perso)
+            piece = map.est_dans_piece((perso.x, perso.y))
+            if piece != False:
+                piece.visite_cellules_piece(map.grid)
+                if not piece.visitee:
+                    coords = piece.renvoi_diff_coords(difficulty)
+                    for coord in coords:
+                        monstre = Monstre(coord, difficulty)
+                        liste_monstres.append(monstre)
+                    piece.visitee = True
+            for monstre in liste_monstres:
+                if monstre.vivant:
+                    if time.time() - monstre.dernierMvmt >= monstre.vitesse:
+                        monstre.dernierMvmt = time.time()
+                        deplacerMonstre(monstre, map, perso)
     return out

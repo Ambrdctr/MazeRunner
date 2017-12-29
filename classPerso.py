@@ -18,7 +18,7 @@ class Joueur(Perso):
         self.vivant = True
         self.vie = 100
         self.vitesse = 1
-        self.force = 5
+        self.force = 10
         self.memoire = 30
         self.charisme = 0
         #self.inventaire = Bag()
@@ -41,10 +41,13 @@ class Monstre(Perso):
         self.vivant = True
         self.dansDonjon = True
         self.vie = 10*diff
-        self.dernierMvmt = 0
+        self.dernierMvmt = time.time()
         self.vitesse = 3 / diff
         self.dirRetour = 0
         self.force = 5
-        self.vision = 0
+        self.vision = diff*10
         self.images =  [pygame.image.load("images/m_haut.png").convert_alpha(), pygame.image.load("images/m_droite.png").convert_alpha(),
                        pygame.image.load("images/m_bas.png").convert_alpha(), pygame.image.load("images/m_gauche.png").convert_alpha()]
+
+    def __str__(self):
+        return str(self.vivant) + str(self.vie) + str(self.dernierMvmt)

@@ -18,7 +18,7 @@ color_cle = green
 cases1 = blue
 cases2 = white
 
-def afficher_map(screen, perso, monstre, map):
+def afficher_map(screen, perso, monstres, map):
     # Fond
     taille_case = 100
     mer1 = pygame.image.load("images/eau1.png").convert()
@@ -32,8 +32,6 @@ def afficher_map(screen, perso, monstre, map):
     mort = pygame.image.load("images/sang.png").convert_alpha()
     mort = pygame.transform.scale(mort, (taille_case, taille_case))
 
-    monstreimg = monstre.images[monstre.dir]
-    monstreimg = pygame.transform.scale(monstreimg, (taille_case, taille_case))
 
     x = perso.x
     y = perso.y
@@ -81,13 +79,16 @@ def afficher_map(screen, perso, monstre, map):
                     screen.blit(mer3, (posx, posy))
                 elif eau == 4:
                     screen.blit(mer4, (posx, posy))
-            if (k == monstre.x) and (i == monstre.y) and perso.dansDonjon:
-                posx = taille_case * pos1
-                posy = taille_case * pos2
-                if monstre.vivant:
-                    screen.blit(monstreimg, (posx, posy))
-                else:
-                    screen.blit(mort, (posx,posy))
+            for monstre in monstres:
+                monstreimg = monstre.images[monstre.dir]
+                monstreimg = pygame.transform.scale(monstreimg, (taille_case, taille_case))
+                if (k == monstre.x) and (i == monstre.y) and perso.dansDonjon:
+                    posx = taille_case * pos1
+                    posy = taille_case * pos2
+                    if monstre.vivant:
+                        screen.blit(monstreimg, (posx, posy))
+                    else:
+                        screen.blit(mort, (posx,posy))
             if (k == x) and (i == y) and perso.vivant:
                 posx = taille_case * pos1 + int(taille_case/6)
                 posy = taille_case * pos2

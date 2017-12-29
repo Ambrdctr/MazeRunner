@@ -2,10 +2,10 @@ import pygame
 from pygame.locals import *
 import random
 from classPerso import Monstre
+import math
 
 
 def mur(x,y,direction, map):
-    taille_case = 100
     carte = map.grid
     res = False
     yPrec = y
@@ -30,8 +30,6 @@ def mur(x,y,direction, map):
 
 
 def attMonstre(x, y, direction, monstre, perso, map):
-    taille_case = 100
-    carte = map.grid
     res = False
     yPrec = y
     xPrec = x
@@ -61,8 +59,6 @@ def attMonstre(x, y, direction, monstre, perso, map):
 
 
 def attPerso(x, y, direction, perso, monstre, map):
-    taille_case = 100
-    carte = map.grid
     res = False
     yPrec = y
     xPrec = x
@@ -91,27 +87,40 @@ def attPerso(x, y, direction, perso, monstre, map):
     return res
 
 
-def deplacerPerso(perso, map, monstre, key):
+def deplacerPerso(perso, map, monstres, key):
 
     x = perso.x
     y = perso.y
 
+    pas_monstre = True
     if key == K_UP:
         perso.dir = 0
-        if y > 0 and not mur(x, y, 'haut', map) and not attMonstre(x, y, 'haut', monstre, perso, map):
-            perso.y -= 1
+        if y > 0 and not mur(x, y, 'haut', map):
+            for monstre in monstres:
+                if attMonstre(x, y, 'haut', monstre, perso, map):
+                    pas_monstre = False
+            if pas_monstre: perso.y -= 1
     if key == K_DOWN:
         perso.dir = 2
-        if y < map.w-1 and not mur(x, y, 'bas', map) and not attMonstre(x, y, 'bas', monstre, perso, map):
-            perso.y += 1
+        if y < map.w-1 and not mur(x, y, 'bas', map):
+            for monstre in monstres:
+                if attMonstre(x, y, 'bas', monstre, perso, map):
+                    pas_monstre = False
+            if pas_monstre: perso.y += 1
     if key == K_RIGHT:
         perso.dir = 1
-        if x < map.h-1 and not mur(x, y, 'droite', map) and not attMonstre(x, y, 'droite', monstre, perso, map):
-            perso.x += 1
+        if x < map.h-1 and not mur(x, y, 'droite', map):
+            for monstre in monstres:
+                if attMonstre(x, y, 'droite', monstre, perso, map):
+                    pas_monstre = False
+            if pas_monstre: perso.x += 1
     if key == K_LEFT:
         perso.dir = 3
-        if x > 0 and not mur(x, y, 'gauche', map) and not attMonstre(x, y, 'gauche', monstre, perso, map):
-            perso.x -= 1
+        if x > 0 and not mur(x, y, 'gauche', map):
+            for monstre in monstres:
+                if attMonstre(x, y, 'gauche', monstre, perso, map):
+                    pas_monstre = False
+            if pas_monstre: perso.x -= 1
 
 
 
@@ -121,29 +130,38 @@ def deplacerMonstre(monstre, map, perso):
     y = monstre.y
 
     deplacementMonstre = [K_UP, K_DOWN, K_RIGHT, K_LEFT]
-    abouger = False
     passage = False
     passagePossible = []
 
-    for elt in deplacementMonstre:
-        if elt != monstre.dirRetour:
-            if elt == K_UP and not mur(x, y, 'haut', map) and y > 0:
-                passage = True
-                passagePossible.append(elt)
-            if elt == K_DOWN and not mur(x, y, 'bas', map) and y < map.w-1:
-                passage = True
-                passagePossible.append(elt)
-            if elt == K_LEFT and not mur(x, y, 'gauche', map) and x > 0:
-                passage = True
-                passagePossible.append(elt)
-            if elt == K_RIGHT and not mur(x, y, 'droite', map) and x < map.h-1:
-                passage = True
-                passagePossible.append(elt)
+    distance = math.sqrt(math.pow(perso.x - x, 2) + math.pow(perso.y - y, 2))
 
-    if passage == False:
-        key = monstre.dirRetour
+    if distance <= monstre.vision and distance != 0 and (monstre.force >= perso.force or random.random() >= 0.8):
+        if math.sqrt(math.pow(perso.x - x, 2)) > math.sqrt(math.pow(perso.y - y, 2)):
+            if perso.x > x: key = K_RIGHT
+            elif perso.x < x: key = K_LEFT
+        else:
+            if perso.y > y: key = K_DOWN
+            elif perso.y < y: key = K_UP
     else:
-        key = random.choice(passagePossible)
+        for elt in deplacementMonstre:
+            if elt != monstre.dirRetour:
+                if elt == K_UP and not mur(x, y, 'haut', map) and y > 0:
+                    passage = True
+                    passagePossible.append(elt)
+                if elt == K_DOWN and not mur(x, y, 'bas', map) and y < map.w-1:
+                    passage = True
+                    passagePossible.append(elt)
+                if elt == K_LEFT and not mur(x, y, 'gauche', map) and x > 0:
+                    passage = True
+                    passagePossible.append(elt)
+                if elt == K_RIGHT and not mur(x, y, 'droite', map) and x < map.h-1:
+                    passage = True
+                    passagePossible.append(elt)
+
+        if passage == False:
+            key = monstre.dirRetour
+        else:
+            key = random.choice(passagePossible)
 
     if key == K_UP :
         monstre.dir = 0
