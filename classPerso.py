@@ -18,7 +18,7 @@ class Joueur(Perso):
         self.vivant = True
         self.vie = 100
         self.vitesse = 1
-        self.force = 10
+        self.force = 5
         self.memoire = 30
         self.charisme = 0
         #self.inventaire = Bag()
@@ -45,7 +45,7 @@ class Monstre(Perso):
         self.vitesse = 3 / diff
         self.dirRetour = 0
         self.force = 5
-        self.vision = diff*10
+        self.vision = diff*2
         self.images =  [pygame.image.load("images/m_haut.png").convert_alpha(), pygame.image.load("images/m_droite.png").convert_alpha(),
                        pygame.image.load("images/m_bas.png").convert_alpha(), pygame.image.load("images/m_gauche.png").convert_alpha()]
 

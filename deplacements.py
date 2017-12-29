@@ -28,6 +28,27 @@ def mur(x,y,direction, map):
             res = True
     return res
 
+def ya_monstre(xPrec, yPrec, monstres, direction):
+    res = False
+    for m in monstres:
+        if direction == 'haut':
+            ySuiv = (yPrec - 1)
+            xSuiv = xPrec
+        if direction == 'droite':
+            xSuiv = (xPrec + 1)
+            ySuiv = yPrec
+        if direction == 'bas':
+            ySuiv = (yPrec + 1)
+            xSuiv = xPrec
+        if direction == 'gauche':
+            xSuiv = (xPrec - 1)
+            ySuiv = yPrec
+        if m.x == xSuiv and m.y == ySuiv:
+            res = True
+            break
+    return res
+
+
 
 def attMonstre(x, y, direction, monstre, perso, map):
     res = False
@@ -124,7 +145,7 @@ def deplacerPerso(perso, map, monstres, key):
 
 
 
-def deplacerMonstre(monstre, map, perso):
+def deplacerMonstre(monstre, monstres, map, perso):
 
     x = monstre.x
     y = monstre.y
@@ -134,15 +155,32 @@ def deplacerMonstre(monstre, map, perso):
     passagePossible = []
 
     distance = math.sqrt(math.pow(perso.x - x, 2) + math.pow(perso.y - y, 2))
+    peut_bouger = False
 
+    #Depalcement logique lorsque la distance du perso est inférieur ou égale à la vision du monstre
     if distance <= monstre.vision and distance != 0 and (monstre.force >= perso.force or random.random() >= 0.8):
         if math.sqrt(math.pow(perso.x - x, 2)) > math.sqrt(math.pow(perso.y - y, 2)):
             if perso.x > x: key = K_RIGHT
             elif perso.x < x: key = K_LEFT
-        else:
+        elif math.sqrt(math.pow(perso.x - x, 2)) < math.sqrt(math.pow(perso.y - y, 2)):
             if perso.y > y: key = K_DOWN
             elif perso.y < y: key = K_UP
-    else:
+        else:
+            if random.randint(1,2) == 1:
+                if perso.x > x: key = K_RIGHT
+                elif perso.x < x: key = K_LEFT
+            else:
+                if perso.y > y: key = K_DOWN
+                elif perso.y < y: key = K_UP
+        if key == K_UP:
+            peut_bouger = not mur(x, y, 'haut', map) and y > 0
+        if key == K_DOWN:
+            peut_bouger = not mur(x, y, 'bas', map) and y < map.w - 1
+        if key == K_LEFT:
+            peut_bouger = not mur(x, y, 'gauche', map) and x > 0
+        if key == K_RIGHT:
+            peut_bouger = not mur(x, y, 'droite', map) and x < map.h - 1
+    if not peut_bouger:
         for elt in deplacementMonstre:
             if elt != monstre.dirRetour:
                 if elt == K_UP and not mur(x, y, 'haut', map) and y > 0:
@@ -166,22 +204,22 @@ def deplacerMonstre(monstre, map, perso):
     if key == K_UP :
         monstre.dir = 0
         monstre.dirRetour = K_DOWN
-        if not attPerso(x, y, 'haut', perso, monstre, map):
+        if not attPerso(x, y, 'haut', perso, monstre, map) and not ya_monstre(x, y, monstres, 'haut'):
             monstre.y -= 1
     if key == K_DOWN :
         monstre.dir = 2
         monstre.dirRetour = K_UP
-        if not attPerso(x, y, 'bas', perso, monstre, map):
+        if not attPerso(x, y, 'bas', perso, monstre, map) and not ya_monstre(x, y, monstres, 'bas'):
             monstre.y += 1
     if key == K_LEFT :
         monstre.dir = 3
         monstre.dirRetour = K_RIGHT
-        if not attPerso(x, y, 'gauche', perso, monstre, map):
+        if not attPerso(x, y, 'gauche', perso, monstre, map) and not ya_monstre(x, y, monstres, 'gauche'):
             monstre.x -= 1
     if key == K_RIGHT :
         monstre.dir = 1
         monstre.dirRetour = K_LEFT
-        if not attPerso(x, y, 'droite', perso, monstre, map):
+        if not attPerso(x, y, 'droite', perso, monstre, map) and not ya_monstre(x, y, monstres, 'droite'):
             monstre.x += 1
 
 

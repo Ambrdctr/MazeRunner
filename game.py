@@ -68,12 +68,11 @@ def play(screen, difficulty):
                 if not piece.visitee:
                     coords = piece.renvoi_diff_coords(difficulty)
                     for coord in coords:
-                        monstre = Monstre(coord, difficulty)
-                        liste_monstres.append(monstre)
+                        liste_monstres.append(Monstre(coord, difficulty))
                     piece.visitee = True
             for monstre in liste_monstres:
                 if monstre.vivant:
                     if time.time() - monstre.dernierMvmt >= monstre.vitesse:
                         monstre.dernierMvmt = time.time()
-                        deplacerMonstre(monstre, map, perso)
+                        deplacerMonstre(monstre, liste_monstres, map, perso)
     return out
