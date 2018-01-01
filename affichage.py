@@ -44,7 +44,7 @@ def afficher_map(screen, perso, monstres, map):
             if i in range(0, len(tab)) and k in range(0, len(tab[i])):
                 posx = taille_case * pos1
                 posy = taille_case * pos2
-                if perso.dansDonjon and time.time() - tab[i][k].visitee > perso.memoire:
+                if perso.dansDonjon and (tab[i][k].visitee != True and time.time() - tab[i][k].visitee > perso.memoire):
                     case = pygame.image.load("images/ombre.png").convert()
                 else:
                     case = pygame.image.load("images/" + tab[i][k].state + ".png").convert()
@@ -82,7 +82,7 @@ def afficher_map(screen, perso, monstres, map):
             for monstre in monstres:
                 monstreimg = monstre.images[monstre.dir]
                 monstreimg = pygame.transform.scale(monstreimg, (taille_case, taille_case))
-                if (k == monstre.x) and (i == monstre.y) and perso.dansDonjon:
+                if (k == monstre.x) and (i == monstre.y) and perso.dansDonjon and (tab[i][k].visitee == True or time.time() - tab[i][k].visitee < perso.memoire):
                     posx = taille_case * pos1
                     posy = taille_case * pos2
                     if monstre.vivant:

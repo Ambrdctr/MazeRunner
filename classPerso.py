@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 import time
+import random
 
 class Perso:
     
@@ -18,10 +19,10 @@ class Joueur(Perso):
         self.vivant = True
         self.vie = 100
         self.vitesse = 1
-        self.force = 5
+        # self.inventaire = Bag()
+        self.force = random.randint(4,8)
         self.memoire = 30
         self.charisme = 0
-        #self.inventaire = Bag()
         self.images = [pygame.image.load("images/haut.png").convert_alpha(), pygame.image.load("images/droite.png").convert_alpha(),
                        pygame.image.load("images/bas.png").convert_alpha(), pygame.image.load("images/gauche.png").convert_alpha()]
         self.dansDonjon = False
@@ -42,10 +43,10 @@ class Monstre(Perso):
         self.dansDonjon = True
         self.vie = 10*diff
         self.dernierMvmt = time.time()
-        self.vitesse = 3 / diff
+        self.vitesse = 1 / diff
         self.dirRetour = 0
-        self.force = 5
-        self.vision = diff*2
+        self.force = random.randint(diff*3,diff*3+5)
+        self.vision = diff*3
         self.images =  [pygame.image.load("images/m_haut.png").convert_alpha(), pygame.image.load("images/m_droite.png").convert_alpha(),
                        pygame.image.load("images/m_bas.png").convert_alpha(), pygame.image.load("images/m_gauche.png").convert_alpha()]
 

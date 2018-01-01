@@ -14,7 +14,8 @@ def play(screen, difficulty):
 
     out = True
     exterieur = create_empty_map(int(size[0] / 50), int(size[1] / 50))
-    donjon = create_maze(30, 20, 10)
+    donjon = create_maze(difficulty*20, difficulty*15, 15, False)
+    k = 1 #Permet de savoir jusqu'à quel étage est arrivé le joueur
 
     map = exterieur
 
@@ -40,8 +41,7 @@ def play(screen, difficulty):
                 if event.key == K_ESCAPE:
                     out = not pause(screen)
                 if event.key == K_UP or event.key == K_DOWN or event.key == K_RIGHT or event.key == K_LEFT:
-                    aBouge = True
-                    deplacerPerso(perso, map, liste_monstres, event.key)
+                    aBouge = deplacerPerso(perso, map, liste_monstres, event.key)
         if allerDonjon(map, perso):
             aBouge = False
             map = donjon
@@ -75,4 +75,16 @@ def play(screen, difficulty):
                     if time.time() - monstre.dernierMvmt >= monstre.vitesse:
                         monstre.dernierMvmt = time.time()
                         deplacerMonstre(monstre, liste_monstres, map, perso)
+        if allerEtageSuivant(map, perso):
+            if k < difficulty*3:
+                donjon = create_maze(difficulty*20, difficulty*15, 15, False) #sans le tresor
+            else:
+                donjon = create_maze(difficulty*20, difficulty*15, 15, True) #avec le tresor
+            aBouge = False
+            map = donjon
+            perso.x = map.start[1]
+            perso.y = map.start[0]
+            perso.dansDonjon = True
+            liste_monstres = []
+            k += 1
     return out

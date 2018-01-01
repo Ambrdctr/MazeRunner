@@ -110,6 +110,8 @@ def attPerso(x, y, direction, perso, monstre, map):
 
 def deplacerPerso(perso, map, monstres, key):
 
+    res = False
+
     x = perso.x
     y = perso.y
 
@@ -120,28 +122,37 @@ def deplacerPerso(perso, map, monstres, key):
             for monstre in monstres:
                 if attMonstre(x, y, 'haut', monstre, perso, map):
                     pas_monstre = False
-            if pas_monstre: perso.y -= 1
+            if pas_monstre:
+                perso.y -= 1
+                res = True
     if key == K_DOWN:
         perso.dir = 2
         if y < map.w-1 and not mur(x, y, 'bas', map):
             for monstre in monstres:
                 if attMonstre(x, y, 'bas', monstre, perso, map):
                     pas_monstre = False
-            if pas_monstre: perso.y += 1
+            if pas_monstre:
+                perso.y += 1
+                res = True
     if key == K_RIGHT:
         perso.dir = 1
         if x < map.h-1 and not mur(x, y, 'droite', map):
             for monstre in monstres:
                 if attMonstre(x, y, 'droite', monstre, perso, map):
                     pas_monstre = False
-            if pas_monstre: perso.x += 1
+            if pas_monstre:
+                perso.x += 1
+                res = True
     if key == K_LEFT:
         perso.dir = 3
         if x > 0 and not mur(x, y, 'gauche', map):
             for monstre in monstres:
                 if attMonstre(x, y, 'gauche', monstre, perso, map):
                     pas_monstre = False
-            if pas_monstre: perso.x -= 1
+            if pas_monstre:
+                perso.x -= 1
+                res = True
+    return res
 
 
 

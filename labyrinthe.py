@@ -26,7 +26,7 @@ class Room:
     def visite_cellules_piece(self, grid):
         for i in range(self.left, self.right):
             for j in range(self.top, self.bottom):
-                grid[j][i].visitee = time.time()
+                grid[j][i].visitee = True
 
     def renvoi_diff_coords(self, diff):
         coords = []
@@ -36,7 +36,7 @@ class Room:
 
 
 class Grid:
-    def __init__(self, w, h):
+    def __init__(self, w, h, tresor):
         self.w = w
         self.h = h
         randList = [(0, 0), (0, self.h - 1), (self.w - 1, self.h - 1), (self.w - 1, 0)]
@@ -54,7 +54,10 @@ class Grid:
                 grid[i].append(initial_cell)
                 ind += 1
         grid[self.start[0]][self.start[1]].state = 'entree'
-        grid[self.end[0]][self.end[1]].state = 'sortie'
+        if tresor:
+            grid[self.end[0]][self.end[1]].state = 'tresor'
+        else:
+            grid[self.end[0]][self.end[1]].state = 'sortie'
         self.grid = grid
 
     def non_overlap_room(self, roomB):
@@ -232,7 +235,7 @@ def kruskal(maze, roomsNb):
             cellSet.join_sets(cell, neighbor, maze)
     return maze
 
-def create_maze(w, h, roomsNb):
-    maze = Grid(w, h)
+def create_maze(w, h, roomsNb, tresor):
+    maze = Grid(w, h, tresor)
     kruskal(maze, roomsNb)
     return maze
