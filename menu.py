@@ -127,3 +127,10 @@ def credit(screen):
 
     # Rafraîchissement de l'écran
     pygame.display.flip()
+
+def victoire_screen(screen):
+    fond = pygame.image.load("images/victoire.png").convert()
+    screen.blit(fond, (0, 0))
+
+    # Rafraîchissement de l'écran
+    pygame.display.flip()

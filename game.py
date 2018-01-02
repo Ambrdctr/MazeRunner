@@ -9,12 +9,14 @@ from labyrinthe import create_maze
 import random
 import time
 
+from menu import victoire_screen
+
 def play(screen, difficulty):
     size = screen.get_size()
 
     out = True
     exterieur = create_empty_map(int(size[0] / 50), int(size[1] / 50))
-    donjon = create_maze(difficulty*20, difficulty*15, 15, False)
+    donjon = create_maze(difficulty*20, difficulty*15, 15, True)
     k = 1 #Permet de savoir jusqu'à quel étage est arrivé le joueur
 
     map = exterieur
@@ -32,6 +34,15 @@ def play(screen, difficulty):
         affichage(screen, perso, liste_monstres, map)
         # Rafraîchissement de l'écran
         pygame.display.flip()
+
+        if victoire(map,perso):
+            time.sleep(3)
+            victoire_screen(screen)
+            time.sleep(3)
+            perso.x = 0
+            perso.y = 0
+            map = exterieur
+            perso.dansDonjon = False
 
         for event in pygame.event.get():
             # Lorsque l'on ferme la fenetre
@@ -54,11 +65,6 @@ def play(screen, difficulty):
                 perso.y = 0
                 map = exterieur
                 perso.dansDonjon = False
-        if victoire(map,perso):
-            perso.x = 0
-            perso.y = 0
-            map = exterieur
-            perso.dansDonjon = False
 
         if perso.dansDonjon:
             map.grid[perso.y][perso.x].visitee = time.time()
@@ -76,6 +82,7 @@ def play(screen, difficulty):
                         monstre.dernierMvmt = time.time()
                         deplacerMonstre(monstre, liste_monstres, map, perso)
         if allerEtageSuivant(map, perso):
+            k += 1
             if k < difficulty*3:
                 donjon = create_maze(difficulty*20, difficulty*15, 15, False) #sans le tresor
             else:
@@ -86,5 +93,4 @@ def play(screen, difficulty):
             perso.y = map.start[0]
             perso.dansDonjon = True
             liste_monstres = []
-            k += 1
     return out
