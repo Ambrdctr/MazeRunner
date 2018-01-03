@@ -118,7 +118,6 @@ class Set:
         self.lst = {}
         rooms = maze.rooms
         for room in rooms:
-            print(room)
             ind = maze.grid[room.top][room.left].set
             cellList = []
             for j in range(room.left, room.right + 1):
