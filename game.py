@@ -18,11 +18,11 @@ def play(screen, difficulty):
 
     out = True
     exterieur = create_empty_map(int(size[0] / 50), int(size[1] / 50))
-    etages = []
+    etages = [exterieur]
     k = 0  # Permet de savoir jusqu'à quel étage est arrivé le joueur
     e = 0 # Permet de connaitre l'etage courant du joueur
 
-    map = exterieur
+    map = etages[e]
 
     perso = Joueur((3,1), 'Didier')
 
@@ -82,7 +82,7 @@ def play(screen, difficulty):
                     etages.append(create_maze(difficulty*20, difficulty*15, 15, True)) #avec le tresor
                 k += 1
             aBouge = False
-            donjon = etages[e-1]
+            donjon = etages[e]
             map = donjon
             perso.x = map.start[1]
             perso.y = map.start[0]
@@ -95,16 +95,16 @@ def play(screen, difficulty):
                     if sortir(screen):
                         perso.x = 0
                         perso.y = 0
-                        map = exterieur
-                        perso.dansDonjon = False
                         e -= 1
+                        map = etages[e]
+                        perso.dansDonjon = False
                     else:
                         aBouge = False
                 else:
                     aBouge = False
-                    donjon = etages[e-1]
+                    e -= 1
+                    donjon = etages[e]
                     map = donjon
                     perso.x = map.end[1]
                     perso.y = map.end[0]
-                    e -= 1
     return out
