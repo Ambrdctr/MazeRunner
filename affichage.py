@@ -18,7 +18,7 @@ color_cle = green
 cases1 = blue
 cases2 = white
 
-def afficher_map(screen, perso, monstres, map):
+def afficher_map(screen, perso, monstres, coffres, map):
     # Fond
     taille_case = 100
     mer1 = pygame.image.load("images/eau1.png").convert()
@@ -89,6 +89,13 @@ def afficher_map(screen, perso, monstres, map):
                         screen.blit(monstreimg, (posx, posy))
                     else:
                         screen.blit(mort, (posx,posy))
+            for coffre in coffres:
+                coffreimg = coffre.image
+                coffreimg = pygame.transform.scale(coffreimg, (taille_case, taille_case))
+                if (k == coffre.x) and (i == coffre.y) and perso.dansDonjon and (tab[i][k].visitee == True or time.time() - tab[i][k].visitee < perso.memoire):
+                    posx = taille_case * pos1
+                    posy = taille_case * pos2
+                    screen.blit(coffreimg, (posx, posy))
             if (k == x) and (i == y) and perso.vivant:
                 posx = taille_case * pos1 + int(taille_case/6)
                 posy = taille_case * pos2
@@ -110,8 +117,8 @@ def afficherStats(screen, perso):
     pygame.draw.rect(screen, (0, 0, 255), (1410, 140, perso.force, 10), 0)
 
 
-def affichage(screen, perso, monstre, map):
-    afficher_map(screen, perso, monstre, map)
+def affichage(screen, perso, monstres, coffres, map):
+    afficher_map(screen, perso, monstres, coffres, map)
     afficherStats(screen, perso)
 
 

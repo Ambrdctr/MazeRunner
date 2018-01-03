@@ -78,6 +78,27 @@ def attMonstre(x, y, direction, monstre, perso, map):
                 res = False
     return res
 
+def ouvre_coffre(x, y, direction, coffre):
+    res = False
+    yPrec = y
+    xPrec = x
+    if direction == 'haut':
+        ySuiv = (y - 1)
+        if yPrec != ySuiv and ySuiv == coffre.y and xPrec == coffre.x:
+            res = True
+    if direction == 'droite':
+        xSuiv = (x + 1)
+        if xPrec != xSuiv and xSuiv == coffre.x and yPrec == coffre.y:
+            res = True
+    if direction == 'bas':
+        ySuiv = (y + 1)
+        if yPrec != ySuiv and ySuiv == coffre.y and xPrec == coffre.x:
+            res = True
+    if direction == 'gauche':
+        xSuiv = (x - 1)
+        if xPrec != xSuiv and xSuiv == coffre.x and yPrec == coffre.y:
+            res = True
+    return res
 
 def attPerso(x, y, direction, perso, monstre, map):
     res = False
@@ -108,7 +129,7 @@ def attPerso(x, y, direction, perso, monstre, map):
     return res
 
 
-def deplacerPerso(perso, map, monstres, key):
+def deplacerPerso(perso, map, monstres, coffres, key):
 
     res = False
 
@@ -116,13 +137,17 @@ def deplacerPerso(perso, map, monstres, key):
     y = perso.y
 
     pas_monstre = True
+    pas_coffre = True
     if key == K_UP:
         perso.dir = 0
         if y > 0 and not mur(x, y, 'haut', map):
             for monstre in monstres:
                 if attMonstre(x, y, 'haut', monstre, perso, map):
                     pas_monstre = False
-            if pas_monstre:
+            for coffre in coffres:
+                if ouvre_coffre(x, y, 'haut', coffre):
+                    pas_coffre = False
+            if pas_monstre and pas_coffre:
                 perso.y -= 1
                 res = True
     if key == K_DOWN:
@@ -131,7 +156,10 @@ def deplacerPerso(perso, map, monstres, key):
             for monstre in monstres:
                 if attMonstre(x, y, 'bas', monstre, perso, map):
                     pas_monstre = False
-            if pas_monstre:
+            for coffre in coffres:
+                if ouvre_coffre(x, y, 'bas', coffre):
+                    pas_coffre = False
+            if pas_monstre and pas_coffre:
                 perso.y += 1
                 res = True
     if key == K_RIGHT:
@@ -140,7 +168,10 @@ def deplacerPerso(perso, map, monstres, key):
             for monstre in monstres:
                 if attMonstre(x, y, 'droite', monstre, perso, map):
                     pas_monstre = False
-            if pas_monstre:
+            for coffre in coffres:
+                if ouvre_coffre(x, y, 'droite', coffre):
+                    pas_coffre = False
+            if pas_monstre and pas_coffre:
                 perso.x += 1
                 res = True
     if key == K_LEFT:
@@ -149,7 +180,10 @@ def deplacerPerso(perso, map, monstres, key):
             for monstre in monstres:
                 if attMonstre(x, y, 'gauche', monstre, perso, map):
                     pas_monstre = False
-            if pas_monstre:
+            for coffre in coffres:
+                if ouvre_coffre(x, y, 'gauche', coffre):
+                    pas_coffre = False
+            if pas_monstre and pas_coffre:
                 perso.x -= 1
                 res = True
     return res

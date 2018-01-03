@@ -134,3 +134,49 @@ def victoire_screen(screen):
 
     # Rafraîchissement de l'écran
     pygame.display.flip()
+
+def sortir(screen):
+    fond = pygame.image.load("images/sortir.png").convert()
+    screen.blit(fond, (0, 0))
+
+    # Dessin du rectangle de selection
+    x = 650
+    y = 360
+    pygame.draw.rect(screen, (200, 50, 50), (x, y, 300, 130), 5)
+
+    # Rafraîchissement de l'écran
+    pygame.display.flip()
+
+    # Variable qui continue la boucle si = True, stoppe si = False
+    run = True
+
+    # variables necessaire
+    res = True
+    # Boucle infinie
+    while run:
+        # Limitation de vitesse de la boucle
+        # 30 frames par secondes suffisent
+        pygame.time.Clock().tick(30)
+
+        for event in pygame.event.get():
+            # Lorsque l'on ferme la fenetre
+            if event.type == QUIT:
+                run = False
+            # Deplacement
+            if event.type == KEYDOWN:
+                if event.key == K_UP:
+                    if not res:
+                        y -= 210
+                        res = True
+                if event.key == K_DOWN:
+                    if res:
+                        y += 210
+                        res = False
+                if event.key == K_RETURN:
+                    run = False
+                # Re-collage
+                screen.blit(fond, (0, 0))
+                pygame.draw.rect(screen, (200, 50, 50), (x, y, 300, 130), 5)
+                # Rafraichissement
+                pygame.display.flip()
+    return res

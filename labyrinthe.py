@@ -18,10 +18,19 @@ class Room:
         self.top = x1
         self.bottom = x2 - 1
         self.visitee = False
+        self.coffre = False
 
     def __str__(self):
         return "(" + str(self.left) + "," + str(self.top) + "), (" + str(self.right) + "," + str(self.bottom) + ")"
 
+    def coord_border(self):
+        top = (self.top, randint(self.left, self.right))
+        right = (randint(self.top, self.bottom-1), self.right-1)
+        bottom = (self.bottom-1, randint(self.left, self.right-1))
+        left = (randint(self.top, self.bottom), self.left)
+        tab = [top, right, bottom, left]
+        n = randint(0, 3)
+        return (tab[n], n)
 
     def visite_cellules_piece(self, grid):
         for i in range(self.left, self.right):
@@ -44,6 +53,8 @@ class Grid:
         randList.remove(self.start)
         self.end = choice(randList)
         self.rooms = []
+        self.liste_monstres = []
+        self.liste_coffres = []
         grid = []
         ind = 0
         for i in range(w):

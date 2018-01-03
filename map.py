@@ -21,6 +21,8 @@ class Grid:
     def __init__(self, w, h):
         self.w = w
         self.h = h
+        self.liste_monstres = []
+        self.liste_coffres = []
         grid = []
         cellInt = Cell()
         for i in range(w):
