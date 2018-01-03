@@ -55,7 +55,6 @@ def play(screen, difficulty):
                     out = not pause(screen)
                 if event.key == K_UP or event.key == K_DOWN or event.key == K_RIGHT or event.key == K_LEFT:
                     aBouge = deplacerPerso(perso, map, map.liste_monstres, map.liste_coffres, event.key)
-                    print(e, aBouge)
         if perso.dansDonjon:
             map.grid[perso.y][perso.x].visitee = time.time()
             piece = map.est_dans_piece((perso.x, perso.y))
@@ -72,14 +71,14 @@ def play(screen, difficulty):
                 if monstre.vivant:
                     if time.time() - monstre.dernierMvmt >= monstre.vitesse:
                         monstre.dernierMvmt = time.time()
-                        deplacerMonstre(monstre, map.liste_monstres, map, perso)
+                        deplacerMonstre(monstre, map.liste_monstres, map.liste_coffres, map, perso)
         if aBouge and (allerEtageSuivant(map, perso) or allerDonjon(map, perso)):
             e += 1
             if e > k:
                 if k < difficulty*3:
-                    etages.append(create_maze(difficulty*20, difficulty*15, 15, False)) #sans le tresor
+                    etages.append(create_maze(difficulty*20, difficulty*15, difficulty*15, False)) #sans le tresor
                 else:
-                    etages.append(create_maze(difficulty*20, difficulty*15, 15, True)) #avec le tresor
+                    etages.append(create_maze(difficulty*20, difficulty*15, difficulty*15, True)) #avec le tresor
                 k += 1
             aBouge = False
             donjon = etages[e]
@@ -89,7 +88,6 @@ def play(screen, difficulty):
             perso.dansDonjon = True
 
         if allerEtagePrecedent(map, perso):
-            print(e, aBouge)
             if aBouge:
                 if e == 1:
                     if sortir(screen):

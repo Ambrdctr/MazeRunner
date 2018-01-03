@@ -118,7 +118,8 @@ class Set:
         self.lst = {}
         rooms = maze.rooms
         for room in rooms:
-            ind = maze.grid[room.left][room.top].set
+            print(room)
+            ind = maze.grid[room.top][room.left].set
             cellList = []
             for j in range(room.left, room.right + 1):
                 for i in range(room.top, room.bottom + 1):
@@ -198,7 +199,6 @@ def find_neighbor(cell):
 def place_rooms(maze, roomRange):
     r_min = roomRange[0]
     r_max = roomRange[1]
-    maxind = maze.w * maze.h
 
     x1 = randint(1, maze.w - 1 - r_max)
     y1 = randint(1, maze.h - 1 - r_max)

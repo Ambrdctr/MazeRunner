@@ -78,26 +78,29 @@ def attMonstre(x, y, direction, monstre, perso, map):
                 res = False
     return res
 
-def ouvre_coffre(x, y, direction, coffre):
+def ya_coffre(x, y, direction, coffres):
     res = False
     yPrec = y
     xPrec = x
-    if direction == 'haut':
-        ySuiv = (y - 1)
-        if yPrec != ySuiv and ySuiv == coffre.y and xPrec == coffre.x:
-            res = True
-    if direction == 'droite':
-        xSuiv = (x + 1)
-        if xPrec != xSuiv and xSuiv == coffre.x and yPrec == coffre.y:
-            res = True
-    if direction == 'bas':
-        ySuiv = (y + 1)
-        if yPrec != ySuiv and ySuiv == coffre.y and xPrec == coffre.x:
-            res = True
-    if direction == 'gauche':
-        xSuiv = (x - 1)
-        if xPrec != xSuiv and xSuiv == coffre.x and yPrec == coffre.y:
-            res = True
+    for coffre in coffres:
+        if direction == 'haut':
+            ySuiv = (y - 1)
+            if yPrec != ySuiv and ySuiv == coffre.y and xPrec == coffre.x:
+                res = True
+        if direction == 'droite':
+            xSuiv = (x + 1)
+            if xPrec != xSuiv and xSuiv == coffre.x and yPrec == coffre.y:
+                res = True
+        if direction == 'bas':
+            ySuiv = (y + 1)
+            if yPrec != ySuiv and ySuiv == coffre.y and xPrec == coffre.x:
+                res = True
+        if direction == 'gauche':
+            xSuiv = (x - 1)
+            if xPrec != xSuiv and xSuiv == coffre.x and yPrec == coffre.y:
+                res = True
+        if res:
+            break
     return res
 
 def attPerso(x, y, direction, perso, monstre, map):
@@ -144,9 +147,8 @@ def deplacerPerso(perso, map, monstres, coffres, key):
             for monstre in monstres:
                 if attMonstre(x, y, 'haut', monstre, perso, map):
                     pas_monstre = False
-            for coffre in coffres:
-                if ouvre_coffre(x, y, 'haut', coffre):
-                    pas_coffre = False
+            if ya_coffre(x, y, 'haut', coffres):
+                pas_coffre = False
             if pas_monstre and pas_coffre:
                 perso.y -= 1
                 res = True
@@ -156,9 +158,8 @@ def deplacerPerso(perso, map, monstres, coffres, key):
             for monstre in monstres:
                 if attMonstre(x, y, 'bas', monstre, perso, map):
                     pas_monstre = False
-            for coffre in coffres:
-                if ouvre_coffre(x, y, 'bas', coffre):
-                    pas_coffre = False
+            if ya_coffre(x, y, 'bas', coffres):
+                pas_coffre = False
             if pas_monstre and pas_coffre:
                 perso.y += 1
                 res = True
@@ -168,9 +169,8 @@ def deplacerPerso(perso, map, monstres, coffres, key):
             for monstre in monstres:
                 if attMonstre(x, y, 'droite', monstre, perso, map):
                     pas_monstre = False
-            for coffre in coffres:
-                if ouvre_coffre(x, y, 'droite', coffre):
-                    pas_coffre = False
+            if ya_coffre(x, y, 'droite', coffres):
+                pas_coffre = False
             if pas_monstre and pas_coffre:
                 perso.x += 1
                 res = True
@@ -180,9 +180,8 @@ def deplacerPerso(perso, map, monstres, coffres, key):
             for monstre in monstres:
                 if attMonstre(x, y, 'gauche', monstre, perso, map):
                     pas_monstre = False
-            for coffre in coffres:
-                if ouvre_coffre(x, y, 'gauche', coffre):
-                    pas_coffre = False
+            if ya_coffre(x, y, 'gauche', coffres):
+                pas_coffre = False
             if pas_monstre and pas_coffre:
                 perso.x -= 1
                 res = True
@@ -190,7 +189,7 @@ def deplacerPerso(perso, map, monstres, coffres, key):
 
 
 
-def deplacerMonstre(monstre, monstres, map, perso):
+def deplacerMonstre(monstre, monstres, coffres, map, perso):
 
     x = monstre.x
     y = monstre.y
@@ -218,26 +217,26 @@ def deplacerMonstre(monstre, monstres, map, perso):
                 if perso.y > y: key = K_DOWN
                 elif perso.y < y: key = K_UP
         if key == K_UP:
-            peut_bouger = not mur(x, y, 'haut', map) and y > 0
+            peut_bouger = not mur(x, y, 'haut', map) and not ya_coffre(x, y, 'haut', coffres) and y > 0
         if key == K_DOWN:
-            peut_bouger = not mur(x, y, 'bas', map) and y < map.w - 1
+            peut_bouger = not mur(x, y, 'bas', map) and not ya_coffre(x, y, 'bas', coffres) and y < map.w - 1
         if key == K_LEFT:
-            peut_bouger = not mur(x, y, 'gauche', map) and x > 0
+            peut_bouger = not mur(x, y, 'gauche', map) and not ya_coffre(x, y, 'gauche', coffres) and x > 0
         if key == K_RIGHT:
-            peut_bouger = not mur(x, y, 'droite', map) and x < map.h - 1
+            peut_bouger = not mur(x, y, 'droite', map) and not ya_coffre(x, y, 'droite', coffres) and x < map.h - 1
     if not peut_bouger:
         for elt in deplacementMonstre:
             if elt != monstre.dirRetour:
-                if elt == K_UP and not mur(x, y, 'haut', map) and y > 0:
+                if elt == K_UP and not mur(x, y, 'haut', map) and not ya_coffre(x, y, 'haut', coffres) and y > 0:
                     passage = True
                     passagePossible.append(elt)
-                if elt == K_DOWN and not mur(x, y, 'bas', map) and y < map.w-1:
+                if elt == K_DOWN and not mur(x, y, 'bas', map) and not ya_coffre(x, y, 'bas', coffres) and y < map.w-1:
                     passage = True
                     passagePossible.append(elt)
-                if elt == K_LEFT and not mur(x, y, 'gauche', map) and x > 0:
+                if elt == K_LEFT and not mur(x, y, 'gauche', map) and not ya_coffre(x, y, 'gauche', coffres) and x > 0:
                     passage = True
                     passagePossible.append(elt)
-                if elt == K_RIGHT and not mur(x, y, 'droite', map) and x < map.h-1:
+                if elt == K_RIGHT and not mur(x, y, 'droite', map) and not ya_coffre(x, y, 'droite', coffres) and x < map.h-1:
                     passage = True
                     passagePossible.append(elt)
 
