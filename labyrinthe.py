@@ -7,7 +7,7 @@ class Cell:
         self.walls = [True, True, True, True]
         self.state = 'pierre'
         self.set = i
-        self.visitee = False
+        self.visitee = True
 
 
 class Room:
@@ -33,8 +33,8 @@ class Room:
         return (tab[n], n)
 
     def visite_cellules_piece(self, grid):
-        for i in range(self.left, self.right):
-            for j in range(self.top, self.bottom):
+        for i in range(self.left, self.right+1):
+            for j in range(self.top, self.bottom+1):
                 grid[j][i].visitee = True
 
     def renvoi_diff_coords(self, diff):

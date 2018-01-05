@@ -24,7 +24,7 @@ def play(screen, difficulty):
 
     map = etages[e]
 
-    perso = Joueur((3,1), 'Didier')
+    perso = Joueur((3,1), 'Didier', screen)
 
     aBouge = False
 
@@ -32,6 +32,7 @@ def play(screen, difficulty):
     pygame.key.set_repeat(100, 50)
 
     while out:
+        screen.fill((0, 0, 0))
         affichage(screen, perso, map.liste_monstres, map.liste_coffres, map)
         # Rafraîchissement de l'écran
         pygame.display.flip()
@@ -65,7 +66,7 @@ def play(screen, difficulty):
                     for coord in coords:
                         map.liste_monstres.append(Monstre(coord, difficulty))
                     coffre_coord = piece.coord_border()
-                    map.liste_coffres.append(Chest(coffre_coord[0][1], coffre_coord[0][0], coffre_coord[1]))
+                    map.liste_coffres.append(Chest(coffre_coord[0][1], coffre_coord[0][0], coffre_coord[1], screen))
                     piece.visitee = True
             for monstre in map.liste_monstres:
                 if monstre.vivant:
@@ -75,7 +76,7 @@ def play(screen, difficulty):
         if aBouge and (allerEtageSuivant(map, perso) or allerDonjon(map, perso)):
             e += 1
             if e > k:
-                if k < difficulty*3:
+                if k < difficulty:
                     etages.append(create_maze(difficulty*20, difficulty*15, difficulty*15, False)) #sans le tresor
                 else:
                     etages.append(create_maze(difficulty*20, difficulty*15, difficulty*15, True)) #avec le tresor

@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 import time
 import random
+from classChest import Bag
 
 class Perso:
     
@@ -13,19 +14,23 @@ class Perso:
 
 class Joueur(Perso):
     
-    def __init__(self, ici, name):
+    def __init__(self, ici, name, screen):
         Perso.__init__(self, ici)
         self.nom = name
         self.vivant = True
         self.vie = 100
         self.vitesse = 1
-        # self.inventaire = Bag()
+        self.inventaire = Bag(screen)
         self.force = random.randint(4,8)
         self.memoire = 600
         self.charisme = 0
         self.images = [pygame.image.load("images/haut.png").convert_alpha(), pygame.image.load("images/droite.png").convert_alpha(),
                        pygame.image.load("images/bas.png").convert_alpha(), pygame.image.load("images/gauche.png").convert_alpha()]
         self.dansDonjon = False
+
+    #def afficher_inventaire(self, screen):
+
+
 
 
 class Marchand(Perso):
