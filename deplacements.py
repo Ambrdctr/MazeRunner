@@ -4,6 +4,7 @@ import random
 from classPerso import Monstre
 import math
 import classChest
+from echanges import echange
 
 
 def mur(x,y,direction, map):
@@ -101,7 +102,7 @@ def ya_coffre(x, y, direction, coffres, perso):
             if xPrec != xSuiv and xSuiv == coffre.x and yPrec == coffre.y:
                 res = True
         if res:
-            coffre.afficher_contenu(800, 300, "Coffre", perso)
+            echange(perso, coffre)
             break
 
     return res

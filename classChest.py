@@ -28,14 +28,13 @@ class Bag:
         self.capacite = 10
         self.contenu = []
 
-    def afficher_sac(self, px, py, nom, echange):
+    def afficher_sac(self, px, py, nom):
 
-        if not echange:
-            # Opacité de l'arrière plan
-            s = pygame.Surface((1600, 900))
-            s.set_alpha(200)
-            s.fill((0,0,0))
-            self.ecran.blit(s, (0, 0))
+        # Opacité de l'arrière plan
+        s = pygame.Surface((1600, 900))
+        s.set_alpha(200)
+        s.fill((0,0,0))
+        self.ecran.blit(s, (0, 0))
 
         #Encadrement des cases
         taille_case = 100
@@ -82,13 +81,7 @@ class Chest(Bag):
     def __str__(self):
         return str(self.x)+str(self.y)
 
-    def afficher_contenu(self, px, py, nom, perso):
-
-        # Opacité de l'arrière plan
-        s = pygame.Surface((1600, 900))
-        s.set_alpha(200)
-        s.fill((0,0,0))
-        self.ecran.blit(s, (0, 0))
+    def afficher_contenu(self, px, py, nom):
 
         #Encadrement des cases
         taille_case = 100
@@ -111,19 +104,4 @@ class Chest(Bag):
             tx += 1
             if self.tabObj[x] != False:
                 self.ecran.blit(self.tabObj[x].image, (rx, y))
-
-        perso.inventaire.afficher_sac(200, 300, "Inventaire", True)
-
         pygame.display.flip()
-
-
-        run = True
-        while run:
-
-            for event in pygame.event.get():
-                # Lorsque l'on ferme la fenetre
-                if event.type == QUIT:
-                    run = False
-                if event.type == KEYDOWN:
-                    if event.key == K_ESCAPE:
-                        run = False
