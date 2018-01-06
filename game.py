@@ -8,6 +8,7 @@ from classChest import Chest
 from fonctionCases import *
 from labyrinthe import create_maze
 from menu import sortir
+
 import random
 import time
 
@@ -46,6 +47,16 @@ def play(screen, difficulty):
             map = exterieur
             perso.dansDonjon = False
             e = 0
+
+        if not perso.vivant :
+            time.sleep(1)
+            wasted = pygame.image.load("images/wasted.png").convert_alpha()
+            wasted = pygame.transform.scale(wasted, (1600,900))
+            screen.blit(wasted, (0,0))
+            pygame.display.flip()
+            time.sleep(5)
+            out = False
+
 
         for event in pygame.event.get():
             # Lorsque l'on ferme la fenetre
