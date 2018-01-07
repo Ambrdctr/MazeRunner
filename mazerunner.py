@@ -9,7 +9,8 @@ def principal():
     pygame.init()
 
     #Creation de la fenetre
-    screen = pygame.display.set_mode((1600, 900), FULLSCREEN)
+    #screen = pygame.display.set_mode((1600, 900), FULLSCREEN)
+    screen = pygame.display.set_mode((1366, 768), FULLSCREEN)
     #screen = pygame.display.set_mode((800, 600), FULLSCREEN)
     #screen = pygame.display.set_mode((1440, 900), FULLSCREEN)
 
