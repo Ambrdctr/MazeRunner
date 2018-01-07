@@ -23,13 +23,16 @@ class Room:
     def __str__(self):
         return "(" + str(self.left) + "," + str(self.top) + "), (" + str(self.right) + "," + str(self.bottom) + ")"
 
-    def coord_border(self):
-        top = (self.top, randint(self.left, self.right))
-        right = (randint(self.top, self.bottom), self.right)
-        bottom = (self.bottom, randint(self.left, self.right))
-        left = (randint(self.top, self.bottom), self.left)
-        tab = [top, right, bottom, left]
-        n = randint(0, 3)
+    def coord_border(self, grid):
+        res = False
+        while not res:
+            top = (self.top, randint(self.left + 1, self.right - 1))
+            right = (randint(self.top + 1, self.bottom - 1), self.right)
+            bottom = (self.bottom, randint(self.left + 1, self.right - 1))
+            left = (randint(self.top + 1, self.bottom - 1), self.left)
+            tab = [top, right, bottom, left]
+            n = randint(0, 3)
+            res = grid[tab[n][0]][tab[n][1]].walls[n]
         return (tab[n], n)
 
     def visite_cellules_piece(self, grid):
