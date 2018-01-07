@@ -202,3 +202,42 @@ def pause(screen):
                 # Rafraichissement
                 pygame.display.flip()
     return choice
+
+def inventaire(screen, perso):
+    # Opacité de l'arrière plan
+    s = pygame.Surface((1600, 900))
+    s.set_alpha(200)
+    s.fill((0, 0, 0))
+    screen.blit(s, (0, 0))
+
+    posObjInventaire = perso.inventaire.afficher_sac("Inventaire")
+
+    run = True
+
+    while run:
+
+        for event in pygame.event.get():
+
+            # Lorsque l'on ferme la fenetre
+            if event.type == QUIT:
+                run = False
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE or event.key == K_i:
+                    run = False
+
+            pos = pygame.mouse.get_pos()
+            conteneur = 0
+            if posObjInventaire[1].collidepoint(pos):
+                conteneur = 1
+
+            if event.type == MOUSEMOTION:
+
+                if conteneur == 1:
+                    dansCase = False
+                    for rect in posObjInventaire[0]:
+                        if rect.collidepoint(pos):
+                            perso.inventaire.afficher_sac("Inventaire", posObjInventaire[0].index(rect)+1)
+                            dansCase = True
+                            break
+                    if not dansCase:
+                        perso.inventaire.afficher_sac("Inventaire")

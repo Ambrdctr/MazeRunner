@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
 from map import create_empty_map
-from affichage import affichage, pause
+from affichage import affichage, pause, inventaire
 from deplacements import deplacerPerso, deplacerMonstre
 from classPerso import Perso, Joueur, Monstre
 from classChest import Chest
@@ -67,6 +67,9 @@ def play(screen, difficulty):
                     out = not pause(screen)
                 if event.key == K_UP or event.key == K_DOWN or event.key == K_RIGHT or event.key == K_LEFT:
                     aBouge = deplacerPerso(perso, map, map.liste_monstres, map.liste_coffres, event.key)
+                if event.key == K_i:
+                    inventaire(screen, perso)
+
         if perso.dansDonjon:
             map.grid[perso.y][perso.x].visitee = time.time()
             piece = map.est_dans_piece((perso.x, perso.y))
