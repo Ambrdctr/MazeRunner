@@ -76,7 +76,7 @@ def play(screen, difficulty):
                     coords = piece.renvoi_diff_coords(difficulty)
                     for coord in coords:
                         map.liste_monstres.append(Monstre(coord, difficulty))
-                    coffre_coord = piece.coord_border()
+                    coffre_coord = piece.coord_border(map.grid)
                     map.liste_coffres.append(Chest(coffre_coord[0][1], coffre_coord[0][0], coffre_coord[1], screen))
                     piece.visitee = True
             for monstre in map.liste_monstres:
