@@ -44,6 +44,7 @@ class Monstre(Perso):
     
     def __init__(self, ici, diff):
         Perso.__init__(self, ici)
+        self.diff = diff
         self.vivant = True
         self.dansDonjon = True
         self.vie = 10*diff

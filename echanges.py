@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 
 def echange(perso, coffre):
-    perso.inventaire.afficher_sac(200, 300, "Inventaire")
+    perso.inventaire.afficher_sac("Inventaire")
     coffre.afficher_contenu(800, 300, "Coffre")
 
     run = True

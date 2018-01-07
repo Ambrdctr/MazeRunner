@@ -156,6 +156,7 @@ def attPerso(x, y, direction, perso, monstre, map):
                 res = True
         if res == True:
             perso.vie += - monstre.force
+            monstre.force = random.randint(monstre.diff * 3, monstre.diff * 3 + 5)
             if perso.vie <= 0:
                 perso.vivant = False
                 res = False

@@ -20,11 +20,22 @@ cases2 = white
 
 def afficher_map(screen, perso, monstres, coffres, map):
     # Fond
-    taille_case = 100
+    size = screen.get_size()
+    if size[0] <= size[1]:
+        taille_case = size[0]//12
+    else:
+        taille_case = size[1]//12
     mer1 = pygame.image.load("images/eau1.png").convert()
+    mer1 = pygame.transform.scale(mer1, (taille_case, taille_case))
+
     mer2 = pygame.image.load("images/eau2.png").convert()
+    mer2 = pygame.transform.scale(mer2, (taille_case, taille_case))
+
     mer3 = pygame.image.load("images/eau3.png").convert()
+    mer3 = pygame.transform.scale(mer3, (taille_case, taille_case))
+
     mer4 = pygame.image.load("images/eau4.png").convert()
+    mer4 = pygame.transform.scale(mer4, (taille_case, taille_case))
 
     persoimg = perso.images[perso.dir]
     persoimg = pygame.transform.scale(persoimg, (int(taille_case/1.5), taille_case))
@@ -104,17 +115,36 @@ def afficher_map(screen, perso, monstres, coffres, map):
         pos2 += 1
 
 def afficherStats(screen, perso):
-    pygame.draw.rect(screen, (0, 0, 0), (1300, 80, 300, 200), 0)
-    myfont = pygame.font.SysFont('Comic Sans MS', 15)
+    size = screen.get_size()
+    if size[0] <= size[1]:
+        min = size[0]
+        posx = (size[0] // 12) * 13
+    else:
+        min = size[1]
+        posx = (size[1] // 12) * 13
+    taille_police = min*15//900
+
+    def pos_textx(x):
+        return posx+((size[0]-posx)*x)
+
+    pygame.draw.rect(screen, (20, 20, 20), (posx, 0, size[0]-posx, 200), 0)
+    myfont = pygame.font.SysFont('Comic Sans MS', taille_police)
+
     textsurface = myfont.render('Vie (' + str(perso.vie) + ')', False, (200, 200, 200))
-    screen.blit(textsurface, (1320, 94))
-    pygame.draw.rect(screen, (255,0,0), (1410, 100, perso.vie, 10), 0)
+    screen.blit(textsurface, (pos_textx(0.05), size[1]//10))
+    pygame.draw.rect(screen, (255,0,0), (size[0]-5, size[1]//10+5, -perso.vie*(size[0]/1000), 10), 0)
+
     textsurface = myfont.render('Vitesse (' + str(perso.vitesse) + ')', False, (200, 200, 200))
-    screen.blit(textsurface, (1320, 114))
-    pygame.draw.rect(screen, (0, 255, 0), (1410, 120, perso.vitesse*10, 10), 0)
+    screen.blit(textsurface, (pos_textx(0.05), size[1]//10+taille_police+5))
+    pygame.draw.rect(screen, (0, 255, 0), (size[0]-5, size[1]//10+taille_police+12.5, -perso.vitesse*(size[0]/500), 10), 0)
+
     textsurface = myfont.render('Force (' + str(perso.force) + ')', False, (200, 200, 200))
-    screen.blit(textsurface, (1320, 134))
-    pygame.draw.rect(screen, (0, 0, 255), (1410, 140, perso.force, 10), 0)
+    screen.blit(textsurface, (pos_textx(0.05), size[1]//10+(taille_police*2)+10))
+    if perso.force > 20:
+        pygame.draw.rect(screen, (0, 0, 255), (size[0]-5, size[1]//10+(taille_police*2)+20, -50*(size[0]/800), 10), 0)
+        pygame.draw.rect(screen, (255, 200, 0), (size[0]-(50*(size[0]/800)), size[1]//10+(taille_police*2)+20, -10*(size[0]/800), 10), 0)
+    else:
+        pygame.draw.rect(screen, (0, 0, 255), (size[0]-5, size[1]//10+(taille_police*2)+20, -perso.force*(size[0]/800), 10), 0)
 
 
 def affichage(screen, perso, monstres, coffres, map):
