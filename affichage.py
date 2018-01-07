@@ -65,19 +65,19 @@ def afficher_map(screen, perso, monstres, coffres, map):
                 if tab[i][k].walls[0] == True:
                     posx = taille_case * pos1
                     posy = taille_case * pos2
-                    pygame.draw.rect(screen, color_mur, (posx, posy - 5, taille_case, 10), 0)
+                    pygame.draw.rect(screen, color_mur, (posx - 5, posy - 5, taille_case + 5, 5), 0)
                 if tab[i][k].walls[1] == True:
                     posx = taille_case * pos1 + taille_case
                     posy = taille_case * pos2
-                    pygame.draw.rect(screen, color_mur, (posx - 5, posy, 10, taille_case), 0)
+                    pygame.draw.rect(screen, color_mur, (posx - 5, posy, 5, taille_case), 0)
                 if tab[i][k].walls[2] == True:
                     posx = taille_case * pos1
                     posy = taille_case * pos2 + taille_case
-                    pygame.draw.rect(screen, color_mur, (posx, posy - 5, taille_case, 10), 0)
+                    pygame.draw.rect(screen, color_mur, (posx, posy - 5, taille_case, 5), 0)
                 if tab[i][k].walls[3] == True:
                     posx = taille_case * pos1
                     posy = taille_case * pos2
-                    pygame.draw.rect(screen, color_mur, (posx - 5, posy, 10, taille_case), 0)
+                    pygame.draw.rect(screen, color_mur, (posx - 5, posy, 5, taille_case), 0)
             else:
                 eau = random.randint(1,1)#, 4)
                 posx = taille_case * pos1

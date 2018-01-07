@@ -25,8 +25,8 @@ class Room:
 
     def coord_border(self):
         top = (self.top, randint(self.left, self.right))
-        right = (randint(self.top, self.bottom-1), self.right-1)
-        bottom = (self.bottom-1, randint(self.left, self.right-1))
+        right = (randint(self.top, self.bottom), self.right)
+        bottom = (self.bottom, randint(self.left, self.right))
         left = (randint(self.top, self.bottom), self.left)
         tab = [top, right, bottom, left]
         n = randint(0, 3)

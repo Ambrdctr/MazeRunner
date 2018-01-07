@@ -99,7 +99,7 @@ class Chest(Bag):
     def __str__(self):
         return str(self.x)+str(self.y)
 
-    def afficher_contenu(self, px, py, nom):
+    def afficher_contenu(self, nom):
 
         screen = self.ecran
 
@@ -137,5 +137,5 @@ class Chest(Bag):
             tx += 1
             if self.tabObj[x] != False:
                 image = pygame.transform.scale(self.tabObj[x].image, (taille_case, taille_case))
-                screen.blit(image, (rx+(posx-(5*taille_case+20)), posy))
+                screen.blit(image, (rx+(posx-(5*taille_case+20))+5, posy+5))
         pygame.display.flip()
