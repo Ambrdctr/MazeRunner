@@ -118,39 +118,39 @@ def afficherStats(screen, perso):
     size = screen.get_size()
     if size[0] <= size[1]:
         min = size[0]
-        posx = (size[0] // 12) * 13
+        taille_case = size[0] // 12
     else:
         min = size[1]
-        posx = (size[1] // 12) * 13
+        taille_case = size[1] // 12
+    posx = (taille_case) * 13
     taille_police = min*15//900
 
     def pos_textx(x):
         return posx+((size[0]-posx)*x)
 
-    pygame.draw.rect(screen, (20, 20, 20), (posx, 0, size[0]-posx, 200), 0)
+    pygame.draw.rect(screen, (20, 20, 20), (posx, 0, size[0]-posx, taille_case*2), 0)
     myfont = pygame.font.SysFont('Comic Sans MS', taille_police)
 
     textsurface = myfont.render('Vie (' + str(perso.vie) + ')', False, (200, 200, 200))
-    screen.blit(textsurface, (pos_textx(0.05), size[1]//10))
-    pygame.draw.rect(screen, (255,0,0), (size[0]-5, size[1]//10+5, -perso.vie*(size[0]/1000), 10), 0)
+    screen.blit(textsurface, (pos_textx(0.05), taille_case))
+    pygame.draw.rect(screen, (255,0,0), (size[0]-5, taille_case+3, -perso.vie*(size[0]/1000), 10), 0)
 
     textsurface = myfont.render('Vitesse (' + str(perso.vitesse) + ')', False, (200, 200, 200))
-    screen.blit(textsurface, (pos_textx(0.05), size[1]//10+taille_police+5))
-    pygame.draw.rect(screen, (0, 255, 0), (size[0]-5, size[1]//10+taille_police+12.5, -perso.vitesse*(size[0]/500), 10), 0)
+    screen.blit(textsurface, (pos_textx(0.05), taille_case+taille_police+5))
+    pygame.draw.rect(screen, (0, 255, 0), (size[0]-5, taille_case+taille_police+8, -perso.vitesse*(size[0]/500), 10), 0)
 
     textsurface = myfont.render('Force (' + str(perso.force) + ')', False, (200, 200, 200))
-    screen.blit(textsurface, (pos_textx(0.05), size[1]//10+(taille_police*2)+10))
+    screen.blit(textsurface, (pos_textx(0.05), taille_case+(taille_police*2)+10))
     if perso.force > 20:
-        pygame.draw.rect(screen, (0, 0, 255), (size[0]-5, size[1]//10+(taille_police*2)+20, -50*(size[0]/800), 10), 0)
-        pygame.draw.rect(screen, (255, 200, 0), (size[0]-(50*(size[0]/800)), size[1]//10+(taille_police*2)+20, -10*(size[0]/800), 10), 0)
+        pygame.draw.rect(screen, (0, 0, 255), (size[0]-5, taille_case+(taille_police*2)+13, -50*(size[0]/800), 10), 0)
+        pygame.draw.rect(screen, (255, 200, 0), (size[0]-(50*(size[0]/800)), taille_case+(taille_police*2)+13, -10*(size[0]/800), 10), 0)
     else:
-        pygame.draw.rect(screen, (0, 0, 255), (size[0]-5, size[1]//10+(taille_police*2)+20, -perso.force*(size[0]/800), 10), 0)
-
+        pygame.draw.rect(screen, (0, 0, 255), (size[0]-5, taille_case+(taille_police*2)+13, -perso.force*(size[0]/800), 10), 0)
 
 def affichage(screen, perso, monstres, coffres, map):
     afficher_map(screen, perso, monstres, coffres, map)
     afficherStats(screen, perso)
-
+    perso.afficherEquipement(screen)
 
 def pause(screen):
     fond = pygame.image.load("images/pause.png").convert()
@@ -202,42 +202,3 @@ def pause(screen):
                 # Rafraichissement
                 pygame.display.flip()
     return choice
-
-def inventaire(screen, perso):
-    # Opacité de l'arrière plan
-    s = pygame.Surface((1600, 900))
-    s.set_alpha(200)
-    s.fill((0, 0, 0))
-    screen.blit(s, (0, 0))
-
-    posObjInventaire = perso.inventaire.afficher_sac("Inventaire")
-
-    run = True
-
-    while run:
-
-        for event in pygame.event.get():
-
-            # Lorsque l'on ferme la fenetre
-            if event.type == QUIT:
-                run = False
-            if event.type == KEYDOWN:
-                if event.key == K_ESCAPE or event.key == K_i:
-                    run = False
-
-            pos = pygame.mouse.get_pos()
-            conteneur = 0
-            if posObjInventaire[1].collidepoint(pos):
-                conteneur = 1
-
-            if event.type == MOUSEMOTION:
-
-                if conteneur == 1:
-                    dansCase = False
-                    for rect in posObjInventaire[0]:
-                        if rect.collidepoint(pos):
-                            perso.inventaire.afficher_sac("Inventaire", posObjInventaire[0].index(rect)+1)
-                            dansCase = True
-                            break
-                    if not dansCase:
-                        perso.inventaire.afficher_sac("Inventaire")
