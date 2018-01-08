@@ -40,6 +40,7 @@ class PotionForce(Objet):
     def __init__(self, screen):
         Objet.__init__(self, 20, 6, "pt2", screen)
         self.force = 10
+        self.temps = 120
 
 class PotionMemoire(Objet):
     def __init__(self, screen):

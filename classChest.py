@@ -17,9 +17,6 @@ def tableau_d_objets(screen):
     for i in range(2):
         tab.append(Piece(10, screen))
         tab.append(Couteau(screen))
-    for i in range(20):
-        tab.append(Epee(screen))
-        tab.append(Couteau(screen))
 
     return tab
 
