@@ -19,7 +19,7 @@ def play(screen, difficulty):
     size = screen.get_size()
 
     out = True
-    exterieur = create_empty_map(int(size[0] / 50), int(size[1] / 50))
+    exterieur = create_empty_map()
     etages = [exterieur]
     k = 0  # Permet de savoir jusqu'à quel étage est arrivé le joueur
     e = 0 # Permet de connaitre l'etage courant du joueur
@@ -34,6 +34,7 @@ def play(screen, difficulty):
     pygame.key.set_repeat(100, 50)
 
     while out:
+        pygame.time.Clock().tick(30)
         screen.fill((0, 0, 0))
         affichage(screen, perso, map.liste_monstres, map.liste_coffres, map)
         # Rafraîchissement de l'écran
@@ -73,7 +74,8 @@ def play(screen, difficulty):
 
 
         if perso.dansDonjon:
-            map.grid[perso.y][perso.x].visitee = time.time()
+            if not map.grid[perso.y][perso.x].visitee:
+                map.grid[perso.y][perso.x].visitee = time.time()
             piece = map.est_dans_piece((perso.x, perso.y))
             if piece != False:
                 piece.visite_cellules_piece(map.grid)
@@ -93,9 +95,9 @@ def play(screen, difficulty):
             e += 1
             if e > k:
                 if k < difficulty:
-                    etages.append(create_maze(difficulty*20, difficulty*15, difficulty*15, False)) #sans le tresor
+                    etages.append(create_maze(difficulty*15, difficulty*20, difficulty*15, False)) #sans le tresor
                 else:
-                    etages.append(create_maze(difficulty*20, difficulty*15, difficulty*15, True)) #avec le tresor
+                    etages.append(create_maze(difficulty*15, difficulty*20, difficulty*15, True)) #avec le tresor
                 k += 1
             aBouge = False
             donjon = etages[e]
