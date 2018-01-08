@@ -17,6 +17,9 @@ def tableau_d_objets(screen):
     for i in range(2):
         tab.append(Piece(10, screen))
         tab.append(Couteau(screen))
+    for i in range(20):
+        tab.append(Epee(screen))
+        tab.append(Couteau(screen))
 
     return tab
 
@@ -27,8 +30,14 @@ class Bag:
         self.ecran = screen
         self.capacite = 10
         self.contenu = []
+        self.tabObj = []
+        self.pieces = 0
+        for i in range(self.capacite):
+            self.tabObj.append(False)
 
-    def afficher_sac(self, nom):
+    def afficher_sac(self, nom, id=False):
+
+        tabAllObj = []
 
         screen = self.ecran
 
@@ -37,20 +46,12 @@ class Bag:
         if size[0] <= size[1]:
             min = size[0]
             taille_case = size[0] // 12
-            posy = (taille_case) * 8
-            posx = (taille_case) * 13
         else:
             min = size[1]
             taille_case = size[1] // 12
-            posy = (taille_case) * 8
-            posx = (taille_case) * 13
-        taille_police = min * 15 // 900
 
-        # Opacité de l'arrière plan
-        s = pygame.Surface((1600, 900))
-        s.set_alpha(200)
-        s.fill((0,0,0))
-        screen.blit(s, (0, 0))
+        posy = (taille_case) * 8
+        taille_police = min * 15 // 900
 
         #pygame.draw.rect(screen, (20, 20, 20), (0, posy, posx // 2, size[1] - posy), 0)
 
@@ -59,7 +60,11 @@ class Bag:
 
         #Ecriture du nom du contenant
         myfont = pygame.font.SysFont('Comic Sans MS', taille_police)
-        textsurface = myfont.render(nom, False, (50, 50, 50))
+        if self.pieces > 1:
+            ch = " pièces"
+        else:
+            ch = " pièce"
+        textsurface = myfont.render(nom + ", " + str(self.pieces) + ch, False, (50, 50, 50))
         screen.blit(textsurface, (5, posy + 5))
         posy -= taille_case-taille_police*2
         tx = 0
@@ -70,11 +75,21 @@ class Bag:
                 posy += taille_case
             rx = tx*taille_case
             pygame.draw.rect(screen, (220, 220, 220), (rx+4, posy+4, taille_case+1, taille_case+1), 4)
-            pygame.draw.rect(screen, (180, 180, 180), (rx+5, posy+5, taille_case, taille_case), 0)
+            if id != False:
+                if id-1 == x:
+                    pygame.draw.rect(screen, (200, 200, 200), (rx+5, posy+5, taille_case, taille_case), 0)
+                else:
+                    pygame.draw.rect(screen, (180, 180, 180), (rx + 5, posy + 5, taille_case, taille_case), 0)
+            else:
+                pygame.draw.rect(screen, (180, 180, 180), (rx + 5, posy + 5, taille_case, taille_case), 0)
+            tabAllObj.append(Rect(rx+5, posy+5, taille_case, taille_case))
             tx += 1
-            if x <= len(self.contenu)-1:
-                screen.blit(self.contenu[x].image, (rx, posy))
+            if self.tabObj[x] != False:
+                image = pygame.transform.scale(self.tabObj[x].image, (taille_case, taille_case))
+                screen.blit(image, (rx + 5, posy + 5))
         pygame.display.flip()
+
+        return (tabAllObj, Rect(0, (taille_case) * 8, 5*taille_case+20, ((self.capacite//5)*taille_case+40)))
 
 
 class Chest(Bag):
@@ -86,8 +101,8 @@ class Chest(Bag):
         images = [pygame.image.load("images/c_haut.png").convert_alpha(), pygame.image.load("images/c_droite.png").convert_alpha(),
                  pygame.image.load("images/c_bas.png").convert_alpha(), pygame.image.load("images/c_gauche.png").convert_alpha()]
         self.image = images[img]
-        tabN = random.sample(range(0, self.capacite-1), random.randint(2, self.capacite-2))
         self.tabObj = []
+        tabN = random.sample(range(0, self.capacite-1), random.randint(2, self.capacite-2))
         tabObjets = tableau_d_objets(screen)
         for i in range(self.capacite):
             if i in tabN:
@@ -99,7 +114,9 @@ class Chest(Bag):
     def __str__(self):
         return str(self.x)+str(self.y)
 
-    def afficher_contenu(self, nom):
+    def afficher_contenu(self, nom, id=False):
+
+        allposTab = []
 
         screen = self.ecran
 
@@ -108,13 +125,12 @@ class Chest(Bag):
         if size[0] <= size[1]:
             min = size[0]
             taille_case = size[0] // 12
-            posy = (taille_case) * 8
-            posx = (taille_case) * 13
         else:
             min = size[1]
             taille_case = size[1] // 12
-            posy = (taille_case) * 8
-            posx = (taille_case) * 13
+
+        posy = (taille_case) * 8
+        posx = (taille_case) * 13
         taille_police = min * 15 // 900
 
         #Encadrement des cases
@@ -132,10 +148,23 @@ class Chest(Bag):
                 tx = 0
                 posy += taille_case
             rx = tx*taille_case
-            pygame.draw.rect(screen, (220, 220, 220), (rx+(posx-(5*taille_case+20))+4, posy+4, taille_case+1, taille_case+1), 4)
-            pygame.draw.rect(screen, (180, 180, 180), (rx+(posx-(5*taille_case+20))+5, posy+5, taille_case, taille_case), 0)
+            x1 = rx+(posx-(5*taille_case+20))+4
+            y1 = posy+4
+            x2 = taille_case
+            y2 = taille_case
+            pygame.draw.rect(screen, (220, 220, 220), (x1, y1, x2+1, y2+1), 4)
+            if id != False:
+                if id-1 == x:
+                    pygame.draw.rect(screen, (200, 200, 200), (x1+1, y1+1, x2, y2), 0)
+                else:
+                    pygame.draw.rect(screen, (180, 180, 180), (x1 + 1, y1 + 1, x2, y2), 0)
+            else:
+                pygame.draw.rect(screen, (180, 180, 180), (x1 + 1, y1 + 1, x2, y2), 0)
+            allposTab.append(Rect(x1, y1, x2, y2))
             tx += 1
             if self.tabObj[x] != False:
                 image = pygame.transform.scale(self.tabObj[x].image, (taille_case, taille_case))
-                screen.blit(image, (rx+(posx-(5*taille_case+20))+5, posy+5))
+                screen.blit(image, (x1+1, y1+1))
         pygame.display.flip()
+
+        return (allposTab, Rect(posx-(5*taille_case+20), (taille_case) * 8, (5*taille_case+20), ((self.capacite//5)*taille_case+40)))

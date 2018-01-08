@@ -116,6 +116,7 @@ def afficher_map(screen, perso, monstres, coffres, map):
         pos2 += 1
 
 def map_visite(screen, perso, map):
+<<<<<<< HEAD
         # Fond
         size = screen.get_size()
         if size[0] <= size[1]:
@@ -141,46 +142,79 @@ def map_visite(screen, perso, map):
 
                     pos1 += 1
             pos2 += 1
+=======
+    # Fond
+    size = screen.get_size()
+    if size[0] <= size[1]:
+        taille_case = size[0] // 12
+    else:
+        taille_case = size[1] // 12
+
+    x = perso.x
+    y = perso.y
+    tab = map.grid
+    pos2 = 8
+
+    for i in range(0, len(tab)):
+        pos1 = 13
+        for k in range(0, len(tab[i])):
+
+            posx = pos1 * 10
+            posy = pos2 * 10
+            if (tab[i][k].visitee != True and time.time() - tab[i][k].visitee > perso.memoire):
+                pygame.draw.rect(screen, black, (posx, posy, 5, taille_case), 0)
+            else:
+                pygame.draw.rect(screen, yellow, (posx, posy, 5, taille_case), 0)
+
+            pos1 += 1
+        pos2 += 1
+>>>>>>> 5901488a8ca18aaa78d63afc0769780dfa14f34f
 
 def afficherStats(screen, perso):
     size = screen.get_size()
     if size[0] <= size[1]:
         min = size[0]
-        posx = (size[0] // 12) * 13
+        taille_case = size[0] // 12
     else:
         min = size[1]
-        posx = (size[1] // 12) * 13
+        taille_case = size[1] // 12
+    posx = (taille_case) * 13
     taille_police = min*15//900
 
     def pos_textx(x):
         return posx+((size[0]-posx)*x)
 
-    pygame.draw.rect(screen, (20, 20, 20), (posx, 0, size[0]-posx, 200), 0)
+    pygame.draw.rect(screen, (20, 20, 20), (posx, 0, size[0]-posx, taille_case*2), 0)
     myfont = pygame.font.SysFont('Comic Sans MS', taille_police)
 
     textsurface = myfont.render('Vie (' + str(perso.vie) + ')', False, (200, 200, 200))
-    screen.blit(textsurface, (pos_textx(0.05), size[1]//10))
-    pygame.draw.rect(screen, (255,0,0), (size[0]-5, size[1]//10+5, -perso.vie*(size[0]/1000), 10), 0)
+    screen.blit(textsurface, (pos_textx(0.05), taille_case))
+    pygame.draw.rect(screen, (255,0,0), (size[0]-5, taille_case+3, -perso.vie*(size[0]/1000), 10), 0)
 
     textsurface = myfont.render('Vitesse (' + str(perso.vitesse) + ')', False, (200, 200, 200))
-    screen.blit(textsurface, (pos_textx(0.05), size[1]//10+taille_police+5))
-    pygame.draw.rect(screen, (0, 255, 0), (size[0]-5, size[1]//10+taille_police+12.5, -perso.vitesse*(size[0]/500), 10), 0)
+    screen.blit(textsurface, (pos_textx(0.05), taille_case+taille_police+5))
+    pygame.draw.rect(screen, (0, 255, 0), (size[0]-5, taille_case+taille_police+8, -perso.vitesse*(size[0]/500), 10), 0)
 
     textsurface = myfont.render('Force (' + str(perso.force) + ')', False, (200, 200, 200))
-    screen.blit(textsurface, (pos_textx(0.05), size[1]//10+(taille_police*2)+10))
+    screen.blit(textsurface, (pos_textx(0.05), taille_case+(taille_police*2)+10))
     if perso.force > 20:
-        pygame.draw.rect(screen, (0, 0, 255), (size[0]-5, size[1]//10+(taille_police*2)+20, -50*(size[0]/800), 10), 0)
-        pygame.draw.rect(screen, (255, 200, 0), (size[0]-(50*(size[0]/800)), size[1]//10+(taille_police*2)+20, -10*(size[0]/800), 10), 0)
+        pygame.draw.rect(screen, (0, 0, 255), (size[0]-5, taille_case+(taille_police*2)+13, -50*(size[0]/800), 10), 0)
+        pygame.draw.rect(screen, (255, 200, 0), (size[0]-(50*(size[0]/800)), taille_case+(taille_police*2)+13, -10*(size[0]/800), 10), 0)
     else:
-        pygame.draw.rect(screen, (0, 0, 255), (size[0]-5, size[1]//10+(taille_police*2)+20, -perso.force*(size[0]/800), 10), 0)
-
+        pygame.draw.rect(screen, (0, 0, 255), (size[0]-5, taille_case+(taille_police*2)+13, -perso.force*(size[0]/800), 10), 0)
 
 def affichage(screen, perso, monstres, coffres, map):
     afficher_map(screen, perso, monstres, coffres, map)
     afficherStats(screen, perso)
+<<<<<<< HEAD
     if perso.dansDonjon:
         map_visite(screen, perso, map)
 
+=======
+    perso.afficherEquipement(screen)
+    if perso.dansDonjon:
+        map_visite(screen, perso, map)
+>>>>>>> 5901488a8ca18aaa78d63afc0769780dfa14f34f
 
 def pause(screen):
     fond = pygame.image.load("images/pause.png").convert()
