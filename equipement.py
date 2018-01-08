@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 from classObject import Epee, Couteau, PotionVie, PotionForce, PotionMemoire, PotionVitesse
 from affichage import afficherStats
+import random
 
 def inventaire(screen, perso):
     # Opacité de l'arrière plan
@@ -70,6 +71,10 @@ def inventaire(screen, perso):
                                 break
                     perso.afficherEquipement(screen)
                     perso.inventaire.afficher_sac("Inventaire")
+                perso.force = random.randint(4, 8)
+                if perso.equipement[2] != False:
+                    perso.force += perso.equipement[2].force
+                afficherStats(screen, perso)
 
             if event.type == MOUSEMOTION:
 
