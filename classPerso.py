@@ -18,6 +18,7 @@ class Joueur(Perso):
         Perso.__init__(self, ici)
         self.nom = name
         self.vivant = True
+        self.protection = 0
         self.vie = 100
         self.vitesse = 1
         self.inventaire = Bag(screen)
@@ -78,11 +79,19 @@ class Joueur(Perso):
         else:
             pygame.draw.rect(screen, (180, 180, 180), rectObj, 0)
 
+        tabAllObj.append(rectObj)
+
+        if self.equipement[0] != False:
+            image = pygame.transform.scale(self.equipement[0].image, (droite - gauche, droite - gauche))
+            screen.blit(image, (tabAllObj[0][0], tabAllObj[0][1]))
+
+        if self.equipement[1] != False:
+            image = pygame.transform.scale(self.equipement[1].image, (droite - gauche, droite - gauche))
+            screen.blit(image, (tabAllObj[1][0], tabAllObj[1][1]))
+
         if self.equipement[2] != False:
             image = pygame.transform.scale(self.equipement[2].image, (droite - gauche, droite - gauche))
-            screen.blit(image, (rectObj[0], rectObj[1]))
-
-        tabAllObj.append(rectObj)
+            screen.blit(image, (tabAllObj[2][0], tabAllObj[2][1]))
 
         pygame.display.flip()
 

@@ -5,17 +5,18 @@ from classObject import *
 
 
 def tableau_d_objets(screen):
-    tab = [Piece(50, screen), Cle(screen), Epee(screen),
+    tab = [Piece(50, screen), Casque(screen), Heaume(screen), Epee(screen),
             PotionForce(screen), PotionMemoire(screen), PotionVie(screen), PotionVitesse(screen)]
 
     #Objets avec + de chances d'apparaitre
-    for i in range(5):
+    for i in range(0):
         tab.append(Piece(1, screen))
         tab.append(Piece(2, screen))
-    for i in range(3):
+    for i in range(0):
         tab.append(Piece(5, screen))
-    for i in range(2):
+    for i in range(0):
         tab.append(Piece(10, screen))
+        tab.append(Casque(screen))
         tab.append(Couteau(screen))
 
     return tab

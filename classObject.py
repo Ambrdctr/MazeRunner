@@ -23,13 +23,23 @@ class Cle(Objet):
 
 class Couteau(Objet):
     def __init__(self, screen):
-        Objet.__init__(self, 20, 10, "couteau", screen)
+        Objet.__init__(self, 20, 0.8, "couteau", screen)
         self.force = 5
 
 class Epee(Objet):
     def __init__(self, screen):
-        Objet.__init__(self, 50, 6, "epee", screen)
+        Objet.__init__(self, 50, 2, "epee", screen)
         self.force = 15
+
+class Casque(Objet):
+    def __init__(self, screen):
+        Objet.__init__(self, 10, 1.5, "casque", screen)
+        self.protection = 5
+
+class Heaume(Objet):
+    def __init__(self, screen):
+        Objet.__init__(self, 20, 3, "heaume", screen)
+        self.protection = 20
 
 class PotionVie(Objet):
     def __init__(self, screen):

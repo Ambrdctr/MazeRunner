@@ -159,6 +159,11 @@ def afficherStats(screen, perso):
     pygame.draw.rect(screen, (20, 20, 20), (posx, 0, size[0]-posx, taille_case*2), 0)
     myfont = pygame.font.SysFont('Comic Sans MS', taille_police)
 
+    if perso.protection > 0:
+        textsurface = myfont.render('Vie (' + str(perso.protection) + ')', False, (200, 200, 200))
+        screen.blit(textsurface, (pos_textx(0.05), taille_case-taille_police-5))
+        pygame.draw.rect(screen, (255, 0, 0), (size[0] - 5, taille_case-taille_police -2, -perso.protection * (size[0] / 1000), 10), 0)
+
     textsurface = myfont.render('Vie (' + str(perso.vie) + ')', False, (200, 200, 200))
     screen.blit(textsurface, (pos_textx(0.05), taille_case))
     pygame.draw.rect(screen, (255,0,0), (size[0]-5, taille_case+3, -perso.vie*(size[0]/1000), 10), 0)
