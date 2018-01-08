@@ -7,7 +7,7 @@ class Cell:
         self.walls = [True, True, True, True]
         self.state = 'pierre'
         self.set = i
-        self.visitee = True
+        self.visitee = False
 
 
 class Room:
