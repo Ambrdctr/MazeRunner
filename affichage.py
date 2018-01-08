@@ -179,7 +179,7 @@ def affichage(screen, perso, monstres, coffres, map):
     afficher_map(screen, perso, monstres, coffres, map)
     afficherStats(screen, perso)
     perso.afficherEquipement(screen)
-    if perso.dansDonjon:
+    if perso.dansDonjon and False:
         map_visite(screen, perso, map)
 
 def pause(screen):
