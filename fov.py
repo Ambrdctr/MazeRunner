@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-def visible(map, cell, perso):
-
-    return True
-=======
 import pygame
 from pygame.locals import *
 from classPerso import Perso
@@ -64,4 +59,3 @@ def visible(map, cell, perso):
                     map.grid[i][k].visitee = time.time()
                 return True
     return False
->>>>>>> Ambroise

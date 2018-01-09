@@ -5,7 +5,6 @@ def allerDonjon(map, perso):
 
 def allerEtageSuivant(map, perso):
 
-<<<<<<< HEAD
     if map.grid[perso.y][perso.x].state == 'trappe':
         aCle = False
         for obj in perso.inventaire.contenu:
@@ -21,9 +20,6 @@ def allerEtageSuivant(map, perso):
 
 
     elif map.grid[perso.y][perso.x].state == 'sortie':
-=======
-    if map.grid[perso.y][perso.x].state == 'sortie':
->>>>>>> Ambroise
         tab = map.grid
         for i in range(0, len(tab)):
             for k in range(0, len(tab[i])):
@@ -62,19 +58,4 @@ def surSorciere(map, perso):
 
 def surAcheteur(map, perso):
 
-<<<<<<< HEAD
-=======
-    return map.grid[perso.y][perso.x].state == 'tresor'
-
-def surForgeron(map, perso):
-
-    return map.grid[perso.y][perso.x].state == 'forgeron'
-
-def surSorciere(map, perso):
-
-    return map.grid[perso.y][perso.x].state == 'sorciere'
-
-def surAcheteur(map, perso):
-
->>>>>>> Ambroise
     return map.grid[perso.y][perso.x].state == 'acheteur'
