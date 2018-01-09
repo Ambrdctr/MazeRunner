@@ -1,3 +1,4 @@
+
 import pygame
 from pygame.locals import *
 import time
@@ -11,6 +12,7 @@ def ecrire(phrase, screen):
         min = size[1]
         taille_case = size[1] // 12
     taille_police = min * 15 // 500
+
 
     x=0
     y=taille_case*6

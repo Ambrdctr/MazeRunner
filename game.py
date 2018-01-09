@@ -34,6 +34,10 @@ def play(screen, difficulty):
     sorciere = Marchand('Sorciere', screen)
     acheteur = Marchand('Acheteur', screen)
 
+    forgeron = Marchand('Forgeron', screen)
+    sorciere = Marchand('Sorciere', screen)
+    acheteur = Marchand('Acheteur', screen)
+
     aBouge = False
 
     # Touche reste enfoncée
@@ -48,7 +52,6 @@ def play(screen, difficulty):
             ecrire("""Bonjour aventurier !\nRetrouvera-tu le trésor ?\nBonne chance...""",
                    screen)
             arrive = False
-
         gererEquipement(screen, perso)
         # Rafraîchissement de l'écran
         pygame.display.flip()
@@ -98,7 +101,7 @@ def play(screen, difficulty):
 
 
         if perso.dansDonjon:
-            if not map.grid[perso.y][perso.x].visitee:
+            if map.grid[perso.y][perso.x].visitee != True:
                 map.grid[perso.y][perso.x].visitee = time.time()
             piece = map.est_dans_piece((perso.x, perso.y))
             if piece != False:

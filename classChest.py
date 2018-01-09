@@ -164,7 +164,7 @@ class Chest(Bag):
                  pygame.image.load("images/c_bas.png").convert_alpha(), pygame.image.load("images/c_gauche.png").convert_alpha()]
         self.image = images[img]
         self.tabObj = []
-        tabN = random.sample(range(0, self.capacite-1), random.randint(8, self.capacite-1))
+        tabN = random.sample(range(0, self.capacite-1), random.randint(3, self.capacite-3))
         tabObjets = tableau_d_objets(screen)
         for i in range(self.capacite):
             if i in tabN:
