@@ -26,17 +26,10 @@ class Room:
     def coord_border(self, grid):
         res = False
         while not res:
-<<<<<<< HEAD
-            top = (self.top, randint(self.left + 1, self.right - 1))
-            right = (randint(self.top + 1, self.bottom - 1), self.right)
-            bottom = (self.bottom, randint(self.left + 1, self.right - 1))
-            left = (randint(self.top + 1, self.bottom - 1), self.left)
-=======
             top = (self.top, randint(self.left+1, self.right-1))
             right = (randint(self.top+1, self.bottom-1), self.right)
             bottom = (self.bottom, randint(self.left+1, self.right-1))
             left = (randint(self.top+1, self.bottom-1), self.left)
->>>>>>> 5901488a8ca18aaa78d63afc0769780dfa14f34f
             tab = [top, right, bottom, left]
             n = randint(0, 3)
             res = grid[tab[n][0]][tab[n][1]].walls[n]

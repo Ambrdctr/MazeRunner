@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+import random
 
 class Objet:
     def __init__(self, value, weight, nom, screen):
@@ -18,35 +19,51 @@ class Piece(Objet):
 class Cle(Objet):
     def __init__(self, screen):
         """color : de la forme (r,g,b)"""
-        Objet.__init__(self, 10, 0.05, "cle", screen)
+        Objet.__init__(self, 80, 0.05, "cle", screen)
 
 
 class Couteau(Objet):
     def __init__(self, screen):
-        Objet.__init__(self, 20, 10, "couteau", screen)
+        Objet.__init__(self, 20, 0.8, "couteau", screen)
         self.force = 5
 
 class Epee(Objet):
     def __init__(self, screen):
-        Objet.__init__(self, 50, 6, "epee", screen)
+        Objet.__init__(self, 50, 2, "epee", screen)
         self.force = 15
+
+class Casque(Objet):
+    def __init__(self, screen):
+        Objet.__init__(self, 20, 1.5, "casque", screen)
+        self.protection = 20
+
+class Heaume(Objet):
+    def __init__(self, screen):
+        Objet.__init__(self, 50, 3, "heaume", screen)
+        self.protection = 50
 
 class PotionVie(Objet):
     def __init__(self, screen):
-        Objet.__init__(self, 20, 6, "pt1", screen)
+        Objet.__init__(self, 40, 6, "pt1", screen)
         self.vie = 20
 
 class PotionForce(Objet):
     def __init__(self, screen):
-        Objet.__init__(self, 20, 6, "pt2", screen)
+        Objet.__init__(self, 40, 6, "pt2", screen)
         self.force = 10
-
-class PotionMemoire(Objet):
-    def __init__(self, screen):
-        Objet.__init__(self, 20, 6, "pt3", screen)
-        self.memoire = 30
+        self.temps = False
+        self.duree = random.randint(30, 45)
 
 class PotionVitesse(Objet):
     def __init__(self, screen):
-        Objet.__init__(self, 20, 6, "pt4", screen)
+        Objet.__init__(self, 20, 6, "pt3", screen)
         self.vitesse = 5
+        self.temps = False
+        self.duree = random.randint(30, 45)
+
+class PotionMemoire(Objet):
+    def __init__(self, screen):
+        Objet.__init__(self, 20, 6, "pt4", screen)
+        self.memoire = 30
+        self.temps = False
+        self.duree = random.randint(60, 80)

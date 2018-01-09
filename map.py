@@ -49,8 +49,8 @@ class Grid:
         return ch
 
 
-def create_empty_map(w,h):
-    map = Grid(w,h)
+def create_empty_map():
+    map = Grid(20,30)
     map.grid[2][3].state = 'entreeDonjon'
     map.grid[10][1].state = 'forgeron'
     map.grid[10][3].state = 'sorciere'
