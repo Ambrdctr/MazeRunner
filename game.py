@@ -10,8 +10,12 @@ from fonctionCases import *
 from labyrinthe import create_maze
 from menu import sortir
 from marchandage import marchander
+<<<<<<< HEAD
 from message import ecrire
 from menu import victoire_screen
+=======
+
+>>>>>>> Ambroise
 import random
 import time
 
@@ -34,6 +38,10 @@ def play(screen, difficulty):
     sorciere = Marchand('Sorciere', screen)
     acheteur = Marchand('Acheteur', screen)
 
+    forgeron = Marchand('Forgeron', screen)
+    sorciere = Marchand('Sorciere', screen)
+    acheteur = Marchand('Acheteur', screen)
+
     aBouge = False
 
     # Touche reste enfoncée
@@ -44,11 +52,14 @@ def play(screen, difficulty):
         pygame.time.Clock().tick(30)
         screen.fill((0, 0, 0))
         affichage(screen, perso, map.liste_monstres, map.liste_coffres, map)
+<<<<<<< HEAD
         if arrive:
             ecrire("""Bonjour aventurier !\nRetrouvera-tu le trésor ?\nBonne chance...""",
                    screen)
             arrive = False
 
+=======
+>>>>>>> Ambroise
         gererEquipement(screen, perso)
         # Rafraîchissement de l'écran
         pygame.display.flip()
@@ -98,7 +109,11 @@ def play(screen, difficulty):
 
 
         if perso.dansDonjon:
+<<<<<<< HEAD
             if not map.grid[perso.y][perso.x].visitee:
+=======
+            if map.grid[perso.y][perso.x].visitee != True:
+>>>>>>> Ambroise
                 map.grid[perso.y][perso.x].visitee = time.time()
             piece = map.est_dans_piece((perso.x, perso.y))
             if piece != False:

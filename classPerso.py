@@ -24,7 +24,11 @@ class Joueur(Perso):
         self.vitesse = 1
         self.inventaire = Bag(screen)
         self.force = 5
+<<<<<<< HEAD
         self.memoire = 30
+=======
+        self.memoire = 1
+>>>>>>> Ambroise
         self.charisme = 0
         self.images = [pygame.image.load("images/haut.png").convert_alpha(), pygame.image.load("images/droite.png").convert_alpha(),
                        pygame.image.load("images/bas.png").convert_alpha(), pygame.image.load("images/gauche.png").convert_alpha()]

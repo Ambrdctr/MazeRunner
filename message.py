@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import pygame
 from pygame.locals import *
 import time
@@ -11,10 +12,19 @@ def ecrire(phrase, screen):
         min = size[1]
         taille_case = size[1] // 12
     taille_police = min * 15 // 500
+=======
+def ecrire(ch, screen):
+    size = screen.get_size()
+    if size[0] <= size[1]:
+        taille_case = size[0] // 12
+    else:
+        taille_case = size[1] // 12
+>>>>>>> Ambroise
 
     x=0
     y=taille_case*6
     xp=taille_case*13
+<<<<<<< HEAD
     yp=taille_case*8
 
     s = pygame.Surface((xp, yp))
@@ -48,3 +58,6 @@ def ecrire(phrase, screen):
 
             if event.type == MOUSEBUTTONUP and event.button == 1:
                 run = False
+=======
+    yp=taille_case*8
+>>>>>>> Ambroise

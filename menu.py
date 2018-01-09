@@ -136,10 +136,18 @@ def credit(screen):
     # Rafraîchissement de l'écran
     pygame.display.flip()
 
+<<<<<<< HEAD
 def victoire_screen(screen, temps):
     size = screen.get_size()
     fond1 = pygame.image.load("images/victoire1.png").convert()
     fond1 = pygame.transform.scale(fond1, (size[0], size[1]))
+=======
+def victoire_screen(screen):
+    size = screen.get_size()
+    fond = pygame.image.load("images/victoire.png").convert()
+    fond = pygame.transform.scale(fond, (size[0], size[1]))
+    screen.blit(fond, (0, 0))
+>>>>>>> Ambroise
 
     fond2 = pygame.image.load("images/victoire2.png").convert()
     fond2 = pygame.transform.scale(fond2, (size[0], size[1]))
