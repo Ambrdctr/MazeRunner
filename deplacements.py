@@ -164,6 +164,7 @@ def attPerso(x, y, direction, perso, monstre, map):
                 perso.vie -= attaque
             if perso.vie <= 0:
                 perso.vivant = False
+                perso.vie = 0
                 res = False
     return res
 

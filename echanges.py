@@ -6,7 +6,9 @@ def echange(perso, coffre):
 
     screen = coffre.ecran
     # Opacité de l'arrière plan
-    s = pygame.Surface((1600, 900))
+
+    size = screen.get_size()
+    s = pygame.Surface((size[0], size[1]))
     s.set_alpha(200)
     s.fill((0, 0, 0))
     screen.blit(s, (0, 0))
