@@ -1,7 +1,5 @@
 import pygame
 from pygame.locals import *
-from convertisseur import convertirSecondes
-import time
 
 def startMenu(screen):
     size = screen.get_size()
@@ -136,44 +134,14 @@ def credit(screen):
     # Rafraîchissement de l'écran
     pygame.display.flip()
 
-def victoire_screen(screen, temps):
+def victoire_screen(screen):
     size = screen.get_size()
-    fond1 = pygame.image.load("images/victoire1.png").convert()
-    fond1 = pygame.transform.scale(fond1, (size[0], size[1]))
+    fond = pygame.image.load("images/victoire.png").convert()
+    fond = pygame.transform.scale(fond, (size[0], size[1]))
+    screen.blit(fond, (0, 0))
 
-    fond2 = pygame.image.load("images/victoire2.png").convert()
-    fond2 = pygame.transform.scale(fond2, (size[0], size[1]))
-
-
-    #Affichage du texte
-    myfont = pygame.font.SysFont('Comic Sans MS', int(72 * size[1] / 900))
-    text = convertirSecondes(round(temps,0))
-    print(text)
-    textsurface = myfont.render(text, False, (200, 50, 50))
-
-    run = True
-    affiche = time.time()
-
-    # Boucle infinie
-    while run:
-
-        for event in pygame.event.get():
-            # Lorsque l'on ferme la fenetre
-            if event.type == QUIT:
-                run = False
-            # ou echap
-            if event.type == KEYDOWN:
-                if event.key == K_ESCAPE:
-                    run = False
-        if time.time()-affiche > 1:
-            screen.blit(fond1, (0, 0))
-            if time.time()-affiche > 1.3:
-                affiche = time.time()
-        else:
-            screen.blit(fond2, (0, 0))
-        screen.blit(textsurface, (int(500 * size[0] / 1600), int(500 * size[1] / 900)))
-        # Rafraichissement
-        pygame.display.flip()
+    # Rafraîchissement de l'écran
+    pygame.display.flip()
 
 def sortir(screen):
     size = screen.get_size()

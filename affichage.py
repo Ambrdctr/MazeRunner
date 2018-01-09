@@ -63,7 +63,7 @@ def afficher_map(screen, perso, monstres, coffres, map):
             if i in range(0, len(tab)) and k in range(0, len(tab[i])):
                 posx = taille_case * pos1
                 posy = taille_case * pos2
-                if perso.dansDonjon and not visible(tab, (i, k), perso):
+                if perso.dansDonjon and not visible(map, (i, k), perso):
                     case = pygame.image.load("images/ombre.png").convert()
                 else:
                     case = pygame.image.load("images/" + tab[i][k].state + ".png").convert()
@@ -151,7 +151,7 @@ def map_visite(screen, perso, map):
                 pygame.draw.rect(screen, gray, (posx, posy, taille, taille), 0)
             if tab[i][k].visitee == True:
                 pygame.draw.rect(screen, grayRoom, (posx, posy, taille, taille), 0)
-            if tab[i][k].state == 'sortie' and time.time() - tab[i][k].visitee < perso.memoire:
+            if tab[i][k].state == 'sortie' and tab[i][k].visitee == True:
                 pygame.draw.rect(screen, red, (posx, posy, taille, taille), 0)
             if tab[i][k].state == 'entree':
                 pygame.draw.rect(screen, green, (posx, posy, taille, taille), 0)
@@ -160,6 +160,9 @@ def map_visite(screen, perso, map):
             pos1 += taille
         pos2 += taille
 
+    largeurMur = taille//5
+    if largeurMur < 2:
+        largeurMur = 2
     pos2 = 8 * taille_case
     for i in range(0, len(tab)):
         pos1 = 13 * taille_case
@@ -167,19 +170,19 @@ def map_visite(screen, perso, map):
             if tab[i][k].walls[0] == True:
                 posx = pos1
                 posy = pos2
-                pygame.draw.rect(screen, darkGray, (posx - taille//10, posy - taille//10, taille, taille//5), 0)
+                pygame.draw.rect(screen, darkGray, (posx - taille//10, posy - taille//10, taille, largeurMur), 0)
             if tab[i][k].walls[1] == True:
                 posx = pos1 + taille
                 posy = pos2
-                pygame.draw.rect(screen, darkGray, (posx - taille//10, posy, taille//5, taille), 0)
+                pygame.draw.rect(screen, darkGray, (posx - taille//10, posy, largeurMur, taille), 0)
             if tab[i][k].walls[2] == True:
                 posx = pos1
                 posy = pos2 + taille
-                pygame.draw.rect(screen, darkGray, (posx, posy - taille//10, taille, taille//5), 0)
+                pygame.draw.rect(screen, darkGray, (posx, posy - taille//10, taille, largeurMur), 0)
             if tab[i][k].walls[3] == True:
                 posx = pos1
                 posy = pos2
-                pygame.draw.rect(screen, darkGray, (posx - taille//10, posy, taille//5, taille), 0)
+                pygame.draw.rect(screen, darkGray, (posx - taille//10, posy, largeurMur, taille), 0)
             pos1 += taille
         pos2 += taille
     pygame.display.flip()
