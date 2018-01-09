@@ -5,7 +5,7 @@ def allerDonjon(map, perso):
 
     return map.grid[perso.y][perso.x].state == 'entreeDonjon'
 
-def allerEtageSuivant(map, perso, screen):
+def allerEtageSuivant(map, perso, screen, message):
 
     if map.grid[perso.y][perso.x].state == 'trappe':
         aCle = False
@@ -19,9 +19,9 @@ def allerEtageSuivant(map, perso, screen):
         if aCle:
             map.grid[perso.y][perso.x].state = 'sortie'
             return True
-        else:
+        elif message:
             ecrire("Il vous faut une clé ! Vous n'en avez pas acheté chez le forgeron ou l'avez déjà utilisée.", screen)
-            return False
+        return False
 
 
     elif map.grid[perso.y][perso.x].state == 'sortie':
@@ -39,7 +39,7 @@ def allerEtagePrecedent(map, perso):
 
     return map.grid[perso.y][perso.x].state == 'entree'
 
-def victoire(map, perso, screen):
+def victoire(map, perso, screen, message):
 
     aCle = False
     if map.grid[perso.y][perso.x].state == 'tresor':
@@ -50,7 +50,7 @@ def victoire(map, perso, screen):
                 perso.inventaire.tabObj[index] = False
                 aCle = True
                 break
-        if not aCle:
+        if not aCle and message:
             ecrire("""Il vous faut une clé pour ouvrir le trésor !\nVous n'en avez pas acheté chez le forgeron ou l'avez déjà utilisée.""", screen)
     return aCle
 
