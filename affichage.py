@@ -11,7 +11,13 @@ darkBlue = (0, 0, 128)
 white = (255, 255, 255)
 black = (0, 0, 0)
 pink = (255, 200, 200)
-yellow = (255,255,0)
+yellow = (255, 255, 0)
+gray = (105, 105, 105)
+darkGray = (10, 10, 10)
+grayRoom = (60, 60, 60)
+kaki = (30, 80, 30)
+chocolat = (90, 58, 34)
+violet = (75,0,130)
 
 color_mur = black
 color_porte = green
@@ -56,7 +62,7 @@ def afficher_map(screen, perso, monstres, coffres, map):
             if i in range(0, len(tab)) and k in range(0, len(tab[i])):
                 posx = taille_case * pos1
                 posy = taille_case * pos2
-                if perso.dansDonjon and (tab[i][k].visitee != True and time.time() - tab[i][k].visitee > perso.memoire):
+                if perso.dansDonjon and False:#(tab[i][k].visitee != True and time.time() - tab[i][k].visitee > perso.memoire):
                     case = pygame.image.load("images/ombre.png").convert()
                 else:
                     case = pygame.image.load("images/" + tab[i][k].state + ".png").convert()
@@ -116,7 +122,68 @@ def afficher_map(screen, perso, monstres, coffres, map):
         pos2 += 1
 
 def map_visite(screen, perso, map):
-<<<<<<< HEAD
+    # Fond
+    size = screen.get_size()
+    if size[0] <= size[1]:
+        taille_case = size[0] // 12
+    else:
+        taille_case = size[1] // 12
+
+    tab = map.grid
+    tailleLong = int((size[0]-13*taille_case)/map.h)
+    tailleHaut = int((size[1]-8*taille_case)/map.w)
+    if tailleLong <= tailleHaut :
+        taille = tailleLong
+    else:
+        taille = tailleHaut
+
+    pos2 = 8 * taille_case
+    for i in range(0, len(tab)):
+        pos1 = 13 * taille_case
+        for k in range(0, len(tab[i])):
+
+            posx = pos1
+            posy = pos2
+
+            pygame.draw.rect(screen, darkGray, (posx, posy, taille, taille), 0)
+            if time.time() - tab[i][k].visitee < perso.memoire:
+                pygame.draw.rect(screen, gray, (posx, posy, taille, taille), 0)
+            if tab[i][k].visitee == True:
+                pygame.draw.rect(screen, grayRoom, (posx, posy, taille, taille), 0)
+            if tab[i][k].state == 'sortie' and time.time() - tab[i][k].visitee < perso.memoire:
+                pygame.draw.rect(screen, red, (posx, posy, taille, taille), 0)
+            if tab[i][k].state == 'entree':
+                pygame.draw.rect(screen, green, (posx, posy, taille, taille), 0)
+            if perso.x == k and perso.y == i:
+                pygame.draw.rect(screen, yellow, (posx, posy, taille, taille), 0)
+            pos1 += taille
+        pos2 += taille
+
+    pos2 = 8 * taille_case
+    for i in range(0, len(tab)):
+        pos1 = 13 * taille_case
+        for k in range(0, len(tab[i])):
+            if tab[i][k].walls[0] == True:
+                posx = pos1
+                posy = pos2
+                pygame.draw.rect(screen, darkGray, (posx - taille//10, posy - taille//10, taille, taille//5), 0)
+            if tab[i][k].walls[1] == True:
+                posx = pos1 + taille
+                posy = pos2
+                pygame.draw.rect(screen, darkGray, (posx - taille//10, posy, taille//5, taille), 0)
+            if tab[i][k].walls[2] == True:
+                posx = pos1
+                posy = pos2 + taille
+                pygame.draw.rect(screen, darkGray, (posx, posy - taille//10, taille, taille//5), 0)
+            if tab[i][k].walls[3] == True:
+                posx = pos1
+                posy = pos2
+                pygame.draw.rect(screen, darkGray, (posx - taille//10, posy, taille//5, taille), 0)
+            pos1 += taille
+        pos2 += taille
+    pygame.display.flip()
+
+def map_ext(screen, perso, map):
     # Fond
     size = screen.get_size()
     if size[0] <= size[1]:
@@ -127,76 +194,35 @@ def map_visite(screen, perso, map):
     x = perso.x
     y = perso.y
     tab = map.grid
-    pos2 = 8
-
-    for i in range(0, len(tab)):
-        pos1 = 13
-        for k in range(0, len(tab[i])):
-
-            posx = pos1 * 10
-            posy = pos2 * 10
-            if (tab[i][k].visitee != True and time.time() - tab[i][k].visitee > perso.memoire):
-                pygame.draw.rect(screen, black, (posx, posy, 5, taille_case), 0)
-            else:
-                pygame.draw.rect(screen, yellow, (posx, posy, 5, taille_case), 0)
-
-            pos1 += 1
-        pos2 += 1
-=======
-<<<<<<< HEAD
-        # Fond
-        size = screen.get_size()
-        if size[0] <= size[1]:
-            taille_case = size[0]//12
-        else:
-            taille_case = size[1]//12
-
-        x = perso.x
-        y = perso.y
-        tab = map.grid
-        pos2 = 8
-
-        for i in range(0, len(tab)):
-            pos1 = 13
-            for k in range(0, len(tab[i])):
-
-                    posx = pos1 *10
-                    posy = pos2 * 10
-                    if (tab[i][k].visitee != True and time.time() - tab[i][k].visitee > perso.memoire):
-                        pygame.draw.rect(screen, black, (posx , posy, 5, taille_case), 0)
-                    else:
-                        pygame.draw.rect(screen, yellow, (posx , posy, 5, taille_case), 0)
-
-                    pos1 += 1
-            pos2 += 1
-=======
-    # Fond
-    size = screen.get_size()
-    if size[0] <= size[1]:
-        taille_case = size[0] // 12
+    tailleLong = int((size[0]-13*taille_case)/map.h)
+    tailleHaut = int((size[1]-8*taille_case)/map.w)
+    if tailleLong <= tailleHaut :
+        taille = tailleLong
     else:
-        taille_case = size[1] // 12
+        taille = tailleHaut
 
-    x = perso.x
-    y = perso.y
-    tab = map.grid
-    pos2 = 8
-
+    pos2 = 8 * taille_case
     for i in range(0, len(tab)):
-        pos1 = 13
+        pos1 = 13 * taille_case
         for k in range(0, len(tab[i])):
-
-            posx = pos1 * 10
-            posy = pos2 * 10
-            if (tab[i][k].visitee != True and time.time() - tab[i][k].visitee > perso.memoire):
-                pygame.draw.rect(screen, black, (posx, posy, 5, taille_case), 0)
+            posx = pos1
+            posy = pos2
+            if tab[i][k].state == 'forgeron':
+                pygame.draw.rect(screen, gray, (posx, posy, taille, taille), 0)
+            elif tab[i][k].state == 'acheteur':
+                pygame.draw.rect(screen, chocolat, (posx, posy, taille, taille), 0)
+            elif tab[i][k].state == 'sorciere':
+                pygame.draw.rect(screen, violet, (posx, posy, taille, taille), 0)
             else:
-                pygame.draw.rect(screen, yellow, (posx, posy, 5, taille_case), 0)
+                pygame.draw.rect(screen, kaki, (posx, posy, taille, taille), 0)
+            if perso.x == k and perso.y == i:
+                pygame.draw.rect(screen, yellow, (posx, posy, taille, taille), 0)
+            if tab[i][k].state == 'entreeDonjon':
+                pygame.draw.rect(screen, green, (posx, posy, taille, taille), 0)
 
-            pos1 += 1
-        pos2 += 1
->>>>>>> 5901488a8ca18aaa78d63afc0769780dfa14f34f
->>>>>>> d9ee7d6d6ac6ad1d35710678647b961c9ce44c7a
+            pos1 += taille
+        pos2 += taille
+    pygame.display.flip()
 
 def afficherStats(screen, perso):
     size = screen.get_size()
@@ -215,42 +241,40 @@ def afficherStats(screen, perso):
     pygame.draw.rect(screen, (20, 20, 20), (posx, 0, size[0]-posx, taille_case*2), 0)
     myfont = pygame.font.SysFont('Comic Sans MS', taille_police)
 
+    if perso.protection > 0:
+        textsurface = myfont.render('Protection (' + str(perso.protection) + ')', False, (200, 200, 200))
+        screen.blit(textsurface, (pos_textx(0.05), taille_case-taille_police*2-10))
+        pygame.draw.rect(screen, (192, 192, 192), (size[0] - 5, taille_case-taille_police*2-7, -perso.protection * (size[0] / 1000), 10), 0)
+
     textsurface = myfont.render('Vie (' + str(perso.vie) + ')', False, (200, 200, 200))
+    screen.blit(textsurface, (pos_textx(0.05), taille_case-taille_police-5))
+    pygame.draw.rect(screen, (255,0,0), (size[0]-5, taille_case-taille_police-2, -perso.vie*(size[0]/1000), 10), 0)
+
+    textsurface = myfont.render('Memoire (' + str(perso.memoire) + ')', False, (200, 200, 200))
     screen.blit(textsurface, (pos_textx(0.05), taille_case))
-    pygame.draw.rect(screen, (255,0,0), (size[0]-5, taille_case+3, -perso.vie*(size[0]/1000), 10), 0)
+    pygame.draw.rect(screen, (255, 200, 0), (size[0] - 5, taille_case + 3, -perso.memoire * (size[0] / 1000), 10), 0)
 
     textsurface = myfont.render('Vitesse (' + str(perso.vitesse) + ')', False, (200, 200, 200))
     screen.blit(textsurface, (pos_textx(0.05), taille_case+taille_police+5))
-    pygame.draw.rect(screen, (0, 255, 0), (size[0]-5, taille_case+taille_police+8, -perso.vitesse*(size[0]/500), 10), 0)
+    pygame.draw.rect(screen, (0, 255, 0), (size[0]-5, taille_case+taille_police+8, -perso.vitesse*(size[0]/100), 10), 0)
 
     textsurface = myfont.render('Force (' + str(perso.force) + ')', False, (200, 200, 200))
     screen.blit(textsurface, (pos_textx(0.05), taille_case+(taille_police*2)+10))
     if perso.force > 20:
-        pygame.draw.rect(screen, (0, 0, 255), (size[0]-5, taille_case+(taille_police*2)+13, -50*(size[0]/800), 10), 0)
-        pygame.draw.rect(screen, (255, 200, 0), (size[0]-(50*(size[0]/800)), taille_case+(taille_police*2)+13, -10*(size[0]/800), 10), 0)
+        pygame.draw.rect(screen, (0, 0, 255), (size[0]-5, taille_case+(taille_police*2)+13, -20*(size[0]/400), 10), 0)
+        pygame.draw.rect(screen, (0, 255, 255), (size[0]-(20*(size[0]/400)), taille_case+(taille_police*2)+13, -10*(size[0]/800), 10), 0)
     else:
-        pygame.draw.rect(screen, (0, 0, 255), (size[0]-5, taille_case+(taille_police*2)+13, -perso.force*(size[0]/800), 10), 0)
+        pygame.draw.rect(screen, (0, 0, 255), (size[0]-5, taille_case+(taille_police*2)+13, -perso.force*(size[0]/400), 10), 0)
 
 def affichage(screen, perso, monstres, coffres, map):
     afficher_map(screen, perso, monstres, coffres, map)
     afficherStats(screen, perso)
-<<<<<<< HEAD
     perso.afficherEquipement(screen)
     if perso.dansDonjon:
         map_visite(screen, perso, map)
+    else:
+        map_ext(screen, perso, map)
 
-=======
-<<<<<<< HEAD
-    if perso.dansDonjon:
-        map_visite(screen, perso, map)
-
-=======
-    perso.afficherEquipement(screen)
-    if perso.dansDonjon:
-        map_visite(screen, perso, map)
->>>>>>> 5901488a8ca18aaa78d63afc0769780dfa14f34f
-
->>>>>>> d9ee7d6d6ac6ad1d35710678647b961c9ce44c7a
 def pause(screen):
     fond = pygame.image.load("images/pause.png").convert()
     screen.blit(fond, (0,0))
