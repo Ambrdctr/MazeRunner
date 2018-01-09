@@ -15,14 +15,14 @@ def inventaire(screen, perso):
     afficherStats(screen, perso)
     posObjEquipement = perso.afficherEquipement(screen)
 
-    posObjInventaire = perso.inventaire.afficher_sac("Inventaire")
+    posObjInventaire = perso.inventaire.afficher_sac(perso.nom)
 
     run = True
 
     while run:
 
         gererEquipement(screen, perso)
-        perso.inventaire.afficher_sac("Inventaire")
+        perso.inventaire.afficher_sac(perso.nom)
         perso.afficherEquipement(screen)
 
         pygame.display.flip()
@@ -106,11 +106,11 @@ def inventaire(screen, perso):
                     dansCase = False
                     for rect in posObjInventaire[0]:
                         if rect.collidepoint(pos):
-                            perso.inventaire.afficher_sac("Inventaire", posObjInventaire[0].index(rect) + 1)
+                            perso.inventaire.afficher_sac(perso.nom, posObjInventaire[0].index(rect) + 1)
                             dansCase = True
                             break
                     if not dansCase:
-                        perso.inventaire.afficher_sac("Inventaire")
+                        perso.inventaire.afficher_sac(perso.nom)
 
                 elif conteneur == 2:
                     dansCase = False

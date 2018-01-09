@@ -11,7 +11,7 @@ def echange(perso, coffre):
     s.fill((0, 0, 0))
     screen.blit(s, (0, 0))
 
-    posObjInventaire = perso.inventaire.afficher_sac("Inventaire")
+    posObjInventaire = perso.inventaire.afficher_sac(perso.nom)
     posObjCoffre = coffre.afficher_contenu("Coffre")
 
     run = True
@@ -50,7 +50,7 @@ def echange(perso, coffre):
                                             coffre.tabObj[i] = obj
                                             break
                             break
-                    perso.inventaire.afficher_sac("Inventaire")
+                    perso.inventaire.afficher_sac(perso.nom)
                     coffre.afficher_contenu("Coffre")
 
 
@@ -75,7 +75,7 @@ def echange(perso, coffre):
                                                 break
                             break
                     coffre.afficher_contenu("Coffre")
-                    perso.inventaire.afficher_sac("Inventaire")
+                    perso.inventaire.afficher_sac(perso.nom)
 
             if event.type == MOUSEMOTION:
 
@@ -83,12 +83,12 @@ def echange(perso, coffre):
                     dansCase = False
                     for rect in posObjInventaire[0]:
                         if rect.collidepoint(pos):
-                            perso.inventaire.afficher_sac("Inventaire", posObjInventaire[0].index(rect)+1)
+                            perso.inventaire.afficher_sac(perso.nom, posObjInventaire[0].index(rect)+1)
                             dansCase = True
                             break
                     if not dansCase:
                         coffre.afficher_contenu("Coffre")
-                        perso.inventaire.afficher_sac("Inventaire")
+                        perso.inventaire.afficher_sac(perso.nom)
 
 
                 elif conteneur == 2:
@@ -100,11 +100,11 @@ def echange(perso, coffre):
                             break
                     if not dansCase:
                         coffre.afficher_contenu("Coffre")
-                        perso.inventaire.afficher_sac("Inventaire")
+                        perso.inventaire.afficher_sac(perso.nom)
 
                 else:
                     coffre.afficher_contenu("Coffre")
-                    perso.inventaire.afficher_sac("Inventaire")
+                    perso.inventaire.afficher_sac(perso.nom)
 
             pygame.display.flip()
 

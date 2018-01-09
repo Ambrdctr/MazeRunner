@@ -22,3 +22,15 @@ def allerEtagePrecedent(map, perso):
 def victoire(map, perso):
 
     return map.grid[perso.y][perso.x].state == 'tresor'
+
+def surForgeron(map, perso):
+
+    return map.grid[perso.y][perso.x].state == 'forgeron'
+
+def surSorciere(map, perso):
+
+    return map.grid[perso.y][perso.x].state == 'sorciere'
+
+def surAcheteur(map, perso):
+
+    return map.grid[perso.y][perso.x].state == 'acheteur'

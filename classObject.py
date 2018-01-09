@@ -19,7 +19,7 @@ class Piece(Objet):
 class Cle(Objet):
     def __init__(self, screen):
         """color : de la forme (r,g,b)"""
-        Objet.__init__(self, 10, 0.05, "cle", screen)
+        Objet.__init__(self, 80, 0.05, "cle", screen)
 
 
 class Couteau(Objet):
@@ -34,22 +34,22 @@ class Epee(Objet):
 
 class Casque(Objet):
     def __init__(self, screen):
-        Objet.__init__(self, 10, 1.5, "casque", screen)
+        Objet.__init__(self, 20, 1.5, "casque", screen)
         self.protection = 20
 
 class Heaume(Objet):
     def __init__(self, screen):
-        Objet.__init__(self, 20, 3, "heaume", screen)
+        Objet.__init__(self, 50, 3, "heaume", screen)
         self.protection = 50
 
 class PotionVie(Objet):
     def __init__(self, screen):
-        Objet.__init__(self, 20, 6, "pt1", screen)
+        Objet.__init__(self, 40, 6, "pt1", screen)
         self.vie = 20
 
 class PotionForce(Objet):
     def __init__(self, screen):
-        Objet.__init__(self, 20, 6, "pt2", screen)
+        Objet.__init__(self, 40, 6, "pt2", screen)
         self.force = 10
         self.temps = False
         self.duree = random.randint(30, 45)

@@ -4,11 +4,12 @@ from map import create_empty_map
 from affichage import affichage, pause
 from equipement import inventaire, gererEquipement
 from deplacements import deplacerPerso, deplacerMonstre
-from classPerso import Perso, Joueur, Monstre
+from classPerso import Perso, Joueur, Marchand, Monstre
 from classChest import Chest
 from fonctionCases import *
 from labyrinthe import create_maze
 from menu import sortir
+from marchandage import marchander
 
 import random
 import time
@@ -27,6 +28,10 @@ def play(screen, difficulty):
     map = etages[e]
 
     perso = Joueur((3,1), 'Didier', screen)
+
+    forgeron = Marchand('Forgeron', screen)
+    sorciere = Marchand('Sorciere', screen)
+    acheteur = Marchand('Acheteur', screen)
 
     aBouge = False
 
@@ -60,6 +65,17 @@ def play(screen, difficulty):
             time.sleep(5)
             out = False
 
+        if not perso.dansDonjon:
+            if surForgeron(map, perso) and aBouge:
+                marchander(perso, forgeron)
+                aBouge = False
+            elif surSorciere(map, perso) and aBouge:
+                marchander(perso, sorciere)
+                aBouge = False
+            elif surAcheteur(map, perso) and aBouge:
+                marchander(perso, acheteur)
+                aBouge = False
+
 
         for event in pygame.event.get():
             # Lorsque l'on ferme la fenetre
@@ -92,6 +108,7 @@ def play(screen, difficulty):
                     if time.time() - monstre.dernierMvmt >= monstre.vitesse:
                         monstre.dernierMvmt = time.time()
                         deplacerMonstre(monstre, map.liste_monstres, map.liste_coffres, map, perso)
+
         if aBouge and (allerEtageSuivant(map, perso) or allerDonjon(map, perso)):
             e += 1
             if e > k:
