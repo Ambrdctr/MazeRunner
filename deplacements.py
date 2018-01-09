@@ -74,7 +74,7 @@ def attMonstre(x, y, direction, monstre, perso, map):
             if xPrec != xSuiv and xSuiv == monstre.x and yPrec == monstre.y:
                 res = True
         if res == True:
-            monstre.vie += - perso.force
+            monstre.vie += - random.randint(perso.force-2, perso.force+2)
             if monstre.vie <= 0:
                 monstre.vivant = False
                 res = False
@@ -155,8 +155,13 @@ def attPerso(x, y, direction, perso, monstre, map):
             if xPrec != xSuiv and xSuiv == perso.x and yPrec == perso.y:
                 res = True
         if res == True:
-            perso.vie += - monstre.force
-            monstre.force = random.randint(monstre.diff * 3, monstre.diff * 3 + 5)
+            attaque =  random.randint(monstre.force - 2, monstre.force + 2)
+            if perso.protection > 0:
+                perso.protection -= attaque
+                perso.equipement[0].protection -= attaque
+            else:
+                perso.protection = 0
+                perso.vie -= attaque
             if perso.vie <= 0:
                 perso.vivant = False
                 res = False

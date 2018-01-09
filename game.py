@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 from map import create_empty_map
 from affichage import affichage, pause
-from equipement import inventaire
+from equipement import inventaire, gererEquipement
 from deplacements import deplacerPerso, deplacerMonstre
 from classPerso import Perso, Joueur, Monstre
 from classChest import Chest
@@ -37,6 +37,7 @@ def play(screen, difficulty):
         pygame.time.Clock().tick(30)
         screen.fill((0, 0, 0))
         affichage(screen, perso, map.liste_monstres, map.liste_coffres, map)
+        gererEquipement(screen, perso)
         # Rafraîchissement de l'écran
         pygame.display.flip()
 
