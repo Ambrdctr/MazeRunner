@@ -2,13 +2,14 @@ import pygame
 from pygame.locals import *
 from map import create_empty_map
 from affichage import affichage, pause
-from equipement import inventaire
+from equipement import inventaire, gererEquipement
 from deplacements import deplacerPerso, deplacerMonstre
-from classPerso import Perso, Joueur, Monstre
+from classPerso import Perso, Joueur, Marchand, Monstre
 from classChest import Chest
 from fonctionCases import *
 from labyrinthe import create_maze
 from menu import sortir
+from marchandage import marchander
 
 import random
 import time
@@ -19,7 +20,7 @@ def play(screen, difficulty):
     size = screen.get_size()
 
     out = True
-    exterieur = create_empty_map(int(size[0] / 50), int(size[1] / 50))
+    exterieur = create_empty_map()
     etages = [exterieur]
     k = 0  # Permet de savoir jusqu'à quel étage est arrivé le joueur
     e = 0 # Permet de connaitre l'etage courant du joueur
@@ -28,14 +29,20 @@ def play(screen, difficulty):
 
     perso = Joueur((3,1), 'Didier', screen)
 
+    forgeron = Marchand('Forgeron', screen)
+    sorciere = Marchand('Sorciere', screen)
+    acheteur = Marchand('Acheteur', screen)
+
     aBouge = False
 
     # Touche reste enfoncée
     pygame.key.set_repeat(100, 50)
 
     while out:
+        pygame.time.Clock().tick(30)
         screen.fill((0, 0, 0))
         affichage(screen, perso, map.liste_monstres, map.liste_coffres, map)
+        gererEquipement(screen, perso)
         # Rafraîchissement de l'écran
         pygame.display.flip()
 
@@ -58,6 +65,17 @@ def play(screen, difficulty):
             time.sleep(5)
             out = False
 
+        if not perso.dansDonjon:
+            if surForgeron(map, perso) and aBouge:
+                marchander(perso, forgeron)
+                aBouge = False
+            elif surSorciere(map, perso) and aBouge:
+                marchander(perso, sorciere)
+                aBouge = False
+            elif surAcheteur(map, perso) and aBouge:
+                marchander(perso, acheteur)
+                aBouge = False
+
 
         for event in pygame.event.get():
             # Lorsque l'on ferme la fenetre
@@ -73,7 +91,8 @@ def play(screen, difficulty):
 
 
         if perso.dansDonjon:
-            map.grid[perso.y][perso.x].visitee = time.time()
+            if map.grid[perso.y][perso.x].visitee != True:
+                map.grid[perso.y][perso.x].visitee = time.time()
             piece = map.est_dans_piece((perso.x, perso.y))
             if piece != False:
                 piece.visite_cellules_piece(map.grid)
@@ -89,13 +108,14 @@ def play(screen, difficulty):
                     if time.time() - monstre.dernierMvmt >= monstre.vitesse:
                         monstre.dernierMvmt = time.time()
                         deplacerMonstre(monstre, map.liste_monstres, map.liste_coffres, map, perso)
+
         if aBouge and (allerEtageSuivant(map, perso) or allerDonjon(map, perso)):
             e += 1
             if e > k:
                 if k < difficulty:
-                    etages.append(create_maze(difficulty*20, difficulty*15, difficulty*15, False)) #sans le tresor
+                    etages.append(create_maze(difficulty*15, difficulty*20, difficulty*15, False)) #sans le tresor
                 else:
-                    etages.append(create_maze(difficulty*20, difficulty*15, difficulty*15, True)) #avec le tresor
+                    etages.append(create_maze(difficulty*15, difficulty*20, difficulty*15, True)) #avec le tresor
                 k += 1
             aBouge = False
             donjon = etages[e]

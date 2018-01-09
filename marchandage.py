@@ -2,9 +2,9 @@ import pygame
 from pygame.locals import *
 from classObject import Piece
 
-def echange(perso, coffre):
+def marchander(perso, marchand):
 
-    screen = coffre.ecran
+    screen = marchand.inventaire.ecran
     # Opacité de l'arrière plan
 
     size = screen.get_size()
@@ -14,7 +14,7 @@ def echange(perso, coffre):
     screen.blit(s, (0, 0))
 
     posObjInventaire = perso.inventaire.afficher_sac(perso.nom)
-    posObjCoffre = coffre.afficher_contenu("Coffre")
+    posObjMarchand = marchand.inventaire.afficher_stock(marchand.nom)
 
     run = True
     while run:
@@ -32,51 +32,55 @@ def echange(perso, coffre):
             conteneur = 0
             if posObjInventaire[1].collidepoint(pos):
                 conteneur = 1
-            elif posObjCoffre[1].collidepoint(pos):
+            if posObjMarchand[1].collidepoint(pos):
                 conteneur = 2
 
             if event.type == MOUSEBUTTONUP and event.button == 1:
 
-                if conteneur == 1:
+                if conteneur == 1 and marchand.nom == 'Acheteur':
                     for rect in posObjInventaire[0]:
                         if rect.collidepoint(pos):
                             index = posObjInventaire[0].index(rect)
                             obj = perso.inventaire.tabObj[index]
                             if obj != False:
-                                if len(coffre.contenu) < coffre.capacite:
+                                if marchand.inventaire.pieces == 0:
                                     perso.inventaire.tabObj[index] = False
                                     perso.inventaire.contenu.remove(obj)
-                                    coffre.contenu.append(obj)
-                                    for i in range(len(coffre.tabObj)):
-                                        if coffre.tabObj[i] == False:
-                                            coffre.tabObj[i] = obj
-                                            break
+                                    listePiece = calculerValeurObj(obj, screen, perso.charisme)
+                                    if perso.charisme > -49:
+                                        perso.charisme -= 2
+                                    for i in range(len(listePiece)):
+                                        marchand.inventaire.tabObj[i] = listePiece[i]
+                                        marchand.inventaire.contenu.append(listePiece[i])
+                                        marchand.inventaire.pieces += listePiece[i].valeur
                             break
                     perso.inventaire.afficher_sac(perso.nom)
-                    coffre.afficher_contenu("Coffre")
+                    marchand.inventaire.afficher_stock(marchand.nom)
 
 
                 elif conteneur == 2:
-                    for rect in posObjCoffre[0]:
+                    for rect in posObjMarchand[0]:
                         if rect.collidepoint(pos):
-                            index = posObjCoffre[0].index(rect)
-                            obj = coffre.tabObj[index]
+                            index = posObjMarchand[0].index(rect)
+                            obj = marchand.inventaire.tabObj[index]
                             if obj != False:
                                 if isinstance(obj, Piece):
-                                    coffre.tabObj[index] = False
-                                    coffre.contenu.remove(obj)
+                                    marchand.inventaire.tabObj[index] = False
+                                    marchand.inventaire.contenu.remove(obj)
+                                    marchand.inventaire.pieces -= obj.valeur
                                     perso.inventaire.pieces += obj.valeur
                                 else:
-                                    if len(perso.inventaire.contenu) < perso.inventaire.capacite:
-                                        coffre.tabObj[index] = False
-                                        coffre.contenu.remove(obj)
+                                    if (len(perso.inventaire.contenu) < perso.inventaire.capacite) and (perso.inventaire.pieces >= obj.valeur):
                                         perso.inventaire.contenu.append(obj)
+                                        perso.inventaire.pieces -= (obj.valeur - int((perso.charisme*obj.valeur)/100))
+                                        if perso.charisme < 49:
+                                            perso.charisme += 2
                                         for i in range(len(perso.inventaire.tabObj)):
                                             if perso.inventaire.tabObj[i] == False:
                                                 perso.inventaire.tabObj[i] = obj
                                                 break
                             break
-                    coffre.afficher_contenu("Coffre")
+                    marchand.inventaire.afficher_stock(marchand.nom)
                     perso.inventaire.afficher_sac(perso.nom)
 
             if event.type == MOUSEMOTION:
@@ -89,25 +93,51 @@ def echange(perso, coffre):
                             dansCase = True
                             break
                     if not dansCase:
-                        coffre.afficher_contenu("Coffre")
+                        marchand.inventaire.afficher_stock(marchand.nom)
                         perso.inventaire.afficher_sac(perso.nom)
 
 
                 elif conteneur == 2:
                     dansCase = False
-                    for rect in posObjCoffre[0]:
+                    for rect in posObjMarchand[0]:
                         if rect.collidepoint(pos):
-                            coffre.afficher_contenu("Coffre", posObjCoffre[0].index(rect)+1)
+                            marchand.inventaire.afficher_stock(marchand.nom, posObjMarchand[0].index(rect)+1)
                             dansCase = True
                             break
                     if not dansCase:
-                        coffre.afficher_contenu("Coffre")
+                        marchand.inventaire.afficher_stock(marchand.nom)
                         perso.inventaire.afficher_sac(perso.nom)
 
                 else:
-                    coffre.afficher_contenu("Coffre")
+                    marchand.inventaire.afficher_stock(marchand.nom)
                     perso.inventaire.afficher_sac(perso.nom)
 
             pygame.display.flip()
 
+def calculerValeurObj(obj, screen, charisme):
+    val = obj.valeur
 
+    solde = int((charisme*val)/100)
+
+    val += solde
+
+    listePiece = []
+
+    while val != 0:
+        if val >= 50:
+            listePiece.append(Piece(50, screen))
+            val -= 50
+        elif val >= 10:
+            listePiece.append(Piece(10, screen))
+            val -= 10
+        elif val >= 5:
+            listePiece.append(Piece(5, screen))
+            val -= 5
+        elif val >= 2:
+            listePiece.append(Piece(2, screen))
+            val -= 2
+        elif val == 1:
+            listePiece.append(Piece(1, screen))
+            val -= 1
+
+    return listePiece

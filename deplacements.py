@@ -74,7 +74,7 @@ def attMonstre(x, y, direction, monstre, perso, map):
             if xPrec != xSuiv and xSuiv == monstre.x and yPrec == monstre.y:
                 res = True
         if res == True:
-            monstre.vie += - perso.force
+            monstre.vie += - random.randint(perso.force-2, perso.force+2)
             if monstre.vie <= 0:
                 monstre.vivant = False
                 res = False
@@ -155,10 +155,16 @@ def attPerso(x, y, direction, perso, monstre, map):
             if xPrec != xSuiv and xSuiv == perso.x and yPrec == perso.y:
                 res = True
         if res == True:
-            perso.vie += - monstre.force
-            monstre.force = random.randint(monstre.diff * 3, monstre.diff * 3 + 5)
+            attaque =  random.randint(monstre.force - 2, monstre.force + 2)
+            if perso.protection > 0:
+                perso.protection -= attaque
+                perso.equipement[0].protection -= attaque
+            else:
+                perso.protection = 0
+                perso.vie -= attaque
             if perso.vie <= 0:
                 perso.vivant = False
+                perso.vie = 0
                 res = False
     return res
 
@@ -233,7 +239,7 @@ def deplacerMonstre(monstre, monstres, coffres, map, perso):
     peut_bouger = False
 
     #Depalcement logique lorsque la distance du perso est inférieur ou égale à la vision du monstre
-    if distance <= monstre.vision and distance != 0 and (monstre.force >= perso.force or random.random() >= 0.8):
+    if distance <= monstre.vision and distance != 0 and (monstre.force >= perso.force or random.random() >= 0.25):
         if math.sqrt(math.pow(perso.x - x, 2)) > math.sqrt(math.pow(perso.y - y, 2)):
             if perso.x > x: key = K_RIGHT
             elif perso.x < x: key = K_LEFT

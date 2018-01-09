@@ -10,12 +10,8 @@ def principal():
 
     #Creation de la fenetre
     #screen = pygame.display.set_mode((1600, 900), FULLSCREEN)
-<<<<<<< HEAD
     screen = pygame.display.set_mode((1366, 768), FULLSCREEN)
-    #screen = pygame.display.set_mode((800, 600), FULLSCREEN)
-=======
-    screen = pygame.display.set_mode((800, 600), RESIZABLE)
->>>>>>> 5901488a8ca18aaa78d63afc0769780dfa14f34f
+    #screen = pygame.display.set_mode((800, 600), RESIZABLE)
     #screen = pygame.display.set_mode((1440, 900), FULLSCREEN)
 
     #Fond noir

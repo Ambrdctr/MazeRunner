@@ -2,14 +2,16 @@ import pygame
 from pygame.locals import *
 
 def startMenu(screen):
+    size = screen.get_size()
     #Impotation image menu
     fond = pygame.image.load("images/start.png").convert()
+    fond = pygame.transform.scale(fond,(size[0], size[1]))
     screen.blit(fond, (0, 0))
 
     # Dessin du rectangle de selection
-    x = 450
-    y = 250
-    pygame.draw.rect(screen, (200, 50, 50), (x, y, 650, 150), 5)
+    x = int(450*size[0]/1600)
+    y = int(250*size[1]/900)
+    pygame.draw.rect(screen, (200, 50, 50), (x, y, int(650*size[0]/1600), int(150*size[1]/900)), 5)
 
     # Rafraîchissement de l'écran
     pygame.display.flip()
@@ -34,36 +36,38 @@ def startMenu(screen):
             if event.type == KEYDOWN:
                 if event.key == K_UP:
                     if choice > 1:
-                        y -= 150
+                        y -= int(150*size[1]/900)
                         choice -= 1
                 if event.key == K_DOWN:
                     if choice < 3:
-                        y += 150
+                        y += int(150*size[1]/900)
                         choice += 1
                 if event.key == K_RETURN:
                     run = False
                 # Re-collage
                 screen.blit(fond, (0, 0))
-                pygame.draw.rect(screen, (200, 50, 50), (x, y, 650, 150), 5)
+                pygame.draw.rect(screen, (200, 50, 50), (x, y, int(650*size[0]/1600), int(150*size[1]/900)), 5)
                 # Rafraichissement
                 pygame.display.flip()
     return choice
 
 def options(screen):
+    size = screen.get_size()
     fond = pygame.image.load("images/options.png").convert()
+    fond = pygame.transform.scale(fond, (size[0], size[1]))
     screen.blit(fond, (0, 0))
 
-    myfont = pygame.font.SysFont('Comic Sans MS', 72)
+    myfont = pygame.font.SysFont('Comic Sans MS', int(65*size[1]/900))
     tabText = ['FACILE', 'MOYEN', 'DIFFICILE']
     text = tabText[0]
     textsurface = myfont.render(text, False, (200, 50, 50))
 
-    screen.blit(textsurface, (950, 220))
+    screen.blit(textsurface, (int(950*size[0]/1600), int(220*size[1]/900)))
 
     # Dessin du rectangle de selection
-    x = 30
-    y = 200
-    pygame.draw.rect(screen, (200, 50, 50), (x, y, 700, 150), 5)
+    x = int(30*size[0]/1600)
+    y = int(200*size[1]/900)
+    pygame.draw.rect(screen, (200, 50, 50), (x, y, int(700*size[0]/1600), int(150*size[1]/900)), 5)
 
     # Rafraîchissement de l'écran
     pygame.display.flip()
@@ -90,11 +94,11 @@ def options(screen):
             if event.type == KEYDOWN:
                 if event.key == K_UP:
                     if choice > 1:
-                        y -= 480
+                        y -= int(480*size[1]/900)
                         choice -= 1
                 if event.key == K_DOWN:
                     if choice < 2:
-                        y += 480
+                        y += int(480*size[1]/900)
                         choice += 1
                 if event.key == K_RIGHT:
                     if choice == 1:
@@ -115,34 +119,40 @@ def options(screen):
                 # Re-collage
                 screen.blit(fond, (0, 0))
                 textsurface = myfont.render(text, False, (200, 50, 50))
-                pygame.draw.rect(screen, (200, 50, 50), (x, y, 700, 150), 5)
-                screen.blit(textsurface, (950, 220))
+                pygame.draw.rect(screen, (200, 50, 50), (x, y, int(700*size[0]/1600), int(150*size[1]/900)), 5)
+                screen.blit(textsurface, (int(950*size[0]/1600), int(220*size[1]/900)))
                 # Rafraichissement
                 pygame.display.flip()
     return res
 
 def credit(screen):
+    size = screen.get_size()
     fond = pygame.image.load("images/credits.png").convert()
+    fond = pygame.transform.scale(fond, (size[0], size[1]))
     screen.blit(fond, (0, 0))
 
     # Rafraîchissement de l'écran
     pygame.display.flip()
 
 def victoire_screen(screen):
+    size = screen.get_size()
     fond = pygame.image.load("images/victoire.png").convert()
+    fond = pygame.transform.scale(fond, (size[0], size[1]))
     screen.blit(fond, (0, 0))
 
     # Rafraîchissement de l'écran
     pygame.display.flip()
 
 def sortir(screen):
+    size = screen.get_size()
     fond = pygame.image.load("images/sortir.png").convert()
+    fond = pygame.transform.scale(fond, (size[0], size[1]))
     screen.blit(fond, (0, 0))
 
     # Dessin du rectangle de selection
-    x = 650
-    y = 360
-    pygame.draw.rect(screen, (200, 50, 50), (x, y, 300, 130), 5)
+    x = int(650*size[0]/1600)
+    y = int(360*size[1]/900)
+    pygame.draw.rect(screen, (200, 50, 50), (x, y, int(300*size[0]/1600), int(130*size[1]/900)), 5)
 
     # Rafraîchissement de l'écran
     pygame.display.flip()
@@ -166,17 +176,17 @@ def sortir(screen):
             if event.type == KEYDOWN:
                 if event.key == K_UP:
                     if not res:
-                        y -= 210
+                        y -= int(210*size[1]/900)
                         res = True
                 if event.key == K_DOWN:
                     if res:
-                        y += 210
+                        y += int(210*size[1]/900)
                         res = False
                 if event.key == K_RETURN:
                     run = False
                 # Re-collage
                 screen.blit(fond, (0, 0))
-                pygame.draw.rect(screen, (200, 50, 50), (x, y, 300, 130), 5)
+                pygame.draw.rect(screen, (200, 50, 50), (x, y, int(300*size[0]/1600), int(130*size[1]/900)), 5)
                 # Rafraichissement
                 pygame.display.flip()
     return res

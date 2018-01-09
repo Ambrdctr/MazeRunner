@@ -3,6 +3,7 @@ from pygame.locals import *
 import time
 import random
 from classChest import Bag
+from classObject import Epee, Couteau, Heaume, Cle, PotionVie, PotionForce, PotionVitesse, PotionMemoire
 
 class Perso:
     
@@ -18,16 +19,23 @@ class Joueur(Perso):
         Perso.__init__(self, ici)
         self.nom = name
         self.vivant = True
+        self.protection = 0
         self.vie = 100
         self.vitesse = 1
         self.inventaire = Bag(screen)
-        self.force = random.randint(4,8)
-        self.memoire = 600
+        self.force = 5
+        self.memoire = 1
         self.charisme = 0
         self.images = [pygame.image.load("images/haut.png").convert_alpha(), pygame.image.load("images/droite.png").convert_alpha(),
                        pygame.image.load("images/bas.png").convert_alpha(), pygame.image.load("images/gauche.png").convert_alpha()]
         self.dansDonjon = False
         self.equipement = [False, False, False]
+
+    def resetStats(self):
+        self.protection = 0
+        self.vitesse = 1
+        self.force = 5
+        self.memoire = 30
 
     def afficherEquipement(self, screen, id=False):
 
@@ -78,11 +86,19 @@ class Joueur(Perso):
         else:
             pygame.draw.rect(screen, (180, 180, 180), rectObj, 0)
 
+        tabAllObj.append(rectObj)
+
+        if self.equipement[0] != False:
+            image = pygame.transform.scale(self.equipement[0].image, (droite - gauche, droite - gauche))
+            screen.blit(image, (tabAllObj[0][0], tabAllObj[0][1]))
+
+        if self.equipement[1] != False:
+            image = pygame.transform.scale(self.equipement[1].image, (droite - gauche, droite - gauche))
+            screen.blit(image, (tabAllObj[1][0], tabAllObj[1][1]))
+
         if self.equipement[2] != False:
             image = pygame.transform.scale(self.equipement[2].image, (droite - gauche, droite - gauche))
-            screen.blit(image, (rectObj[0], rectObj[1]))
-
-        tabAllObj.append(rectObj)
+            screen.blit(image, (tabAllObj[2][0], tabAllObj[2][1]))
 
         pygame.display.flip()
 
@@ -92,12 +108,24 @@ class Joueur(Perso):
 
 
 
-class Marchand(Perso):
+class Marchand():
     
-    def __init__(self, ici, name):
-        Perso.__init__(self, ici)
+    def __init__(self, name, screen):
         self.nom = name
-        self.inventaire = Bag()
+        self.inventaire = Bag(screen)
+
+        if name == "Forgeron":
+            listeObj = [Epee(screen), Couteau(screen), Heaume(screen), Cle(screen)]
+            for i in range(len(listeObj)):
+                self.inventaire.tabObj[i] = listeObj[i]
+                self.inventaire.contenu.append(listeObj[i])
+
+        elif name == "Sorciere":
+            listeObj = [PotionVie(screen), PotionForce(screen), PotionVitesse(screen), PotionMemoire(screen)]
+            for i in range(len(listeObj)):
+                self.inventaire.tabObj[i] = listeObj[i]
+                self.inventaire.contenu.append(listeObj[i])
+
         
 class Monstre(Perso):
     
