@@ -239,7 +239,7 @@ def deplacerMonstre(monstre, monstres, coffres, map, perso):
     peut_bouger = False
 
     #Depalcement logique lorsque la distance du perso est inférieur ou égale à la vision du monstre
-    if distance <= monstre.vision and distance != 0 and (monstre.force >= perso.force or random.random() >= 0.25):
+    if distance <= monstre.vision and distance != 0 and (monstre.force >= perso.force or random.random() >= 0.8):
         if math.sqrt(math.pow(perso.x - x, 2)) > math.sqrt(math.pow(perso.y - y, 2)):
             if perso.x > x: key = K_RIGHT
             elif perso.x < x: key = K_LEFT
