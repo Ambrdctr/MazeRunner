@@ -116,6 +116,7 @@ def afficher_map(screen, perso, monstres, coffres, map):
         pos2 += 1
 
 def map_visite(screen, perso, map):
+<<<<<<< HEAD
     # Fond
     size = screen.get_size()
     if size[0] <= size[1]:
@@ -141,6 +142,61 @@ def map_visite(screen, perso, map):
 
             pos1 += 1
         pos2 += 1
+=======
+<<<<<<< HEAD
+        # Fond
+        size = screen.get_size()
+        if size[0] <= size[1]:
+            taille_case = size[0]//12
+        else:
+            taille_case = size[1]//12
+
+        x = perso.x
+        y = perso.y
+        tab = map.grid
+        pos2 = 8
+
+        for i in range(0, len(tab)):
+            pos1 = 13
+            for k in range(0, len(tab[i])):
+
+                    posx = pos1 *10
+                    posy = pos2 * 10
+                    if (tab[i][k].visitee != True and time.time() - tab[i][k].visitee > perso.memoire):
+                        pygame.draw.rect(screen, black, (posx , posy, 5, taille_case), 0)
+                    else:
+                        pygame.draw.rect(screen, yellow, (posx , posy, 5, taille_case), 0)
+
+                    pos1 += 1
+            pos2 += 1
+=======
+    # Fond
+    size = screen.get_size()
+    if size[0] <= size[1]:
+        taille_case = size[0] // 12
+    else:
+        taille_case = size[1] // 12
+
+    x = perso.x
+    y = perso.y
+    tab = map.grid
+    pos2 = 8
+
+    for i in range(0, len(tab)):
+        pos1 = 13
+        for k in range(0, len(tab[i])):
+
+            posx = pos1 * 10
+            posy = pos2 * 10
+            if (tab[i][k].visitee != True and time.time() - tab[i][k].visitee > perso.memoire):
+                pygame.draw.rect(screen, black, (posx, posy, 5, taille_case), 0)
+            else:
+                pygame.draw.rect(screen, yellow, (posx, posy, 5, taille_case), 0)
+
+            pos1 += 1
+        pos2 += 1
+>>>>>>> 5901488a8ca18aaa78d63afc0769780dfa14f34f
+>>>>>>> d9ee7d6d6ac6ad1d35710678647b961c9ce44c7a
 
 def afficherStats(screen, perso):
     size = screen.get_size()
@@ -178,10 +234,23 @@ def afficherStats(screen, perso):
 def affichage(screen, perso, monstres, coffres, map):
     afficher_map(screen, perso, monstres, coffres, map)
     afficherStats(screen, perso)
+<<<<<<< HEAD
     perso.afficherEquipement(screen)
     if perso.dansDonjon:
         map_visite(screen, perso, map)
 
+=======
+<<<<<<< HEAD
+    if perso.dansDonjon:
+        map_visite(screen, perso, map)
+
+=======
+    perso.afficherEquipement(screen)
+    if perso.dansDonjon:
+        map_visite(screen, perso, map)
+>>>>>>> 5901488a8ca18aaa78d63afc0769780dfa14f34f
+
+>>>>>>> d9ee7d6d6ac6ad1d35710678647b961c9ce44c7a
 def pause(screen):
     fond = pygame.image.load("images/pause.png").convert()
     screen.blit(fond, (0,0))

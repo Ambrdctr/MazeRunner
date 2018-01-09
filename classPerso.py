@@ -27,8 +27,67 @@ class Joueur(Perso):
         self.images = [pygame.image.load("images/haut.png").convert_alpha(), pygame.image.load("images/droite.png").convert_alpha(),
                        pygame.image.load("images/bas.png").convert_alpha(), pygame.image.load("images/gauche.png").convert_alpha()]
         self.dansDonjon = False
+        self.equipement = [False, False, False]
 
-    #def afficher_inventaire(self, screen):
+    def afficherEquipement(self, screen, id=False):
+
+        tabAllObj = []
+        size = screen.get_size()
+        if size[0] <= size[1]:
+            posx = (size[0] // 12) * 13
+            taille_case = size[0] // 12
+        else:
+            posx = (size[1] // 12) * 13
+            taille_case = size[1] // 12
+        posy = (taille_case) * 8
+        # taille_police = min * 15 // 900
+
+        pygame.draw.rect(screen, (30, 30, 30), (posx, taille_case * 2, size[0] - posx, posy - taille_case * 2), 0)
+
+        image = pygame.transform.scale(self.images[2], (int(taille_case * 1.5), int(taille_case * 2.5)))
+        screen.blit(image, (posx + 5, taille_case * 4))
+
+        milieu = (posx + 5) + (int(taille_case * 1.5)) / 2
+        gauche = int((milieu + (posx + 5)) / 2)
+        droite = int((milieu + ((posx + 5) + (int(taille_case * 1.5)))) / 2)
+
+
+        pygame.draw.rect(screen, (220, 220, 220), (gauche, taille_case * 3 + 10, droite - gauche, droite - gauche), 4)
+        rectObj = Rect(gauche + 1, taille_case * 3 + 11, droite - gauche - 1, droite - gauche - 1)
+
+        if id != False and id-1 == 0:
+            pygame.draw.rect(screen, (200, 200, 200), rectObj, 0)
+        else:
+            pygame.draw.rect(screen, (180, 180, 180), rectObj, 0)
+
+        tabAllObj.append(rectObj)
+
+        pygame.draw.rect(screen, (220, 220, 220), (gauche, taille_case * 5 + 10, droite - gauche, droite - gauche), 4)
+        rectObj = Rect(gauche + 1, taille_case * 5 + 11, droite - gauche - 1, droite - gauche - 1)
+        if id != False and id-1 == 1:
+            pygame.draw.rect(screen, (200, 200, 200), rectObj, 0)
+        else:
+            pygame.draw.rect(screen, (180, 180, 180), rectObj, 0)
+
+        tabAllObj.append(rectObj)
+
+        pygame.draw.rect(screen, (220, 220, 220), (gauche + taille_case + 10, taille_case * 5 + 10, droite - gauche, droite - gauche), 4)
+        rectObj = Rect(gauche + taille_case + 11, taille_case * 5 + 11, droite - gauche - 1, droite - gauche - 1)
+        if id != False and id-1 == 2:
+            pygame.draw.rect(screen, (200, 200, 200), rectObj, 0)
+        else:
+            pygame.draw.rect(screen, (180, 180, 180), rectObj, 0)
+
+        if self.equipement[2] != False:
+            image = pygame.transform.scale(self.equipement[2].image, (droite - gauche, droite - gauche))
+            screen.blit(image, (rectObj[0], rectObj[1]))
+
+        tabAllObj.append(rectObj)
+
+        pygame.display.flip()
+
+        return (tabAllObj, Rect(gauche, taille_case * 3 + 10, taille_case + 11 + droite - gauche - 1, (taille_case * 2) + droite - gauche))
+
 
 
 
