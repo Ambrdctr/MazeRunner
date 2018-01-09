@@ -91,7 +91,7 @@ def play(screen, difficulty):
 
 
         if perso.dansDonjon:
-            if not map.grid[perso.y][perso.x].visitee:
+            if map.grid[perso.y][perso.x].visitee != True:
                 map.grid[perso.y][perso.x].visitee = time.time()
             piece = map.est_dans_piece((perso.x, perso.y))
             if piece != False:

@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 import random
 import time
+from fov import visible
 
 # Couleurs
 red = (255, 0, 0)
@@ -62,7 +63,7 @@ def afficher_map(screen, perso, monstres, coffres, map):
             if i in range(0, len(tab)) and k in range(0, len(tab[i])):
                 posx = taille_case * pos1
                 posy = taille_case * pos2
-                if perso.dansDonjon and False:#(tab[i][k].visitee != True and time.time() - tab[i][k].visitee > perso.memoire):
+                if perso.dansDonjon and not visible(map, (i, k), perso):
                     case = pygame.image.load("images/ombre.png").convert()
                 else:
                     case = pygame.image.load("images/" + tab[i][k].state + ".png").convert()
@@ -150,7 +151,7 @@ def map_visite(screen, perso, map):
                 pygame.draw.rect(screen, gray, (posx, posy, taille, taille), 0)
             if tab[i][k].visitee == True:
                 pygame.draw.rect(screen, grayRoom, (posx, posy, taille, taille), 0)
-            if tab[i][k].state == 'sortie' and time.time() - tab[i][k].visitee < perso.memoire:
+            if tab[i][k].state == 'sortie' and tab[i][k].visitee == True:
                 pygame.draw.rect(screen, red, (posx, posy, taille, taille), 0)
             if tab[i][k].state == 'entree':
                 pygame.draw.rect(screen, green, (posx, posy, taille, taille), 0)
@@ -159,6 +160,9 @@ def map_visite(screen, perso, map):
             pos1 += taille
         pos2 += taille
 
+    largeurMur = taille//5
+    if largeurMur < 2:
+        largeurMur = 2
     pos2 = 8 * taille_case
     for i in range(0, len(tab)):
         pos1 = 13 * taille_case
@@ -166,19 +170,19 @@ def map_visite(screen, perso, map):
             if tab[i][k].walls[0] == True:
                 posx = pos1
                 posy = pos2
-                pygame.draw.rect(screen, darkGray, (posx - taille//10, posy - taille//10, taille, taille//5), 0)
+                pygame.draw.rect(screen, darkGray, (posx - taille//10, posy - taille//10, taille, largeurMur), 0)
             if tab[i][k].walls[1] == True:
                 posx = pos1 + taille
                 posy = pos2
-                pygame.draw.rect(screen, darkGray, (posx - taille//10, posy, taille//5, taille), 0)
+                pygame.draw.rect(screen, darkGray, (posx - taille//10, posy, largeurMur, taille), 0)
             if tab[i][k].walls[2] == True:
                 posx = pos1
                 posy = pos2 + taille
-                pygame.draw.rect(screen, darkGray, (posx, posy - taille//10, taille, taille//5), 0)
+                pygame.draw.rect(screen, darkGray, (posx, posy - taille//10, taille, largeurMur), 0)
             if tab[i][k].walls[3] == True:
                 posx = pos1
                 posy = pos2
-                pygame.draw.rect(screen, darkGray, (posx - taille//10, posy, taille//5, taille), 0)
+                pygame.draw.rect(screen, darkGray, (posx - taille//10, posy, largeurMur, taille), 0)
             pos1 += taille
         pos2 += taille
     pygame.display.flip()
@@ -276,15 +280,17 @@ def affichage(screen, perso, monstres, coffres, map):
         map_ext(screen, perso, map)
 
 def pause(screen):
+    size = screen.get_size()
     fond = pygame.image.load("images/pause.png").convert()
+    fond = pygame.transform.scale(fond, (size[0], size[1]))
     screen.blit(fond, (0,0))
     # Rafraichissement
     pygame.display.flip()
 
     # Dessin du rectangle de selection
-    x = 650
-    y = 630
-    pygame.draw.rect(screen, (200, 50, 50), (x, y, 320, 120), 5)
+    x = int(650*size[0]/1600)
+    y = int(630*size[1]/900)
+    pygame.draw.rect(screen, (200, 50, 50), (x, y, int(320*size[0]/1600), int(120*size[1]/900)), 5)
 
     # Rafraîchissement de l'écran
     pygame.display.flip()
@@ -310,18 +316,18 @@ def pause(screen):
             if event.type == KEYDOWN:
                 if event.key == K_UP:
                     if not choice:
-                        y -= 200
+                        y -= int(200*size[1]/900)
                         choice = True
                 if event.key == K_DOWN:
                     if choice:
-                        y += 200
+                        y += int(200*size[1]/900)
                         choice = False
                 if event.key == K_RETURN:
                     run = False
 
                 # Re-collage
                 screen.blit(fond, (0, 0))
-                pygame.draw.rect(screen, (200, 50, 50), (x, y, 320, 120), 5)
+                pygame.draw.rect(screen, (200, 50, 50), (x, y, int(320*size[0]/1600), int(120*size[1]/900)), 5)
                 # Rafraichissement
                 pygame.display.flip()
     return choice
