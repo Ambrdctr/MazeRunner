@@ -16,11 +16,9 @@ import random
 import time
 
 def play(screen, difficulty):
-
-    victoire_screen(screen, 13407)
+    screen.fill((50, 50, 50))
 
     time_start = time.time()
-    out = True
     exterieur = create_empty_map()
     etages = [exterieur]
     k = 0  # Permet de savoir jusqu'à quel étage est arrivé le joueur
@@ -28,11 +26,7 @@ def play(screen, difficulty):
 
     map = etages[e]
 
-    perso = Joueur((3,1), 'Joueur', screen)
-
-    forgeron = Marchand('Forgeron', screen)
-    sorciere = Marchand('Sorciere', screen)
-    acheteur = Marchand('Acheteur', screen)
+    perso = Joueur((3,1), 'Inventaire', screen)
 
     forgeron = Marchand('Forgeron', screen)
     sorciere = Marchand('Sorciere', screen)
@@ -44,36 +38,58 @@ def play(screen, difficulty):
     pygame.key.set_repeat(100, 50)
 
     arrive = True
-    while out:
+    time_piece = time.time()
+    run = True
+    perso.derniereAtt = time.time()
+    while run:
+
+        size = screen.get_size()
+
+        if size[0] <= size[1]:
+            taille_case = size[0] // 12
+        else:
+            taille_case = size[1] // 12
+        pygame.draw.rect(screen, (50, 50, 50), (0, taille_case*8, taille_case*13, size[1]-taille_case*8))
+
+        if time.time() - time_piece >= 30:
+            perso.inventaire.pieces += random.randint(3, 5)
+            time_piece = time.time()
+
         pygame.time.Clock().tick(30)
-        screen.fill((0, 0, 0))
         affichage(screen, perso, map.liste_monstres, map.liste_coffres, map)
         if arrive:
-            ecrire("""Bonjour aventurier !\nRetrouvera-tu le trésor ?\nBonne chance...""",
+            ecrire("""Bonjour aventurier !\nTon but est de retrouver le trésor du donjon\nBonne chance...\n\nNote que ton travail te rapportera entre 3 et 5 pièces toutes les 30 secondes !""",
                    screen)
             arrive = False
         gererEquipement(screen, perso)
         # Rafraîchissement de l'écran
         pygame.display.flip()
 
-        if victoire(map,perso):
+        if victoire(map,perso, screen):
             time.sleep(1)
-            out = victoire_screen(screen, time.time()-time_start)
-            time.sleep(3)
-            perso.x = 0
-            perso.y = 0
-            map = exterieur
-            perso.dansDonjon = False
-            e = 0
+            victoire_screen(screen, time.time()-time_start)
+            run = False
 
         if not perso.vivant :
             time.sleep(1)
+            size = screen.get_size()
             wasted = pygame.image.load("images/wasted.png").convert_alpha()
-            wasted = pygame.transform.scale(wasted, (1600,900))
+            wasted = pygame.transform.scale(wasted, (size[0], size[1]))
             screen.blit(wasted, (0,0))
             pygame.display.flip()
-            time.sleep(5)
-            out = False
+            while run:
+
+                for event in pygame.event.get():
+
+                    # Lorsque l'on ferme la fenetre
+                    if event.type == QUIT:
+                        run = False
+                    if event.type == KEYDOWN:
+                        if event.key == K_ESCAPE:
+                            run = False
+
+                    if event.type == MOUSEBUTTONUP and event.button == 1:
+                        run = False
 
         if not perso.dansDonjon:
             if surForgeron(map, perso) and aBouge:
@@ -90,10 +106,10 @@ def play(screen, difficulty):
         for event in pygame.event.get():
             # Lorsque l'on ferme la fenetre
             if event.type == QUIT:
-                out = False
+                run = False
             if event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
-                    out = not pause(screen)
+                    run = not pause(screen)
                 if event.key == K_UP or event.key == K_DOWN or event.key == K_RIGHT or event.key == K_LEFT:
                     aBouge = deplacerPerso(perso, map, map.liste_monstres, map.liste_coffres, event.key)
                 if event.key == K_i:
@@ -119,7 +135,7 @@ def play(screen, difficulty):
                         monstre.dernierMvmt = time.time()
                         deplacerMonstre(monstre, map.liste_monstres, map.liste_coffres, map, perso)
 
-        if aBouge and (allerEtageSuivant(map, perso) or allerDonjon(map, perso)):
+        if aBouge and (allerEtageSuivant(map, perso, screen) or allerDonjon(map, perso)):
             e += 1
             if e > k:
                 if k < difficulty:
@@ -152,4 +168,3 @@ def play(screen, difficulty):
                     map = donjon
                     perso.x = map.end[1]
                     perso.y = map.end[0]
-    return out

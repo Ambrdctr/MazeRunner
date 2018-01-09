@@ -55,4 +55,5 @@ def create_empty_map():
     map.grid[10][1].state = 'forgeron'
     map.grid[10][3].state = 'sorciere'
     map.grid[10][5].state = 'acheteur'
+    map.grid[5][7].state = 'coffre'
     return map

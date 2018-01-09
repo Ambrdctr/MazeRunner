@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 from classObject import Piece
+from message import ecrire
 
 def echange(perso, coffre):
 
@@ -51,6 +52,8 @@ def echange(perso, coffre):
                                         if coffre.tabObj[i] == False:
                                             coffre.tabObj[i] = obj
                                             break
+                                else:
+                                    ecrire("Le coffre est déjà plein !", screen)
                             break
                     perso.inventaire.afficher_sac(perso.nom)
                     coffre.afficher_contenu("Coffre")
@@ -75,6 +78,8 @@ def echange(perso, coffre):
                                             if perso.inventaire.tabObj[i] == False:
                                                 perso.inventaire.tabObj[i] = obj
                                                 break
+                                    else:
+                                        ecrire("Votre inventaire est plein !", screen)
                             break
                     coffre.afficher_contenu("Coffre")
                     perso.inventaire.afficher_sac(perso.nom)

@@ -5,6 +5,7 @@ from classPerso import Monstre
 import math
 import classChest
 from echanges import echange
+import time
 
 
 def mur(x,y,direction, map):
@@ -74,10 +75,13 @@ def attMonstre(x, y, direction, monstre, perso, map):
             if xPrec != xSuiv and xSuiv == monstre.x and yPrec == monstre.y:
                 res = True
         if res == True:
-            monstre.vie += - random.randint(perso.force-2, perso.force+2)
-            if monstre.vie <= 0:
-                monstre.vivant = False
-                res = False
+            if time.time() - perso.derniereAtt > 1.5/perso.vitesse :
+                perso.derniereAtt = time.time()
+                monstre.vie += - random.randint(perso.force-2, perso.force+2)
+                if monstre.vie <= 0:
+                    monstre.vivant = False
+                    res = False
+                    perso.inventaire.pieces += 10
     return res
 
 def ya_coffre(x, y, direction, coffres, perso):

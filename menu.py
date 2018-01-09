@@ -136,6 +136,21 @@ def credit(screen):
     # Rafraîchissement de l'écran
     pygame.display.flip()
 
+    run = True
+    while run:
+
+        for event in pygame.event.get():
+
+            # Lorsque l'on ferme la fenetre
+            if event.type == QUIT:
+                run = False
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    run = False
+
+            if event.type == MOUSEBUTTONUP and event.button == 1:
+                run = False
+
 def victoire_screen(screen, temps):
     size = screen.get_size()
     fond1 = pygame.image.load("images/victoire1.png").convert()

@@ -11,13 +11,13 @@ def ecrire(phrase, screen):
     else:
         min = size[1]
         taille_case = size[1] // 12
-    taille_police = min * 15 // 500
+    taille_police = min * 15 // 700
 
 
     x=0
     y=taille_case*6
     xp=taille_case*13
-    yp=taille_case*8
+    yp=taille_case*2
 
     s = pygame.Surface((xp, yp))
     s.set_alpha(200)

@@ -138,6 +138,10 @@ def map_visite(screen, perso, map):
     else:
         taille = tailleHaut
 
+    x = 13 * taille_case
+    y = 8 * taille_case
+    pygame.draw.rect(screen, (50, 50, 50), (x, y, size[0]-x, size[1]-y), 0)
+
     pos2 = 8 * taille_case
     for i in range(0, len(tab)):
         pos1 = 13 * taille_case
@@ -152,6 +156,8 @@ def map_visite(screen, perso, map):
             if tab[i][k].visitee == True:
                 pygame.draw.rect(screen, grayRoom, (posx, posy, taille, taille), 0)
             if tab[i][k].state == 'sortie' and tab[i][k].visitee == True:
+                pygame.draw.rect(screen, red, (posx, posy, taille, taille), 0)
+            if tab[i][k].state == 'trappe' and tab[i][k].visitee != False:
                 pygame.draw.rect(screen, red, (posx, posy, taille, taille), 0)
             if tab[i][k].state == 'entree':
                 pygame.draw.rect(screen, green, (posx, posy, taille, taille), 0)

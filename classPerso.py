@@ -26,6 +26,7 @@ class Joueur(Perso):
         self.force = 5
         self.memoire = 10
         self.charisme = 0
+        self.derniereAtt = False
         self.images = [pygame.image.load("images/haut.png").convert_alpha(), pygame.image.load("images/droite.png").convert_alpha(),
                        pygame.image.load("images/bas.png").convert_alpha(), pygame.image.load("images/gauche.png").convert_alpha()]
         self.dansDonjon = False
@@ -35,7 +36,7 @@ class Joueur(Perso):
         self.protection = 0
         self.vitesse = 1
         self.force = 5
-        self.memoire = 30
+        self.memoire = 10
 
     def afficherEquipement(self, screen, id=False):
 
@@ -134,7 +135,7 @@ class Monstre(Perso):
         self.diff = diff
         self.vivant = True
         self.dansDonjon = True
-        self.vie = 10*diff
+        self.vie = 20*diff
         self.dernierMvmt = time.time()
         self.vitesse = 1 / diff
         self.dirRetour = 0

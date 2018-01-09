@@ -42,7 +42,7 @@ class Room:
 
     def renvoi_diff_coords(self, diff):
         coords = []
-        for i in range(diff*2):
+        for i in range(diff+1):
             coords.append((randint(self.left, self.right-1), randint(self.top, self.bottom-1)))
         return coords
 

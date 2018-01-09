@@ -1,9 +1,11 @@
 from classObject import Cle
+from message import ecrire
+
 def allerDonjon(map, perso):
 
     return map.grid[perso.y][perso.x].state == 'entreeDonjon'
 
-def allerEtageSuivant(map, perso):
+def allerEtageSuivant(map, perso, screen):
 
     if map.grid[perso.y][perso.x].state == 'trappe':
         aCle = False
@@ -17,6 +19,9 @@ def allerEtageSuivant(map, perso):
         if aCle:
             map.grid[perso.y][perso.x].state = 'sortie'
             return True
+        else:
+            ecrire("Il vous faut une clé ! Vous n'en avez pas acheté chez le forgeron ou l'avez déjà utilisée.", screen)
+            return False
 
 
     elif map.grid[perso.y][perso.x].state == 'sortie':
@@ -34,19 +39,20 @@ def allerEtagePrecedent(map, perso):
 
     return map.grid[perso.y][perso.x].state == 'entree'
 
-def victoire(map, perso):
+def victoire(map, perso, screen):
+
     aCle = False
-    for obj in perso.inventaire.contenu:
-        if isinstance(obj, Cle):
-            perso.inventaire.contenu.remove(obj)
-            index = perso.inventaire.tabObj.index(obj)
-            perso.inventaire.tabObj[index] = False
-            aCle = True
-            break
-    if aCle:
-        return map.grid[perso.y][perso.x].state == 'tresor'
-    else:
-        return False
+    if map.grid[perso.y][perso.x].state == 'tresor':
+        for obj in perso.inventaire.contenu:
+            if isinstance(obj, Cle):
+                perso.inventaire.contenu.remove(obj)
+                index = perso.inventaire.tabObj.index(obj)
+                perso.inventaire.tabObj[index] = False
+                aCle = True
+                break
+        if not aCle:
+            ecrire("""Il vous faut une clé pour ouvrir le trésor !\nVous n'en avez pas acheté chez le forgeron ou l'avez déjà utilisée.""", screen)
+    return aCle
 
 def surForgeron(map, perso):
 

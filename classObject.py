@@ -57,7 +57,7 @@ class PotionForce(Objet):
 class PotionVitesse(Objet):
     def __init__(self, screen):
         Objet.__init__(self, 20, 6, "pt3", screen)
-        self.vitesse = 5
+        self.vitesse = random.randint(3,5)
         self.temps = False
         self.duree = random.randint(30, 45)
 

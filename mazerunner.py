@@ -9,10 +9,9 @@ def principal():
     pygame.init()
 
     #Creation de la fenetre
-    #screen = pygame.display.set_mode((1600, 900), FULLSCREEN)
+    screen = pygame.display.set_mode((1600, 900), FULLSCREEN)
     #screen = pygame.display.set_mode((1366, 768), FULLSCREEN)
-    #screen = pygame.display.set_mode((800, 600), RESIZABLE)
-    screen = pygame.display.set_mode((1366, 768), FULLSCREEN)
+    #screen = pygame.display.set_mode((1366, 768), FULLSCREEN)
     #screen = pygame.display.set_mode((800, 600), RESIZABLE)
     #screen = pygame.display.set_mode((1440, 900), FULLSCREEN)
 
@@ -25,7 +24,6 @@ def principal():
     while run:
         choice = startMenu(screen)
         if choice == 1:
-            #run = play(screen, difficulty)
             play(screen, difficulty)
         elif choice == 2:
             res = options(screen)
@@ -36,7 +34,6 @@ def principal():
         elif choice == 3:
             run = False
     credit(screen)
-    time.sleep(0.5)
     pygame.display.quit()
 
 principal()

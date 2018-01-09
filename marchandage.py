@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 from classObject import Piece
+from message import ecrire
 
 def marchander(perso, marchand):
 
@@ -70,7 +71,7 @@ def marchander(perso, marchand):
                                     marchand.inventaire.pieces -= obj.valeur
                                     perso.inventaire.pieces += obj.valeur
                                 else:
-                                    if (len(perso.inventaire.contenu) < perso.inventaire.capacite) and (perso.inventaire.pieces >= obj.valeur):
+                                    if (len(perso.inventaire.contenu) < perso.inventaire.capacite) and (perso.inventaire.pieces >= obj.valeur - int((perso.charisme*obj.valeur)/100)):
                                         perso.inventaire.contenu.append(obj)
                                         perso.inventaire.pieces -= (obj.valeur - int((perso.charisme*obj.valeur)/100))
                                         if perso.charisme < 49:
@@ -79,6 +80,11 @@ def marchander(perso, marchand):
                                             if perso.inventaire.tabObj[i] == False:
                                                 perso.inventaire.tabObj[i] = obj
                                                 break
+                                    else:
+                                        ecrire("Vous ne pouvez pas acheter cet objet! Il vous faut : "
+                                               + str(obj.valeur - int((perso.charisme*obj.valeur)/100)) + " pièces.", screen)
+                                        run = False
+
                             break
                     marchand.inventaire.afficher_stock(marchand.nom)
                     perso.inventaire.afficher_sac(perso.nom)
