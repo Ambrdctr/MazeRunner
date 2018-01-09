@@ -37,7 +37,6 @@ def marchander(perso, marchand):
 
                 if conteneur == 1 and marchand.nom == 'Acheteur':
                     for rect in posObjInventaire[0]:
-                        print(rect)
                         if rect.collidepoint(pos):
                             index = posObjInventaire[0].index(rect)
                             obj = perso.inventaire.tabObj[index]
@@ -45,7 +44,7 @@ def marchander(perso, marchand):
                                 if marchand.inventaire.pieces == 0:
                                     perso.inventaire.tabObj[index] = False
                                     perso.inventaire.contenu.remove(obj)
-                                    listePiece = calculerValeurObj(obj, screen)
+                                    listePiece = calculerValeurObj(obj, screen, perso.charisme)
                                     for i in range(len(listePiece)):
                                         marchand.inventaire.tabObj[i] = listePiece[i]
                                         marchand.inventaire.contenu.append(listePiece[i])
@@ -69,7 +68,9 @@ def marchander(perso, marchand):
                                 else:
                                     if (len(perso.inventaire.contenu) < perso.inventaire.capacite) and (perso.inventaire.pieces >= obj.valeur):
                                         perso.inventaire.contenu.append(obj)
-                                        perso.inventaire.pieces -= obj.valeur
+                                        perso.inventaire.pieces -= (obj.valeur - int((perso.charisme*obj.valeur)/100))
+                                        if perso.charisme < 50:
+                                            perso.charisme += 1
                                         for i in range(len(perso.inventaire.tabObj)):
                                             if perso.inventaire.tabObj[i] == False:
                                                 perso.inventaire.tabObj[i] = obj
@@ -109,8 +110,12 @@ def marchander(perso, marchand):
 
             pygame.display.flip()
 
-def calculerValeurObj(obj, screen):
+def calculerValeurObj(obj, screen, charisme):
     val = obj.valeur
+
+    solde = int((charisme*val)/100)
+
+    val += solde
 
     listePiece = []
 
