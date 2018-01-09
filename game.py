@@ -115,7 +115,7 @@ def play(screen, difficulty):
                     run = not pause(screen)
                 if event.key == K_UP or event.key == K_DOWN or event.key == K_RIGHT or event.key == K_LEFT:
                     aBouge = deplacerPerso(perso, map, map.liste_monstres, map.liste_coffres, event.key)
-                    manqueCle = aBouge
+                    messageManqueCle = aBouge
                 if event.key == K_i:
                     inventaire(screen, perso)
 
