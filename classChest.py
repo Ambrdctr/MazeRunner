@@ -9,12 +9,12 @@ def tableau_d_objets(screen):
             PotionForce(screen), PotionMemoire(screen), PotionVie(screen), PotionVitesse(screen)]
 
     #Objets avec + de chances d'apparaitre
-    for i in range(0):
+    for i in range(8):
         tab.append(Piece(1, screen))
         tab.append(Piece(2, screen))
-    for i in range(0):
+    for i in range(6):
         tab.append(Piece(5, screen))
-    for i in range(0):
+    for i in range(4):
         tab.append(Piece(10, screen))
         tab.append(Casque(screen))
         tab.append(Couteau(screen))

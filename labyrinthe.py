@@ -71,7 +71,7 @@ class Grid:
         if tresor:
             grid[self.end[0]][self.end[1]].state = 'tresor'
         else:
-            grid[self.end[0]][self.end[1]].state = 'sortie'
+            grid[self.end[0]][self.end[1]].state = 'trappe'
         self.grid = grid
 
     def non_overlap_room(self, roomB):

@@ -10,15 +10,16 @@ from fonctionCases import *
 from labyrinthe import create_maze
 from menu import sortir
 from marchandage import marchander
-
+from message import ecrire
+from menu import victoire_screen
 import random
 import time
 
-from menu import victoire_screen
-
 def play(screen, difficulty):
-    size = screen.get_size()
 
+    victoire_screen(screen, 13407)
+
+    time_start = time.time()
     out = True
     exterieur = create_empty_map()
     etages = [exterieur]
@@ -27,7 +28,7 @@ def play(screen, difficulty):
 
     map = etages[e]
 
-    perso = Joueur((3,1), 'Didier', screen)
+    perso = Joueur((3,1), 'Joueur', screen)
 
     forgeron = Marchand('Forgeron', screen)
     sorciere = Marchand('Sorciere', screen)
@@ -38,17 +39,23 @@ def play(screen, difficulty):
     # Touche reste enfoncée
     pygame.key.set_repeat(100, 50)
 
+    arrive = True
     while out:
         pygame.time.Clock().tick(30)
         screen.fill((0, 0, 0))
         affichage(screen, perso, map.liste_monstres, map.liste_coffres, map)
+        if arrive:
+            ecrire("""Bonjour aventurier !\nRetrouvera-tu le trésor ?\nBonne chance...""",
+                   screen)
+            arrive = False
+
         gererEquipement(screen, perso)
         # Rafraîchissement de l'écran
         pygame.display.flip()
 
         if victoire(map,perso):
-            time.sleep(3)
-            victoire_screen(screen)
+            time.sleep(1)
+            out = victoire_screen(screen, time.time()-time_start)
             time.sleep(3)
             perso.x = 0
             perso.y = 0
