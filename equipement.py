@@ -1,8 +1,9 @@
 import pygame
 from pygame.locals import *
-from classObject import Epee, Couteau,  PotionForce, PotionMemoire, PotionVitesse, Casque, Heaume
+from classObject import Epee, Couteau,  PotionVie, PotionForce, PotionMemoire, PotionVitesse, Casque, Heaume
 from affichage import afficherStats
 import random
+import time
 
 def inventaire(screen, perso):
     # Opacité de l'arrière plan
@@ -19,6 +20,12 @@ def inventaire(screen, perso):
     run = True
 
     while run:
+
+        gererEquipement(screen, perso)
+        perso.inventaire.afficher_sac("Inventaire")
+        perso.afficherEquipement(screen)
+
+        pygame.display.flip()
 
         for event in pygame.event.get():
 
@@ -56,17 +63,19 @@ def inventaire(screen, perso):
                                         perso.inventaire.contenu.append(perso.equipement[0])
                                     perso.equipement[0] = obj
                                     perso.inventaire.contenu.remove(obj)
-                                elif isinstance(obj, PotionVitesse) or isinstance(obj, PotionForce) or isinstance(obj, PotionMemoire):
-                                    perso.inventaire.tabObj[index] = perso.equipement[1]
-                                    if perso.equipement[1] != False:
-                                        perso.inventaire.contenu.append(perso.equipement[1])
+                                elif (isinstance(obj, PotionVitesse) or isinstance(obj, PotionForce) or isinstance(obj, PotionMemoire)) and perso.equipement[1] == False:
+                                    perso.inventaire.tabObj[index] = False
                                     perso.equipement[1] = obj
                                     perso.inventaire.contenu.remove(obj)
-                                gererEquipement(screen, perso)
+                                    obj.temps = time.time()
+                                elif isinstance(obj, PotionVie):
+                                    if perso.vie < 80:
+                                        perso.vie += obj.vie
+                                    else:
+                                        perso.vie = 100
+                                    perso.inventaire.tabObj[index] = False
+                                    perso.inventaire.contenu.remove(obj)
                             break
-                    perso.inventaire.afficher_sac("Inventaire")
-                    perso.afficherEquipement(screen)
-
 
                 elif conteneur == 2:
                     for rect in posObjEquipement[0]:
@@ -80,22 +89,16 @@ def inventaire(screen, perso):
                                         if perso.inventaire.tabObj[i] == False:
                                             perso.inventaire.tabObj[i] = obj
                                             break
-                                if isinstance(obj, Casque) or isinstance(obj, Heaume):
+                                    perso.inventaire.contenu.append(obj)
+                                elif isinstance(obj, Casque) or isinstance(obj, Heaume):
                                     perso.equipement[0] = False
                                     for i in range(len(perso.inventaire.tabObj)):
                                         if perso.inventaire.tabObj[i] == False:
                                             perso.inventaire.tabObj[i] = obj
                                             break
-                                if isinstance(obj, PotionVitesse) or isinstance(obj, PotionForce) or isinstance(obj, PotionMemoire):
-                                    perso.equipement[1] = False
-                                    for i in range(len(perso.inventaire.tabObj)):
-                                        if perso.inventaire.tabObj[i] == False:
-                                            perso.inventaire.tabObj[i] = obj
-                                            break
-                                perso.inventaire.contenu.append(obj)
+                                    perso.inventaire.contenu.append(obj)
+                                gererEquipement(screen, perso)
                                 break
-                    perso.afficherEquipement(screen)
-                    perso.inventaire.afficher_sac("Inventaire")
 
             if event.type == MOUSEMOTION:
 
@@ -119,21 +122,30 @@ def inventaire(screen, perso):
                     if not dansCase:
                         perso.afficherEquipement(screen)
 
-                else:
-                    perso.afficherEquipement(screen)
-                    perso.inventaire.afficher_sac("Inventaire")
-
 def gererEquipement(screen, perso):
+    perso.resetStats()
     if perso.equipement[0] != False:
-        perso.protection += perso.equipement[0].protection
+        if perso.equipement[0].protection > 0:
+            perso.protection += perso.equipement[0].protection
+        else:
+            perso.equipement[0] = False
     if perso.equipement[1] != False:
         obj = perso.equipement[1]
         if isinstance(obj, PotionVitesse):
             perso.vitesse += obj.vitesse
+            if not (obj.duree > time.time() - obj.temps):
+                perso.equipement[1] = False
+                perso.vitesse -= obj.vitesse
         if isinstance(obj, PotionForce):
             perso.force += obj.force
+            if not (obj.duree > time.time() - obj.temps):
+                perso.equipement[1] = False
+                perso.force -= obj.force
         if isinstance(obj, PotionMemoire):
             perso.memoire += obj.memoire
+            if not (obj.duree > time.time() - obj.temps):
+                perso.equipement[1] = False
+                perso.memoire -= obj.memoire
     if perso.equipement[2] != False:
         perso.force += perso.equipement[2].force
     afficherStats(screen, perso)

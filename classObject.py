@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+import random
 
 class Objet:
     def __init__(self, value, weight, nom, screen):
@@ -34,12 +35,12 @@ class Epee(Objet):
 class Casque(Objet):
     def __init__(self, screen):
         Objet.__init__(self, 10, 1.5, "casque", screen)
-        self.protection = 5
+        self.protection = 20
 
 class Heaume(Objet):
     def __init__(self, screen):
         Objet.__init__(self, 20, 3, "heaume", screen)
-        self.protection = 20
+        self.protection = 50
 
 class PotionVie(Objet):
     def __init__(self, screen):
@@ -50,14 +51,19 @@ class PotionForce(Objet):
     def __init__(self, screen):
         Objet.__init__(self, 20, 6, "pt2", screen)
         self.force = 10
-        self.temps = 120
-
-class PotionMemoire(Objet):
-    def __init__(self, screen):
-        Objet.__init__(self, 20, 6, "pt3", screen)
-        self.memoire = 30
+        self.temps = False
+        self.duree = random.randint(30, 45)
 
 class PotionVitesse(Objet):
     def __init__(self, screen):
-        Objet.__init__(self, 20, 6, "pt4", screen)
+        Objet.__init__(self, 20, 6, "pt3", screen)
         self.vitesse = 5
+        self.temps = False
+        self.duree = random.randint(30, 45)
+
+class PotionMemoire(Objet):
+    def __init__(self, screen):
+        Objet.__init__(self, 20, 6, "pt4", screen)
+        self.memoire = 30
+        self.temps = False
+        self.duree = random.randint(60, 80)

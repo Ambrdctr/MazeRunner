@@ -129,8 +129,6 @@ def map_visite(screen, perso, map):
     else:
         taille_case = size[1] // 12
 
-    x = perso.x
-    y = perso.y
     tab = map.grid
     tailleLong = int((size[0]-13*taille_case)/map.h)
     tailleHaut = int((size[1]-8*taille_case)/map.w)
@@ -183,6 +181,7 @@ def map_visite(screen, perso, map):
                 pygame.draw.rect(screen, darkGray, (posx - taille//10, posy, taille//5, taille), 0)
             pos1 += taille
         pos2 += taille
+    pygame.display.flip()
 
 def map_ext(screen, perso, map):
     # Fond
@@ -223,6 +222,7 @@ def map_ext(screen, perso, map):
 
             pos1 += taille
         pos2 += taille
+    pygame.display.flip()
 
 def afficherStats(screen, perso):
     size = screen.get_size()
@@ -242,25 +242,29 @@ def afficherStats(screen, perso):
     myfont = pygame.font.SysFont('Comic Sans MS', taille_police)
 
     if perso.protection > 0:
-        textsurface = myfont.render('Vie (' + str(perso.protection) + ')', False, (200, 200, 200))
-        screen.blit(textsurface, (pos_textx(0.05), taille_case-taille_police-5))
-        pygame.draw.rect(screen, (255, 0, 0), (size[0] - 5, taille_case-taille_police -2, -perso.protection * (size[0] / 1000), 10), 0)
+        textsurface = myfont.render('Protection (' + str(perso.protection) + ')', False, (200, 200, 200))
+        screen.blit(textsurface, (pos_textx(0.05), taille_case-taille_police*2-10))
+        pygame.draw.rect(screen, (192, 192, 192), (size[0] - 5, taille_case-taille_police*2-7, -perso.protection * (size[0] / 1000), 10), 0)
 
     textsurface = myfont.render('Vie (' + str(perso.vie) + ')', False, (200, 200, 200))
+    screen.blit(textsurface, (pos_textx(0.05), taille_case-taille_police-5))
+    pygame.draw.rect(screen, (255,0,0), (size[0]-5, taille_case-taille_police-2, -perso.vie*(size[0]/1000), 10), 0)
+
+    textsurface = myfont.render('Memoire (' + str(perso.memoire) + ')', False, (200, 200, 200))
     screen.blit(textsurface, (pos_textx(0.05), taille_case))
-    pygame.draw.rect(screen, (255,0,0), (size[0]-5, taille_case+3, -perso.vie*(size[0]/1000), 10), 0)
+    pygame.draw.rect(screen, (255, 200, 0), (size[0] - 5, taille_case + 3, -perso.memoire * (size[0] / 1000), 10), 0)
 
     textsurface = myfont.render('Vitesse (' + str(perso.vitesse) + ')', False, (200, 200, 200))
     screen.blit(textsurface, (pos_textx(0.05), taille_case+taille_police+5))
-    pygame.draw.rect(screen, (0, 255, 0), (size[0]-5, taille_case+taille_police+8, -perso.vitesse*(size[0]/500), 10), 0)
+    pygame.draw.rect(screen, (0, 255, 0), (size[0]-5, taille_case+taille_police+8, -perso.vitesse*(size[0]/100), 10), 0)
 
     textsurface = myfont.render('Force (' + str(perso.force) + ')', False, (200, 200, 200))
     screen.blit(textsurface, (pos_textx(0.05), taille_case+(taille_police*2)+10))
     if perso.force > 20:
-        pygame.draw.rect(screen, (0, 0, 255), (size[0]-5, taille_case+(taille_police*2)+13, -50*(size[0]/800), 10), 0)
-        pygame.draw.rect(screen, (255, 200, 0), (size[0]-(50*(size[0]/800)), taille_case+(taille_police*2)+13, -10*(size[0]/800), 10), 0)
+        pygame.draw.rect(screen, (0, 0, 255), (size[0]-5, taille_case+(taille_police*2)+13, -20*(size[0]/400), 10), 0)
+        pygame.draw.rect(screen, (0, 255, 255), (size[0]-(20*(size[0]/400)), taille_case+(taille_police*2)+13, -10*(size[0]/800), 10), 0)
     else:
-        pygame.draw.rect(screen, (0, 0, 255), (size[0]-5, taille_case+(taille_police*2)+13, -perso.force*(size[0]/800), 10), 0)
+        pygame.draw.rect(screen, (0, 0, 255), (size[0]-5, taille_case+(taille_police*2)+13, -perso.force*(size[0]/400), 10), 0)
 
 def affichage(screen, perso, monstres, coffres, map):
     afficher_map(screen, perso, monstres, coffres, map)
