@@ -115,7 +115,13 @@ class Bag:
 
         # Ecriture du nom du contenant
         myfont = pygame.font.SysFont('Comic Sans MS', taille_police)
-        textsurface = myfont.render(nom, False, (50, 50, 50))
+        if self.pieces > 1:
+            ch = ", " + str(self.pieces) + " pièces"
+        elif self.pieces == 1:
+            ch = ", 1 pièce"
+        else:
+            ch = ""
+        textsurface = myfont.render(nom + ch, False, (50, 50, 50))
         screen.blit(textsurface, (posx - (5 * taille_case + 20) + 5, posy + 5))
         posy -= taille_case - taille_police * 2
         tx = 0

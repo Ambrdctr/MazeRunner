@@ -45,6 +45,8 @@ def marchander(perso, marchand):
                                     perso.inventaire.tabObj[index] = False
                                     perso.inventaire.contenu.remove(obj)
                                     listePiece = calculerValeurObj(obj, screen, perso.charisme)
+                                    if perso.charisme > -50:
+                                        perso.charisme -= 1
                                     for i in range(len(listePiece)):
                                         marchand.inventaire.tabObj[i] = listePiece[i]
                                         marchand.inventaire.contenu.append(listePiece[i])
