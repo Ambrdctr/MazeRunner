@@ -1,6 +1,6 @@
 # MazeRunner
 
-MazeRunner est un jeu d'aventure en vue de dessus où le but est de trouver un trésor caché dans un labyrinthe de plusieurs pièces.
+### MazeRunner est un jeu d'aventure en vue de dessus où le but est de trouver un trésor caché dans un labyrinthe de plusieurs pièces.
 
 ## Installation
 
@@ -53,14 +53,19 @@ Pour utiliser MazeRunner il faut :
 
 ### Commandes
 Les déplacements et les choix du menu se font à l'aide des flèches directionnelles. Pour valider un choix faites 'Entrée'.
+
 Pour ouvrir l'inventaire il faut appuyer sur la touche 'i'.
+
 On peut mettre le jeu en pause à l'aide de la touche 'echap'.
+
 Pour rammasser des objets dans les coffres ou faire des échanges avec les marchands, il suffit de cliquer (en relacher le clic) sur les objets avec la souris.
 
 
 ## Crédits
 Raphaël Tournafond
+
 Ambroise Decouttere
+
 L2 CMI INFO USMB
 
 ## License
