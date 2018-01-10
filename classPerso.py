@@ -105,6 +105,21 @@ class Joueur(Perso):
 
         return (tabAllObj, Rect(gauche, taille_case * 3 + 10, taille_case + 11 + droite - gauche - 1, (taille_case * 2) + droite - gauche))
 
+    def aCle(self):
+        aCle = False
+        for obj in self.inventaire.contenu:
+            if isinstance(obj, Cle):
+                aCle = True
+                break
+        return aCle
+
+    def supprimerCle(self):
+        for obj in self.inventaire.contenu:
+            if isinstance(obj, Cle):
+                self.inventaire.contenu.remove(obj)
+                index = self.inventaire.tabObj.index(obj)
+                self.inventaire.tabObj[index] = False
+                break
 
 
 

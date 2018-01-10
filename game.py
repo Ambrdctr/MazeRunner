@@ -41,7 +41,6 @@ def play(screen, difficulty):
     time_piece = time.time()
     run = True
     perso.derniereAtt = time.time()
-    messageManqueCle = False
     while run:
 
         size = screen.get_size()
@@ -66,12 +65,17 @@ def play(screen, difficulty):
         # Rafraîchissement de l'écran
         pygame.display.flip()
 
-        if victoire(map,perso, screen, messageManqueCle):
-            time.sleep(1)
-            victoire_screen(screen, time.time()-time_start)
-            run = False
-        else:
-            messageManqueCle = False
+        if aBouge and victoire(map, perso):
+            aBouge = False
+            if perso.aCle():
+                perso.supprimerCle()
+                time.sleep(1)
+                victoire_screen(screen, time.time()-time_start)
+                run = False
+            else:
+                ecrire(
+                    """Il vous faut une clé pour ouvrir le trésor !\nVous n'en avez pas acheté chez le forgeron ou l'avez déjà utilisée.""",
+                    screen)
 
         if not perso.vivant :
             time.sleep(1)
@@ -115,7 +119,6 @@ def play(screen, difficulty):
                     run = not pause(screen)
                 if event.key == K_UP or event.key == K_DOWN or event.key == K_RIGHT or event.key == K_LEFT:
                     aBouge = deplacerPerso(perso, map, map.liste_monstres, map.liste_coffres, event.key)
-                    messageManqueCle = aBouge
                 if event.key == K_i:
                     inventaire(screen, perso)
 
@@ -139,22 +142,30 @@ def play(screen, difficulty):
                         monstre.dernierMvmt = time.time()
                         deplacerMonstre(monstre, map.liste_monstres, map.liste_coffres, map, perso)
 
-        if aBouge and (allerEtageSuivant(map, perso, screen, messageManqueCle) or allerDonjon(map, perso)):
-            e += 1
-            if e > k:
-                if k < difficulty:
-                    etages.append(create_maze(difficulty*15, difficulty*20, difficulty*15, False)) #sans le tresor
-                else:
-                    etages.append(create_maze(difficulty*15, difficulty*20, difficulty*15, True)) #avec le tresor
-                k += 1
-            aBouge = False
-            donjon = etages[e]
-            map = donjon
-            perso.x = map.start[1]
-            perso.y = map.start[0]
-            perso.dansDonjon = True
-        elif not allerEtageSuivant(map, perso, screen, False):
-            messageManqueCle = False
+
+        etageSuivant = allerEtageSuivant(map, perso)
+        if aBouge and (etageSuivant or sortieTrouve(map, perso) or allerDonjon(map, perso)):
+            if etageSuivant and not perso.aCle():
+                aBouge = False
+                ecrire("Il vous faut une clé pour continuer! Vous n'en avez pas acheté chez le forgeron ou l'avez déjà utilisée.",
+                           screen)
+            elif etageSuivant and perso.aCle():
+                perso.supprimerCle()
+                map.grid[perso.y][perso.x].state = 'sortie'
+            else:
+                aBouge = False
+                e += 1
+                if e > k:
+                    if k < difficulty:
+                        etages.append(create_maze(difficulty*15, difficulty*20, difficulty*15, False)) #sans le tresor
+                    else:
+                        etages.append(create_maze(difficulty*15, difficulty*20, difficulty*15, True)) #avec le tresor
+                    k += 1
+                donjon = etages[e]
+                map = donjon
+                perso.x = map.start[1]
+                perso.y = map.start[0]
+                perso.dansDonjon = True
 
         if allerEtagePrecedent(map, perso):
             if aBouge:
