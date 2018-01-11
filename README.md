@@ -5,9 +5,8 @@
 ## Installation
 
 Pour utiliser MazeRunner il faut :
-* installer [Python](https://www.python.org/downloads/release/python-337/)
-* s'assurer d'avoir la bibliothèque [Pygame](http://www.pygame.org/download.shtml) fonctionnelle avec la version de python.
-* Dans le fichier 'mazerunner.py', vous pouvez définir la taille de la fenêtre par rapport à la résolution de votre écran au début de la procedure 'principal'.
+* Installer [Python](https://www.python.org/downloads/release/python-337/)
+* S'assurer d'avoir la bibliothèque [Pygame](http://www.pygame.org/download.shtml) fonctionnelle avec la version de python.
 * Il suffit ensuite d'interpréter le fichier 'mazerunner.py' avec votre interpréteur favoris.
 * Pour enlever le prompt au lancement il faut commenter le premier appel et decommenter le second tout en bas du fichier 'mazerunner.py'
 * Une fois lancé, vous pouvez changer la difficulté dans 'OPTIONS'
@@ -45,7 +44,7 @@ Pour utiliser MazeRunner il faut :
 	Ces équipements feront évoluer vos statistiques (seulement lorsqu'il sont équipés)
 * Minimap :
 	Représentation globale du monde dans lequel vous vous trouvez
-	Dans le donjon l'entrée est en vers et la sortie en rouge
+	Dans le donjon l'entrée est en vert et la sortie en rouge
 	Votre position est représentée par le carré jaune
 * Messages :
 	Des messages apparaitrons pour vous guider
@@ -58,7 +57,7 @@ Pour ouvrir l'inventaire il faut appuyer sur la touche 'i'.
 
 On peut mettre le jeu en pause à l'aide de la touche 'echap'.
 
-Pour rammasser des objets dans les coffres ou faire des échanges avec les marchands, il suffit de cliquer (en relacher le clic) sur les objets avec la souris.
+Pour rammasser des objets dans les coffres ou faire des échanges avec les marchands, il suffit de cliquer (et relacher le clic) sur les objets avec la souris.
 
 
 ## Crédits
