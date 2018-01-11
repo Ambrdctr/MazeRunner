@@ -1,5 +1,6 @@
 from classObject import Cle
 
+# fonctions permettant de faire certianes actions en fonction de la case ou se trouve le joueur
 def allerDonjon(map, perso):
 
     return map.grid[perso.y][perso.x].state == 'entreeDonjon'
@@ -10,6 +11,7 @@ def allerEtageSuivant(map, perso):
 
 def sortieTrouve(map, perso):
 
+    #pour affichage du chemin vers la sortie de la minimap
     if map.grid[perso.y][perso.x].state == 'sortie':
         tab = map.grid
         for i in range(0, len(tab)):

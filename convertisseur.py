@@ -1,4 +1,8 @@
 def convertirSecondes(temps):
+    """
+    :param temps: temps en seconde
+    :return: un temps en heure, minutes, seconde (optimise avec des modulos prochainement)
+    """
 
     heure = 0
     minute = 0

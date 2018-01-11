@@ -1,9 +1,15 @@
-
 import pygame
 from pygame.locals import *
 import time
 
 def ecrire(phrase, screen):
+    """
+    :param phrase: phrase a ecrire
+    :param screen: ecran sur lequel afficher
+    :return: un message a l'ecran
+    """
+
+    #dimensionnement par rapport a l'ecran
     size = screen.get_size()
     if size[0] <= size[1]:
         min = size[0]
@@ -13,23 +19,26 @@ def ecrire(phrase, screen):
         taille_case = size[1] // 12
     taille_police = min * 15 // 700
 
-
+    #position du conteneur du message
     x=0
     y=taille_case*6
     xp=taille_case*13
     yp=taille_case*2
 
+    #effet de transparence
     s = pygame.Surface((xp, yp))
     s.set_alpha(200)
     s.fill((0, 0, 0))
     screen.blit(s, (x, y))
 
+    #ecriture du texte
     myfont = pygame.font.SysFont('Comic Sans MS', taille_police)
     for ligne in phrase.splitlines():
         textsurface = myfont.render(ligne, False, (200, 200, 200))
         screen.blit(textsurface, (x+5, y+5))
         y += taille_police + 3
 
+    #affichage d'une image pour montrer qu'il faut cliquer
     curseur = pygame.image.load("images/curseur.png").convert_alpha()
     curseur = pygame.transform.scale(curseur, (taille_case, taille_case))
     screen.blit(curseur, (taille_case*12, taille_case*6))
@@ -41,7 +50,7 @@ def ecrire(phrase, screen):
 
         for event in pygame.event.get():
 
-            # Lorsque l'on ferme la fenetre
+            # event permettant de fermer le message
             if event.type == QUIT:
                 run = False
             if event.type == KEYDOWN:

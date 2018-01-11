@@ -1,4 +1,5 @@
 import random
+#VOIR labyrinthe.py POUR PLUS DE DETAILS
 #Classe cellule
 class Cell:
     """Classe définissant une cellule caractérisé par:
@@ -50,6 +51,7 @@ class Grid:
 
 
 def create_empty_map():
+    #postionnement d'element
     map = Grid(20,30)
     map.grid[2][3].state = 'entreeDonjon'
     map.grid[10][1].state = 'forgeron'

@@ -128,6 +128,10 @@ def options(screen):
     return res
 
 def credit(screen):
+    """
+    :param screen: ecran
+    :return: affiche les credits du jeu
+    """
     size = screen.get_size()
     fond = pygame.image.load("images/credits.png").convert()
     fond = pygame.transform.scale(fond, (size[0], size[1]))
@@ -152,7 +156,14 @@ def credit(screen):
                 run = False
 
 def victoire_screen(screen, temps):
+    """
+    :param screen: ecran
+    :param temps: temps mis pour finir la partie
+    :return: ecran avec le temps affiche
+    """
     size = screen.get_size()
+
+    #pour clignotement
     fond1 = pygame.image.load("images/victoire1.png").convert()
     fond1 = pygame.transform.scale(fond1, (size[0], size[1]))
 
@@ -180,6 +191,7 @@ def victoire_screen(screen, temps):
             if event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
                     run = False
+        #clignotement
         if time.time()-affiche > 1:
             screen.blit(fond1, (0, 0))
             if time.time()-affiche > 1.3:
@@ -191,6 +203,10 @@ def victoire_screen(screen, temps):
         pygame.display.flip()
 
 def sortir(screen):
+    """
+    :param screen: ecran
+    :return: menu pour sortir du donjon
+    """
     size = screen.get_size()
     fond = pygame.image.load("images/sortir.png").convert()
     fond = pygame.transform.scale(fond, (size[0], size[1]))

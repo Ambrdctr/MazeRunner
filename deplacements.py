@@ -243,7 +243,9 @@ def deplacerMonstre(monstre, monstres, coffres, map, perso):
     peut_bouger = False
 
     #Depalcement logique lorsque la distance du perso est inférieur ou égale à la vision du monstre
+    #si le monstre voit le joueur et qu'il est assez fort ou une chance sur deux
     if distance <= monstre.vision and distance != 0 and (monstre.force >= perso.force or random.random() >= 0.5):
+        #rapprochement du monstre
         if math.sqrt(math.pow(perso.x - x, 2)) > math.sqrt(math.pow(perso.y - y, 2)):
             if perso.x > x: key = K_RIGHT
             elif perso.x < x: key = K_LEFT
@@ -257,6 +259,7 @@ def deplacerMonstre(monstre, monstres, coffres, map, perso):
             else:
                 if perso.y > y: key = K_DOWN
                 elif perso.y < y: key = K_UP
+        #test mur et coffre
         if key == K_UP:
             peut_bouger = not mur(x, y, 'haut', map) and not monstre_ya_coffre(x, y, 'haut', coffres) and y > 0
         if key == K_DOWN:
@@ -265,6 +268,8 @@ def deplacerMonstre(monstre, monstres, coffres, map, perso):
             peut_bouger = not mur(x, y, 'gauche', map) and not monstre_ya_coffre(x, y, 'gauche', coffres) and x > 0
         if key == K_RIGHT:
             peut_bouger = not mur(x, y, 'droite', map) and not monstre_ya_coffre(x, y, 'droite', coffres) and x < map.h - 1
+
+    #si il ne pas bouger alors deplacement autre part
     if not peut_bouger:
         for elt in deplacementMonstre:
             if elt != monstre.dirRetour:
