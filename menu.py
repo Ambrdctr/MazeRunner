@@ -173,7 +173,7 @@ def victoire_screen(screen, temps):
 
     #Affichage du texte
     myfont = pygame.font.SysFont('Comic Sans MS', int(72 * size[1] / 900))
-    text = convertirSecondes(round(temps,0))
+    text = convertirSecondes(round(temps,1))
     print(text)
     textsurface = myfont.render(text, False, (200, 50, 50))
 
